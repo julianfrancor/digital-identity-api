@@ -1,4 +1,4 @@
-package com.digitalidentityapi.citizen.controller.model;
+package com.digitalidentityapi.citizen.controller;
 
 import com.digitalidentityapi.citizen.service.OperatorService;
 import org.springframework.beans.factory.annotation.Autowired;
