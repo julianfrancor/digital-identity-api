@@ -2,6 +2,7 @@ package com.digitalidentityapi.citizen.service.impl;
 
 import com.digitalidentityapi.citizen.dto.CitizenDto;
 import com.digitalidentityapi.citizen.entity.Citizen;
+import com.digitalidentityapi.citizen.exception.CitizenAlreadyExistsException;
 import com.digitalidentityapi.citizen.repository.CitizenRepository;
 import com.digitalidentityapi.citizen.service.ICitizenService;
 import lombok.AllArgsConstructor;
@@ -9,6 +10,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -18,12 +20,13 @@ public class CitizenServiceImpl implements ICitizenService {
 
     private CitizenRepository citizenRepository;
 
-    public CitizenServiceImpl(CitizenRepository citizenRepository) {
-        this.citizenRepository = citizenRepository;
-    }
-
     @Override
     public void createCitizen(CitizenDto citizenDto) {
+        Optional<Citizen> existingCitizen = citizenRepository.findById(citizenDto.getId());
+        if (existingCitizen.isPresent()) {
+            throw new CitizenAlreadyExistsException("Citizen with ID " + citizenDto.getId() + "already exists.");
+        }
+
         Citizen citizen = new Citizen();
         BeanUtils.copyProperties(citizenDto, citizen);
         citizenRepository.save(citizen);
