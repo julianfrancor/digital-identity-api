@@ -2,6 +2,7 @@ package com.digitalidentityapi.citizen.controller;
 
 import com.digitalidentityapi.citizen.dto.CitizenDto;
 import com.digitalidentityapi.citizen.service.ICitizenService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,7 +24,7 @@ public class CitizenController {
     }
 
     @PostMapping
-    public ResponseEntity<CitizenDto> createCitizen(@RequestBody CitizenDto citizenDto) {
+    public ResponseEntity<CitizenDto> createCitizen(@Valid @RequestBody CitizenDto citizenDto) {
         citizenService.createCitizen(citizenDto);
         return new ResponseEntity<>(citizenDto, HttpStatus.CREATED);
     }

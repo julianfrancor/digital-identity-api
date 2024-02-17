@@ -20,7 +20,7 @@ public class CitizenDto {
     @Schema(description = "Unique identifier of the citizen", required = true)
     private UUID id;
 
-    @NotEmpty
+    @NotEmpty(message = "Identification cannot be empty")
     @Schema(description = "Identification number of the citizen", required = true)
     private String identification;
 
