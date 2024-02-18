@@ -25,9 +25,6 @@ public class CitizenController {
 
     @PostMapping
     public ResponseEntity<CitizenDto> createCitizen(@Valid @RequestBody CitizenDto citizenDto) {
-        System.out.println("-----------");
-        System.out.println(citizenDto);
-        System.out.println("-----------");
         citizenService.createCitizen(citizenDto);
         return new ResponseEntity<>(citizenDto, HttpStatus.CREATED);
     }

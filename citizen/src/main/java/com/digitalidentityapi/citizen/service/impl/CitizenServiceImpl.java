@@ -24,10 +24,6 @@ public class CitizenServiceImpl implements ICitizenService {
 
     @Override
     public void createCitizen(CitizenDto citizenDto) {
-        System.out.println("-----SERVICE------");
-        System.out.println(citizenDto);
-        System.out.println("-----SERVICE------");
-
         Optional<Citizen> existingCitizen = citizenRepository.findById(citizenDto.getId());
         if (existingCitizen.isPresent()) {
             throw new CitizenAlreadyExistsException("Citizen already registered with email: " + citizenDto.getEmail() + "already exists.");
