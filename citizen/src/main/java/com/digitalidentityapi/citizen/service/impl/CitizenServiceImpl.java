@@ -3,6 +3,7 @@ package com.digitalidentityapi.citizen.service.impl;
 import com.digitalidentityapi.citizen.dto.CitizenDto;
 import com.digitalidentityapi.citizen.entity.Citizen;
 import com.digitalidentityapi.citizen.exception.CitizenAlreadyExistsException;
+import com.digitalidentityapi.citizen.mapper.CitizenMapper;
 import com.digitalidentityapi.citizen.repository.CitizenRepository;
 import com.digitalidentityapi.citizen.service.ICitizenService;
 import lombok.AllArgsConstructor;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -22,13 +24,16 @@ public class CitizenServiceImpl implements ICitizenService {
 
     @Override
     public void createCitizen(CitizenDto citizenDto) {
+        System.out.println("-----SERVICE------");
+        System.out.println(citizenDto);
+        System.out.println("-----SERVICE------");
+
         Optional<Citizen> existingCitizen = citizenRepository.findById(citizenDto.getId());
         if (existingCitizen.isPresent()) {
-            throw new CitizenAlreadyExistsException("Citizen with ID " + citizenDto.getId() + "already exists.");
+            throw new CitizenAlreadyExistsException("Citizen already registered with email: " + citizenDto.getEmail() + "already exists.");
         }
 
-        Citizen citizen = new Citizen();
-        BeanUtils.copyProperties(citizenDto, citizen);
+        Citizen citizen = CitizenMapper.mapToCitizen(citizenDto, new Citizen());
         citizenRepository.save(citizen);
     }
 

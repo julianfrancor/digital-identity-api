@@ -5,9 +5,14 @@ import com.digitalidentityapi.citizen.enums.Status;
 import java.util.UUID;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import lombok.*;
 
 @Entity
-@Table(name = "citizens")
+@Getter
+@Setter
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
 public class Citizen extends BaseEntity {
 
     @Id
