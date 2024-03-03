@@ -17,7 +17,7 @@ import java.util.UUID;
 )
 public class CitizenDto {
 
-    @Schema(description = "Unique identifier of the citizen", required = true)
+    @Schema(description = "Unique identifier of the citizen", required = false)
     private UUID id;
 
     @NotEmpty(message = "Identification cannot be empty")

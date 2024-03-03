@@ -17,10 +17,10 @@ public interface ICitizenService {
     /**
      * Updates an existing citizen's information.
      *
-     * @param id         the unique identifier of the citizen to update
+     * @param email         the email of the citizen to update
      * @param citizenDto the data transfer object containing updated citizen details
      */
-    void updateCitizen(UUID id, CitizenDto citizenDto);
+    void updateCitizen(String email, CitizenDto citizenDto);
 
     /**
      * Retrieves a citizen's information by their unique identifier.

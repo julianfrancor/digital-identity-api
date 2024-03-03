@@ -24,7 +24,7 @@ public class CitizenServiceImpl implements ICitizenService {
 
     @Override
     public void createCitizen(CitizenDto citizenDto) {
-        Optional<Citizen> existingCitizen = citizenRepository.findById(citizenDto.getId());
+        Optional<Citizen> existingCitizen = citizenRepository.findByEmail(citizenDto.getEmail());
         if (existingCitizen.isPresent()) {
             throw new CitizenAlreadyExistsException("Citizen already registered with email: " + citizenDto.getEmail() + "already exists.");
         }
@@ -34,10 +34,10 @@ public class CitizenServiceImpl implements ICitizenService {
     }
 
     @Override
-    public void updateCitizen(UUID id, CitizenDto citizenDto) {
-        Citizen citizen = citizenRepository.findById(id).orElseThrow(() ->
-                new IllegalStateException("Citizen with ID " + id + " does not exist"));
-        BeanUtils.copyProperties(citizenDto, citizen, "id"); // Do not copy the ID field
+    public void updateCitizen(String email, CitizenDto citizenDto) {
+        Citizen citizen = citizenRepository.findByEmail(email).orElseThrow(() ->
+                new IllegalStateException("Citizen with email " + email + " does not exist"));
+        BeanUtils.copyProperties(citizenDto, citizen, "id");
         citizenRepository.save(citizen);
     }
 
