@@ -29,9 +29,9 @@ public class CitizenController {
         return new ResponseEntity<>(citizenDto, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<CitizenDto> updateCitizen(@PathVariable UUID id, @RequestBody CitizenDto citizenDto) {
-        citizenService.updateCitizen(id, citizenDto);
+    @PutMapping("/{email}")
+    public ResponseEntity<CitizenDto> updateCitizen(@PathVariable String email, @RequestBody CitizenDto citizenDto) {
+        citizenService.updateCitizen(email, citizenDto);
         return ResponseEntity.ok(citizenDto);
     }
 
