@@ -6,6 +6,7 @@ import com.digitalidentityapi.citizen.enums.IdentificationType;
 import com.digitalidentityapi.citizen.enums.Status;
 
 import java.util.Date;
+import java.util.UUID;
 
 import static com.digitalidentityapi.citizen.utils.Utils.convertToDate;
 import static com.digitalidentityapi.citizen.utils.Utils.convertToLocalDateTime;
@@ -21,7 +22,6 @@ public class CitizenMapper {
     public static CitizenDto mapToCitizenDto(Citizen citizen) {
         CitizenDto citizenDto = new CitizenDto();
 
-        citizenDto.setId(citizen.getId());
         citizenDto.setIdentification(citizen.getIdentification());
         citizenDto.setIdentificationType(String.valueOf(citizen.getIdentificationType()));
         citizenDto.setFirstName(citizen.getFirstName());
@@ -45,9 +45,7 @@ public class CitizenMapper {
 
 
     public static Citizen mapToCitizen(CitizenDto citizenDto, Citizen citizen) {
-        if (citizenDto.getId() != null) {
-            citizen.setId(citizenDto.getId());
-        }
+        citizen.setId(new UUID(15L, 10L));
         citizen.setIdentification(citizenDto.getIdentification());
         citizen.setIdentificationType(IdentificationType.valueOf(citizenDto.getIdentificationType()));
         citizen.setFirstName(citizenDto.getFirstName());
