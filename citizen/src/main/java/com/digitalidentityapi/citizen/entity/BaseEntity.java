@@ -23,7 +23,7 @@ public class BaseEntity {
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
-    @LastModifiedDate
+    @CreatedDate
     @Column(insertable = false)
     private LocalDateTime updatedAt;
 

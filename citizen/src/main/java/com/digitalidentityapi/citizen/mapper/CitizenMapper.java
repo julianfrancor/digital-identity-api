@@ -5,23 +5,22 @@ import com.digitalidentityapi.citizen.entity.Citizen;
 import com.digitalidentityapi.citizen.enums.IdentificationType;
 import com.digitalidentityapi.citizen.enums.Status;
 
+import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.Optional;
 import java.util.UUID;
 
 import static com.digitalidentityapi.citizen.utils.Utils.convertToDate;
 import static com.digitalidentityapi.citizen.utils.Utils.convertToLocalDateTime;
 
 public class CitizenMapper {
-    public static CitizenDto mapToCitizenDto(Citizen citizen, CitizenDto citizenDto) {
-        citizenDto.setFirstName(citizen.getFirstName());
-        citizenDto.setEmail(citizen.getEmail());
-        citizenDto.setPhone(citizen.getPhone());
-        return citizenDto;
-    }
-
     public static CitizenDto mapToCitizenDto(Citizen citizen) {
+        if (citizen == null) {
+            throw new IllegalArgumentException("Cannot map a null Citizen to CitizenDto.");
+        }
         CitizenDto citizenDto = new CitizenDto();
 
+        citizenDto.setId(citizen.getId());
         citizenDto.setIdentification(citizen.getIdentification());
         citizenDto.setIdentificationType(String.valueOf(citizen.getIdentificationType()));
         citizenDto.setFirstName(citizen.getFirstName());
@@ -32,13 +31,8 @@ public class CitizenMapper {
         citizenDto.setEmail(citizen.getEmail());
         citizenDto.setPhone(citizen.getPhone());
         citizenDto.setStatus(String.valueOf(citizen.getStatus()));
-
-        if (citizen.getCreatedAt() != null) {
-            citizenDto.setCreatedAt(convertToDate(citizen.getCreatedAt()));
-        }
-        if (citizen.getUpdatedAt() != null) {
-            citizenDto.setUpdatedAt(convertToDate(citizen.getUpdatedAt()));
-        }
+        citizenDto.setCreatedAt(convertToDate(citizen.getCreatedAt()));
+        citizenDto.setUpdatedAt(convertToDate(citizen.getUpdatedAt()));
 
         return citizenDto;
     }
@@ -56,14 +50,6 @@ public class CitizenMapper {
         citizen.setEmail(citizenDto.getEmail());
         citizen.setPhone(citizenDto.getPhone());
         citizen.setStatus(Status.valueOf(citizenDto.getStatus()));
-        if (citizen.getCreatedAt() != null) {
-            citizen.setCreatedAt(convertToLocalDateTime(citizenDto.getCreatedAt()));
-        }
-        if (citizen.getUpdatedAt() != null) {
-            citizen.setUpdatedAt(convertToLocalDateTime(citizenDto.getUpdatedAt()));
-        }
-
         return citizen;
     }
-
 }

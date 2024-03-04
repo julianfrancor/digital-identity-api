@@ -23,6 +23,12 @@ public class CitizenController {
         this.citizenService = citizenService;
     }
 
+    @GetMapping
+    public ResponseEntity<List<CitizenDto>> getAllCitizens() {
+        List<CitizenDto> citizens = citizenService.getAllCitizens();
+        return ResponseEntity.ok(citizens);
+    }
+
     @PostMapping
     public ResponseEntity<CitizenDto> createCitizen(@Valid @RequestBody CitizenDto citizenDto) {
         citizenService.createCitizen(citizenDto);
@@ -45,12 +51,6 @@ public class CitizenController {
     public ResponseEntity<Void> deleteCitizen(@PathVariable UUID id) {
         citizenService.deleteCitizen(id);
         return ResponseEntity.noContent().build();
-    }
-
-    @GetMapping
-    public ResponseEntity<List<CitizenDto>> getAllCitizens() {
-        List<CitizenDto> citizens = citizenService.getAllCitizens();
-        return ResponseEntity.ok(citizens);
     }
 
     @GetMapping("/search")

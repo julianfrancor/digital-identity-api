@@ -5,16 +5,14 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.Date;
 import java.util.UUID;
 
 @Data
-@Schema(
-        name = "Citizen",
-        description = "Schema to hold Citizen information"
-)
+@Schema(name = "Citizen", description = "Schema to hold Citizen information")
 public class CitizenDto {
 
     @Schema(description = "Unique identifier of the citizen", required = false)
