@@ -12,11 +12,11 @@ import java.util.Date;
 import java.util.UUID;
 
 @Data
-@Schema(name = "Citizen", description = "Schema to hold Citizen information")
+@Schema(name = "citizen", description = "Schema to hold Citizen information")
 public class CitizenDto {
 
     @Schema(description = "Unique identifier of the citizen", required = false)
-    private UUID id;
+    private String id;
 
     @NotEmpty(message = "Identification cannot be empty")
     @Schema(description = "Identification number of the citizen", required = true)

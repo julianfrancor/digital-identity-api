@@ -20,7 +20,7 @@ public class Citizen extends BaseEntity {
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(updatable = false, nullable = false)
-    private UUID id;
+    private String id;
 
     @Column(nullable = false)
     private String identification;
