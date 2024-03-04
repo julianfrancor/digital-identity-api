@@ -1,19 +1,19 @@
 CREATE TABLE IF NOT EXISTS `citizens`
 (
-    `id`                  UUID PRIMARY KEY NOT NULL,
-    `identification`      VARCHAR(255)     NOT NULL,
-    `identification_type` VARCHAR(255)     NOT NULL,
-    `first_name`          VARCHAR(255)     NOT NULL,
+    `id`                  UUID PRIMARY KEY                          NOT NULL,
+    `identification`      VARCHAR(255)                              NOT NULL,
+    `identification_type` ENUM('DNI', 'PASSPORT', 'DRIVER_LICENSE') NOT NULL,
+    `first_name`          VARCHAR(255)                              NOT NULL,
     `second_name`         VARCHAR(255),
-    `last_name`           VARCHAR(255)     NOT NULL,
+    `last_name`           VARCHAR(255)                              NOT NULL,
     `second_last_name`    VARCHAR(255),
-    `address`             VARCHAR(255)     NOT NULL,
-    `email`               VARCHAR(255)     NOT NULL,
-    `phone`               VARCHAR(50)      NOT NULL,
-    `status`              VARCHAR(255)     NOT NULL,
-    `created_at`          DATE             DEFAULT NULL,
-    `updated_at`          DATE             DEFAULT NULL,
-    `deleted_at`          DATE             DEFAULT NULL
+    `address`             VARCHAR(255)                              NOT NULL,
+    `email`               VARCHAR(255)                              NOT NULL,
+    `phone`               VARCHAR(50)                               NOT NULL,
+    `status`              ENUM('ALIVE', 'DEAD', 'TRANSFERRED')      NOT NULL,
+    `created_at`          DATE                                      DEFAULT NULL,
+    `updated_at`          DATE                                      DEFAULT NULL,
+    `deleted_at`          DATE                                      DEFAULT NULL
 );
 
 CREATE TABLE IF NOT EXISTS `document_types`
@@ -40,6 +40,16 @@ CREATE TABLE IF NOT EXISTS `documents`
     FOREIGN KEY (`document_type_id`) REFERENCES `document_types` (`id`)
 );
 
+CREATE TABLE IF NOT EXISTS `digital_identity_services`
+(
+    `id`         UUID PRIMARY KEY NOT NULL,
+    `name`       VARCHAR(255)     NOT NULL,
+    `premium`    BOOLEAN          NOT NULL,
+    `created_at` DATE,
+    `updated_at` DATE,
+    `deleted_at` DATE
+);
+
 CREATE TABLE IF NOT EXISTS `citizen_services`
 (
     `id`                          UUID PRIMARY KEY NOT NULL,
@@ -52,16 +62,6 @@ CREATE TABLE IF NOT EXISTS `citizen_services`
     `deleted_at`                  DATE,
     FOREIGN KEY (`digital_identity_service_id`) REFERENCES `digital_identity_services` (`id`),
     FOREIGN KEY (`citizen_id`) REFERENCES `citizens` (`id`)
-);
-
-CREATE TABLE IF NOT EXISTS `digital_identity_services`
-(
-    `id`         UUID PRIMARY KEY NOT NULL,
-    `name`       VARCHAR(255)     NOT NULL,
-    `premium`    BOOLEAN          NOT NULL,
-    `created_at` DATE,
-    `updated_at` DATE,
-    `deleted_at` DATE
 );
 
 CREATE TABLE IF NOT EXISTS `transfers`

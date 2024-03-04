@@ -10,10 +10,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
-import java.util.UUID;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,14 +29,19 @@ public class CitizenServiceImpl implements ICitizenService {
         }
 
         Citizen citizen = CitizenMapper.mapToCitizen(citizenDto, new Citizen());
+        citizen.setCreatedAt(LocalDateTime.now(ZoneId.systemDefault()));
+        citizen.setUpdatedAt(LocalDateTime.now(ZoneId.systemDefault()));
         citizenRepository.save(citizen);
     }
+
+
 
     @Override
     public void updateCitizen(String email, CitizenDto citizenDto) {
         Citizen citizen = citizenRepository.findByEmail(email).orElseThrow(() ->
                 new IllegalStateException("Citizen with email " + email + " does not exist"));
         BeanUtils.copyProperties(citizenDto, citizen, "id");
+        citizen.setUpdatedAt(LocalDateTime.now(ZoneId.systemDefault()));
         citizenRepository.save(citizen);
     }
 
@@ -58,11 +62,7 @@ public class CitizenServiceImpl implements ICitizenService {
     @Override
     public List<CitizenDto> getAllCitizens() {
         return citizenRepository.findAll().stream()
-                .map(citizen -> {
-                    CitizenDto dto = new CitizenDto();
-                    BeanUtils.copyProperties(citizen, dto);
-                    return dto;
-                }).collect(Collectors.toList());
+                .map(CitizenMapper::mapToCitizenDto).collect(Collectors.toList());
     }
 
     @Override
