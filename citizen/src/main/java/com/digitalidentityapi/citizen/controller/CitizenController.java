@@ -2,6 +2,7 @@ package com.digitalidentityapi.citizen.controller;
 
 import com.digitalidentityapi.citizen.dto.CitizenDto;
 import com.digitalidentityapi.citizen.service.ICitizenService;
+import com.digitalidentityapi.citizen.service.impl.CitizenServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

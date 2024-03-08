@@ -1,5 +1,6 @@
 package com.digitalidentityapi.citizen.entity;
 
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -9,7 +10,7 @@ import lombok.*;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class Document extends BaseEntity {
+public class DocumentType extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

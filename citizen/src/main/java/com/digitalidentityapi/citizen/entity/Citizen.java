@@ -55,4 +55,3 @@ public class Citizen extends BaseEntity {
     @Column(nullable = false)
     private Status status;
 }
-
