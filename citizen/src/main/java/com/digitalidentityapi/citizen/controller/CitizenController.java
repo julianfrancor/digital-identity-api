@@ -61,37 +61,37 @@ public class CitizenController {
     }
 
     // Restore a soft-deleted citizen
-    @PatchMapping("/restore/{id}")
-    public ResponseEntity<Void> restoreCitizen(@PathVariable UUID id) {
-        citizenService.restoreCitizen(id);
+    @PatchMapping("/restore")
+    public ResponseEntity<Void> restoreCitizen(@RequestParam String email) {
+        citizenService.restoreCitizen(email);
         return ResponseEntity.ok().build();
     }
 
     // Register a citizen for a premium service
-    @PostMapping("/register/{citizenId}/{serviceId}")
-    public ResponseEntity<Void> registerCitizenForPremiumService(@PathVariable UUID citizenId, @PathVariable UUID serviceId) {
-        citizenService.registerCitizenForPremiumService(citizenId, serviceId);
+    @PostMapping("/register")
+    public ResponseEntity<Void> registerCitizenForPremiumService(@RequestParam String email, @RequestParam String serviceId) {
+        citizenService.registerCitizenForPremiumService(email, serviceId);
         return ResponseEntity.ok().build();
     }
 
     // Unregister a citizen from a premium service
-    @DeleteMapping("/unregister/{citizenId}/{serviceId}")
-    public ResponseEntity<Void> unregisterCitizenFromPremiumService(@PathVariable UUID citizenId, @PathVariable UUID serviceId) {
-        citizenService.unregisterCitizenFromPremiumService(citizenId, serviceId);
+    @DeleteMapping("/unregister")
+    public ResponseEntity<Void> unregisterCitizenFromPremiumService(@RequestParam String email, @RequestParam String serviceId) {
+        citizenService.unregisterCitizenFromPremiumService(email, serviceId);
         return ResponseEntity.ok().build();
     }
 
     // Transfer a citizen to a different operator
-    @PostMapping("/transfer/{citizenId}/{targetOperatorId}")
-    public ResponseEntity<Void> transferCitizen(@PathVariable UUID citizenId, @PathVariable UUID targetOperatorId) {
-        citizenService.transferCitizen(citizenId, targetOperatorId);
+    @PostMapping("/transfer")
+    public ResponseEntity<Void> transferCitizen(@RequestParam String email, @RequestParam String targetOperatorId) {
+        citizenService.transferCitizen(email, targetOperatorId);
         return ResponseEntity.ok().build();
     }
 
     // Verify a citizen's identity
-    @GetMapping("/verify/{citizenId}")
-    public ResponseEntity<Boolean> verifyCitizenIdentity(@PathVariable UUID citizenId) {
-        boolean isVerified = citizenService.verifyCitizenIdentity(citizenId);
+    @GetMapping("/verify")
+    public ResponseEntity<Boolean> verifyCitizenIdentity(@RequestParam String email) {
+        boolean isVerified = citizenService.verifyCitizenIdentity(email);
         return ResponseEntity.ok(isVerified);
     }
 }

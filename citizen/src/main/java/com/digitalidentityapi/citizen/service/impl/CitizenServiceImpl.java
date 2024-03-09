@@ -75,28 +75,30 @@ public class CitizenServiceImpl implements ICitizenService {
     }
 
     @Override
-    public void restoreCitizen(UUID id) {
+    public void restoreCitizen(String id) {
         // This method should implement the logic to restore a soft-deleted citizen.
     }
 
     @Override
-    public void registerCitizenForPremiumService(UUID citizenId, UUID serviceId) {
+    public void registerCitizenForPremiumService(String citizenId, String serviceId) {
         // This method should implement the logic to register a citizen for a given service.
     }
 
     @Override
-    public void unregisterCitizenFromPremiumService(UUID citizenId, UUID serviceId) {
+    public void unregisterCitizenFromPremiumService(String citizenId, String serviceId) {
         // This method should implement the logic to unregister a citizen from a given service.
     }
 
     @Override
-    public void transferCitizen(UUID citizenId, UUID targetOperatorId) {
+    public void transferCitizen(String citizenId, String targetOperatorId) {
         // This method should implement the logic to transfer a citizen to a different operator.
+        // TODO: revisar si debo de encola para el servicio de transferencia o si esta parte se encarga de hacer algo en la DB cuando alguien fue transferido
     }
 
     @Override
-    public boolean verifyCitizenIdentity(UUID citizenId) {
+    public boolean verifyCitizenIdentity(String citizenId) {
         // This method should implement the logic to verify a citizen's identity.
+        //TODO: Encolar en Broker para Servicio de Autenticación o revisar bien que hacer con este metodo
         return false;
     }
 }

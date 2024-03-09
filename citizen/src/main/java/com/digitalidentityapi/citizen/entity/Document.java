@@ -14,8 +14,9 @@ public class Document extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(nullable = false)
-    private String citizenId;
+    @ManyToOne
+    @JoinColumn(name = "citizen_id", referencedColumnName = "id")
+    private Citizen citizen;
 
     @Column(nullable = false)
     private String documentTypeId;
