@@ -42,9 +42,9 @@ public class CitizenController {
         return ResponseEntity.ok(citizenDto);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<CitizenDto> getCitizenById(@PathVariable UUID id) {
-        CitizenDto citizenDto = citizenService.getCitizenById(id);
+    @GetMapping("/{email}")
+    public ResponseEntity<CitizenDto> getCitizenById(@PathVariable String email) {
+        CitizenDto citizenDto = citizenService.getCitizenByEmail(email);
         return ResponseEntity.ok(citizenDto);
     }
 

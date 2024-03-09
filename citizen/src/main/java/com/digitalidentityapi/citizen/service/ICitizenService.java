@@ -23,12 +23,12 @@ public interface ICitizenService {
     void updateCitizen(String email, CitizenDto citizenDto);
 
     /**
-     * Retrieves a citizen's information by their unique identifier.
+     * Retrieves a citizen's information by their email.
      *
-     * @param id the unique identifier of the citizen to retrieve
+     * @param email of the citizen to retrieve
      * @return the data transfer object containing the citizen's details
      */
-    CitizenDto getCitizenById(UUID id);
+    CitizenDto getCitizenByEmail(String email);
 
     /**
      * Deletes a citizen's record from the system.

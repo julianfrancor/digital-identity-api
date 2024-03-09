@@ -46,9 +46,9 @@ public class CitizenServiceImpl implements ICitizenService {
     }
 
     @Override
-    public CitizenDto getCitizenById(UUID id) {
-        Citizen citizen = citizenRepository.findById(id).orElseThrow(() ->
-                new IllegalStateException("Citizen with ID " + id + " does not exist"));
+    public CitizenDto getCitizenByEmail(String email) {
+        Citizen citizen = citizenRepository.findByEmail(email).orElseThrow(() ->
+                new IllegalStateException("Citizen with Email " + email + " does not exist"));
         CitizenDto citizenDto = new CitizenDto();
         BeanUtils.copyProperties(citizen, citizenDto);
         return citizenDto;
