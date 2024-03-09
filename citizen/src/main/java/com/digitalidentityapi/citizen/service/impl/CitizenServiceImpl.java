@@ -55,8 +55,10 @@ public class CitizenServiceImpl implements ICitizenService {
     }
 
     @Override
-    public void deleteCitizen(UUID id) {
-        citizenRepository.deleteById(id);
+    public void deleteCitizen(String email) {
+        Citizen citizen = citizenRepository.findByEmail(email).orElseThrow(() ->
+                new IllegalStateException("Citizen with Email " + email + " does not exist"));
+        citizenRepository.delete(citizen);
     }
 
     @Override

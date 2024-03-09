@@ -36,21 +36,21 @@ public class CitizenController {
         return new ResponseEntity<>(citizenDto, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{email}")
-    public ResponseEntity<CitizenDto> updateCitizen(@PathVariable String email, @RequestBody CitizenDto citizenDto) {
+    @PutMapping("/update")
+    public ResponseEntity<CitizenDto> updateCitizen(@RequestParam String email, @RequestBody CitizenDto citizenDto) {
         citizenService.updateCitizen(email, citizenDto);
         return ResponseEntity.ok(citizenDto);
     }
 
-    @GetMapping("/{email}")
-    public ResponseEntity<CitizenDto> getCitizenById(@PathVariable String email) {
+    @GetMapping("/find-by-email")
+    public ResponseEntity<CitizenDto> getCitizenByEmail(@RequestParam String email) {
         CitizenDto citizenDto = citizenService.getCitizenByEmail(email);
         return ResponseEntity.ok(citizenDto);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCitizen(@PathVariable UUID id) {
-        citizenService.deleteCitizen(id);
+    @DeleteMapping("/delete")
+    public ResponseEntity<Void> deleteCitizen(@RequestParam String email) {
+        citizenService.deleteCitizen(email);
         return ResponseEntity.noContent().build();
     }
 

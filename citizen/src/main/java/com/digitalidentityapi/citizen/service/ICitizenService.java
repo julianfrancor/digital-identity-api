@@ -35,7 +35,7 @@ public interface ICitizenService {
      *
      * @param id the unique identifier of the citizen to delete
      */
-    void deleteCitizen(UUID id);
+    void deleteCitizen(String email);
 
     /**
      * Retrieves a list of all citizens in the system.
