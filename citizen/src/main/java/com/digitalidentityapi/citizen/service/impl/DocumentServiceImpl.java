@@ -37,6 +37,15 @@ public class DocumentServiceImpl implements IDocumentService {
     }
 
     @Override
+    public DocumentDto updateDocumentURL(int id, String url) {
+        Document document = documentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Document not found"));
+        document.setUrl(url);
+        Document updatedDocument = documentRepository.save(document);
+        return modelMapper.map(updatedDocument, DocumentDto.class);
+    }
+
+    @Override
     public DocumentDto getDocumentById(int id) {
         Document document = documentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Document not found"));

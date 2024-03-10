@@ -9,7 +9,6 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-@Builder
 @Schema(name = "Document", description = "Schema to hold Document information")
 public class DocumentDto {
 

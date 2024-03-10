@@ -27,6 +27,15 @@ public interface IDocumentService {
     DocumentDto updateDocument(int id, DocumentDto documentDto);
 
     /**
+     * Updates an existing document's url.
+     *
+     * @param id          the unique identifier of the document to update
+     * @param url where the document is stored
+     * @return the updated Document DTO
+     */
+    DocumentDto updateDocumentURL(int id, String url);
+
+    /**
      * Retrieves a document by its ID.
      *
      * @param id the unique identifier of the document to retrieve
