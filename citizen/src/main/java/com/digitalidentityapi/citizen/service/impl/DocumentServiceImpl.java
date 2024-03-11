@@ -1,7 +1,10 @@
 package com.digitalidentityapi.citizen.service.impl;
 
 import com.digitalidentityapi.citizen.dto.DocumentDto;
+import com.digitalidentityapi.citizen.entity.Citizen;
 import com.digitalidentityapi.citizen.entity.Document;
+import com.digitalidentityapi.citizen.mapper.DocumentMapper;
+import com.digitalidentityapi.citizen.repository.CitizenRepository;
 import com.digitalidentityapi.citizen.repository.DocumentRepository;
 import com.digitalidentityapi.citizen.service.IDocumentService;
 import org.modelmapper.ModelMapper;
@@ -18,22 +21,27 @@ public class DocumentServiceImpl implements IDocumentService {
     @Autowired
     private DocumentRepository documentRepository;
 
-    private ModelMapper modelMapper;
+    @Autowired
+    private CitizenRepository citizenRepository;
 
     @Override
     public DocumentDto createDocument(DocumentDto documentDto) {
-        Document document = modelMapper.map(documentDto, Document.class);
+        Citizen citizen = citizenRepository.findByEmail(documentDto.getCitizenEmail()).orElseThrow(() ->
+                new IllegalStateException("Citizen with Email " + documentDto.getCitizenEmail() + " does not exist"));
+        Document document = DocumentMapper.mapToDocument(documentDto, new Document(), citizen);
         Document savedDocument = documentRepository.save(document);
-        return modelMapper.map(savedDocument, DocumentDto.class);
+        return DocumentMapper.mapToDocumentDto(savedDocument);
     }
 
     @Override
     public DocumentDto updateDocument(int id, DocumentDto documentDto) {
         Document document = documentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Document not found"));
-        modelMapper.map(documentDto, document);
+        document.setDocumentTypeId(documentDto.getDocumentTypeId());
+        document.setTitle(documentDto.getTitle());
+        document.setUrl(documentDto.getUrl());
         Document updatedDocument = documentRepository.save(document);
-        return modelMapper.map(updatedDocument, DocumentDto.class);
+        return DocumentMapper.mapToDocumentDto(updatedDocument);
     }
 
     @Override
@@ -42,14 +50,15 @@ public class DocumentServiceImpl implements IDocumentService {
                 .orElseThrow(() -> new RuntimeException("Document not found"));
         document.setUrl(url);
         Document updatedDocument = documentRepository.save(document);
-        return modelMapper.map(updatedDocument, DocumentDto.class);
+        return DocumentMapper.mapToDocumentDto(updatedDocument);
+
     }
 
     @Override
     public DocumentDto getDocumentById(int id) {
         Document document = documentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Document not found"));
-        return modelMapper.map(document, DocumentDto.class);
+        return DocumentMapper.mapToDocumentDto(document);
     }
 
     @Override
@@ -63,14 +72,14 @@ public class DocumentServiceImpl implements IDocumentService {
     public List<DocumentDto> getAllDocumentsByCitizenEmail(String email) {
         List<Document> documents = documentRepository.findAllByCitizenEmail(email);
         return documents.stream()
-                .map(document -> modelMapper.map(document, DocumentDto.class))
+                .map(DocumentMapper::mapToDocumentDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public DocumentDto findDocumentById(int id) {
         Document document = documentRepository.findDocumentById(id);
-        return modelMapper.map(document, DocumentDto.class);
+        return DocumentMapper.mapToDocumentDto(document);
     }
 
     @Override
@@ -78,7 +87,7 @@ public class DocumentServiceImpl implements IDocumentService {
         List<Document> documents = documentRepository.findByDocumentTypeIdAndCitizenEmail(UUID.fromString(documentTypeId), citizenEmail);
 
         return documents.stream()
-                .map(document -> modelMapper.map(document, DocumentDto.class))
+                .map(DocumentMapper::mapToDocumentDto)
                 .collect(Collectors.toList());
     }
 }

@@ -15,9 +15,9 @@ public class DocumentDto {
     @Schema(description = "Unique identifier of the document", required = false)
     private String id;
 
-    @NotEmpty(message = "Citizen ID cannot be empty")
-    @Schema(description = "Identifier of the citizen to whom the document belongs", required = true)
-    private String citizenId;
+    @NotEmpty(message = "Citizen email cannot be empty")
+    @Schema(description = "Email of the citizen to whom the document belongs", required = true)
+    private String citizenEmail;
 
     @NotEmpty(message = "Document type ID cannot be empty")
     @Schema(description = "Identifier of the document type", required = true)
