@@ -40,4 +40,3 @@ public class DocumentMapper {
         return document;
     }
 }
-
