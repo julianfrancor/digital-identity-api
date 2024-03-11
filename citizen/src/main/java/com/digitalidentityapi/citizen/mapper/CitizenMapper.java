@@ -38,8 +38,8 @@ public class CitizenMapper {
     }
 
 
-    public static Citizen mapToCitizen(CitizenDto citizenDto, Citizen citizen) {
-        citizen.setId(new UUID(15L, 10L).toString());
+    public static Citizen mapToCitizen(CitizenDto citizenDto) {
+        Citizen citizen = new Citizen();
         citizen.setIdentification(citizenDto.getIdentification());
         citizen.setIdentificationType(IdentificationType.valueOf(citizenDto.getIdentificationType()));
         citizen.setFirstName(citizenDto.getFirstName());

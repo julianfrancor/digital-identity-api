@@ -28,7 +28,7 @@ public class CitizenServiceImpl implements ICitizenService {
             throw new CitizenAlreadyExistsException("Citizen already registered with email: " + citizenDto.getEmail() + "already exists.");
         }
 
-        Citizen citizen = CitizenMapper.mapToCitizen(citizenDto, new Citizen());
+        Citizen citizen = CitizenMapper.mapToCitizen(citizenDto);
         citizen.setCreatedAt(LocalDateTime.now(ZoneId.systemDefault()));
         citizen.setUpdatedAt(LocalDateTime.now(ZoneId.systemDefault()));
         citizenRepository.save(citizen);

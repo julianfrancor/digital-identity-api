@@ -16,28 +16,18 @@ CREATE TABLE IF NOT EXISTS `citizen`
     `deleted_at`          DATE                                      DEFAULT NULL
 );
 
-CREATE TABLE IF NOT EXISTS `document_types`
-(
-    `id`         int AUTO_INCREMENT PRIMARY KEY NOT NULL,
-    `type`       VARCHAR(255)            NOT NULL,
-    `created_at` DATE,
-    `updated_at` DATE,
-    `deleted_at` DATE
-);
-
-CREATE TABLE IF NOT EXISTS `documents`
+CREATE TABLE IF NOT EXISTS `document`
 (
     `id`               int AUTO_INCREMENT PRIMARY KEY NOT NULL,
     `citizen_id`       int                     NOT NULL,
-    `document_type_id` int                     NOT NULL,
+    `document_type_id` VARCHAR(255)            NOT NULL,
     `title`            VARCHAR(255)            NOT NULL,
     `url`              TEXT                    NOT NULL,
-    `metadata`         JSON                    NOT NULL,
+    `metadata`         TEXT                    NOT NULL,
     `created_at`       DATE,
     `updated_at`       DATE,
     `deleted_at`       DATE,
-    FOREIGN KEY (`citizen_id`) REFERENCES `citizen` (`id`),
-    FOREIGN KEY (`document_type_id`) REFERENCES `document_types` (`id`)
+    FOREIGN KEY (`citizen_id`) REFERENCES `citizen` (`id`)
 );
 
 CREATE TABLE IF NOT EXISTS `digital_identity_services`

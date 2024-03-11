@@ -13,7 +13,7 @@ import java.util.Date;
 public class DocumentDto {
 
     @Schema(description = "Unique identifier of the document", required = false)
-    private String id;
+    private int id;
 
     @NotEmpty(message = "Citizen email cannot be empty")
     @Schema(description = "Email of the citizen to whom the document belongs", required = true)

@@ -11,6 +11,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -29,6 +31,8 @@ public class DocumentServiceImpl implements IDocumentService {
         Citizen citizen = citizenRepository.findByEmail(documentDto.getCitizenEmail()).orElseThrow(() ->
                 new IllegalStateException("Citizen with Email " + documentDto.getCitizenEmail() + " does not exist"));
         Document document = DocumentMapper.mapToDocument(documentDto, new Document(), citizen);
+        document.setCreatedAt(LocalDateTime.now(ZoneId.systemDefault()));
+        document.setUpdatedAt(LocalDateTime.now(ZoneId.systemDefault()));
         Document savedDocument = documentRepository.save(document);
         return DocumentMapper.mapToDocumentDto(savedDocument);
     }

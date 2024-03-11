@@ -16,7 +16,7 @@ public class DocumentMapper {
         }
         DocumentDto documentDto = new DocumentDto();
 
-        documentDto.setId(String.valueOf(document.getId()));
+        documentDto.setId(document.getId());
         documentDto.setCitizenEmail(document.getCitizen() != null ? document.getCitizen().getEmail() : null);
         documentDto.setDocumentTypeId(document.getDocumentTypeId());
         documentDto.setTitle(document.getTitle());
