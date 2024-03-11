@@ -4,9 +4,8 @@ import com.digitalidentityapi.citizen.dto.DocumentDto;
 import com.digitalidentityapi.citizen.entity.Document;
 import com.digitalidentityapi.citizen.entity.Citizen;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Date;
+import static com.digitalidentityapi.citizen.utils.Utils.convertToDate;
+
 
 public class DocumentMapper {
 
@@ -39,10 +38,6 @@ public class DocumentMapper {
         document.setMetadata(documentDto.getMetadata());
 
         return document;
-    }
-
-    private static Date convertToDate(LocalDateTime localDateTime) {
-        return java.util.Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
     }
 }
 

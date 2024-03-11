@@ -1,5 +1,6 @@
 package com.digitalidentityapi.citizen.controller;
 
+import com.digitalidentityapi.citizen.dto.CitizenDto;
 import com.digitalidentityapi.citizen.dto.DocumentDto;
 import com.digitalidentityapi.citizen.service.IDocumentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,18 @@ public class DocumentController {
         return new ResponseEntity<>(createdDocument, HttpStatus.CREATED);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<DocumentDto> getDocumentById(@PathVariable int id) {
+        DocumentDto document = documentService.getDocumentById(id);
+        return ResponseEntity.ok(document);
+    }
+
+    @GetMapping("")
+    public ResponseEntity<List<DocumentDto>> getAllDocuments(@RequestParam String email) {
+        List<DocumentDto> documents = documentService.getAllDocumentsByCitizenEmail(email);
+        return ResponseEntity.ok(documents);
+    }
+
     @PutMapping("/update/{id}")
     public ResponseEntity<DocumentDto> updateDocument(@PathVariable int id, @RequestBody DocumentDto documentDto) {
         DocumentDto updatedDocument = documentService.updateDocument(id, documentDto);
@@ -32,12 +45,6 @@ public class DocumentController {
     public ResponseEntity<DocumentDto> updateDocumentURL(@PathVariable int id, @RequestParam String url) {
         DocumentDto updatedDocument = documentService.updateDocumentURL(id, url);
         return ResponseEntity.ok(updatedDocument);
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<DocumentDto> getDocumentById(@PathVariable int id) {
-        DocumentDto document = documentService.getDocumentById(id);
-        return ResponseEntity.ok(document);
     }
 
     @DeleteMapping("/{id}")

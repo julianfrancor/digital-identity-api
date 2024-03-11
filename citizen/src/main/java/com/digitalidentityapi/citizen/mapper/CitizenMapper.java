@@ -5,13 +5,7 @@ import com.digitalidentityapi.citizen.entity.Citizen;
 import com.digitalidentityapi.citizen.enums.IdentificationType;
 import com.digitalidentityapi.citizen.enums.Status;
 
-import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.Optional;
-import java.util.UUID;
-
 import static com.digitalidentityapi.citizen.utils.Utils.convertToDate;
-import static com.digitalidentityapi.citizen.utils.Utils.convertToLocalDateTime;
 
 public class CitizenMapper {
     public static CitizenDto mapToCitizenDto(Citizen citizen) {
