@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS `citizen`
 (
-    `id`                  VARCHAR(255) PRIMARY KEY                   NOT NULL,
+    `id`                  int AUTO_INCREMENT  PRIMARY KEY           NOT NULL,
     `identification`      VARCHAR(255)                              NOT NULL,
     `identification_type` ENUM('DNI', 'PASSPORT', 'DRIVER_LICENSE') NOT NULL,
     `first_name`          VARCHAR(255)                              NOT NULL,
@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS `citizen`
 
 CREATE TABLE IF NOT EXISTS `document_types`
 (
-    `id`         VARCHAR(255) PRIMARY KEY NOT NULL,
+    `id`         int AUTO_INCREMENT PRIMARY KEY NOT NULL,
     `type`       VARCHAR(255)            NOT NULL,
     `created_at` DATE,
     `updated_at` DATE,
@@ -27,9 +27,9 @@ CREATE TABLE IF NOT EXISTS `document_types`
 
 CREATE TABLE IF NOT EXISTS `documents`
 (
-    `id`               VARCHAR(255) PRIMARY KEY NOT NULL,
-    `citizen_id`       VARCHAR(255)             NOT NULL,
-    `document_type_id` VARCHAR(255)             NOT NULL,
+    `id`               int AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    `citizen_id`       int                     NOT NULL,
+    `document_type_id` int                     NOT NULL,
     `title`            VARCHAR(255)            NOT NULL,
     `url`              TEXT                    NOT NULL,
     `metadata`         JSON                    NOT NULL,
@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS `documents`
 
 CREATE TABLE IF NOT EXISTS `digital_identity_services`
 (
-    `id`         VARCHAR(255) PRIMARY KEY NOT NULL,
+    `id`         int AUTO_INCREMENT PRIMARY KEY NOT NULL,
     `name`       VARCHAR(255)            NOT NULL,
     `premium`    BOOLEAN                 NOT NULL,
     `created_at` DATE,
@@ -52,10 +52,10 @@ CREATE TABLE IF NOT EXISTS `digital_identity_services`
 
 CREATE TABLE IF NOT EXISTS `citizen_services`
 (
-    `id`                          VARCHAR(255) PRIMARY KEY NOT NULL,
-    `digital_identity_service_id` VARCHAR(255)             NOT NULL,
-    `citizen_id`                  VARCHAR(255)             NOT NULL,
-    `subscription_date`           DATE                    NOT NULL,
+    `id`                          int AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    `digital_identity_service_id` int                            NOT NULL,
+    `citizen_id`                  int                            NOT NULL,
+    `subscription_date`           DATE                           NOT NULL,
     `unsubscription_date`         DATE,
     `created_at`                  DATE,
     `updated_at`                  DATE,
@@ -66,9 +66,9 @@ CREATE TABLE IF NOT EXISTS `citizen_services`
 
 CREATE TABLE IF NOT EXISTS `transfers`
 (
-    `id`            VARCHAR(255) PRIMARY KEY NOT NULL,
-    `citizen_id`    VARCHAR(255)             NOT NULL,
-    `operator_id`   VARCHAR(255)             NOT NULL,
+    `id`            int AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    `citizen_id`    int             NOT NULL,
+    `operator_id`   int             NOT NULL,
     `transfer_date` DATE                    NOT NULL,
     `created_at`    DATE,
     `updated_at`    DATE,
@@ -78,9 +78,9 @@ CREATE TABLE IF NOT EXISTS `transfers`
 
 CREATE TABLE IF NOT EXISTS `external_companies`
 (
-    `id`                          VARCHAR(255) PRIMARY KEY NOT NULL,
-    `external_company_id`         VARCHAR(255)             NOT NULL,
-    `digital_identity_service_id` VARCHAR(255)             NOT NULL,
+    `id`                          int AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    `external_company_id`         int             NOT NULL,
+    `digital_identity_service_id` int             NOT NULL,
     `affiliation_date`            DATE                    NOT NULL,
     `discharge_date`              DATE                    NOT NULL,
     `created_at`                  DATE,
@@ -91,9 +91,9 @@ CREATE TABLE IF NOT EXISTS `external_companies`
 
 CREATE TABLE IF NOT EXISTS `external_companies_services`
 (
-    `id`                    VARCHAR(255) PRIMARY KEY NOT NULL,
+    `id`                    int AUTO_INCREMENT PRIMARY KEY NOT NULL,
     `name`                  VARCHAR(255)             NOT NULL,
-    `external_companies_id` VARCHAR(255)             NOT NULL,
+    `external_companies_id` int                      NOT NULL,
     `nit`                   VARCHAR(255)             NOT NULL,
     `address`               VARCHAR(255)             NOT NULL,
     `email`                 VARCHAR(255)             NOT NULL,
