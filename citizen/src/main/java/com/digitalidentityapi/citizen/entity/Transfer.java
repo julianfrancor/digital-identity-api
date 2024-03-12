@@ -2,7 +2,6 @@ package com.digitalidentityapi.citizen.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
 
 import java.util.Date;
 
@@ -14,19 +13,16 @@ import java.util.Date;
 @AllArgsConstructor
 public class Transfer extends BaseEntity {
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    @Column(updatable = false, nullable = false)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "citizen_id", referencedColumnName = "id", nullable = false)
-    private Citizen citizen;
+    @Column(name = "citizen_id", nullable = false)
+    private int citizenId;
 
     @Column(name = "operator_id", nullable = false)
-    private String operator;
+    private int operatorId;
 
     @Column(name = "transfer_date", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date transferDate;
 }

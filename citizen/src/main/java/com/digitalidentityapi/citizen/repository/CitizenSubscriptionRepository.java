@@ -10,7 +10,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface CitizenSubscriptionRepository extends JpaRepository<CitizenSubscription, UUID> {
+public interface CitizenSubscriptionRepository extends JpaRepository<CitizenSubscription, Integer> {
 
     Optional<CitizenSubscription> findByCitizenIdAndDigitalIdentityServicesId(int citizenSubscriptionId, int digitalIdentityServiceId);
 

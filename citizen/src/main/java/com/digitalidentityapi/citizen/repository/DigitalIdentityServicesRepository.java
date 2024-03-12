@@ -8,7 +8,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface DigitalIdentityServicesRepository extends JpaRepository<DigitalIdentityServices, UUID> {
+public interface DigitalIdentityServicesRepository extends JpaRepository<DigitalIdentityServices, Integer> {
 
     Optional<DigitalIdentityServices> findById(int id);
 
