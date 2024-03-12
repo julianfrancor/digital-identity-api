@@ -11,10 +11,10 @@ import java.util.Date;
 @Data
 @Builder
 @Schema(name = "DigitalIdentityService", description = "Schema to hold Digital Identity Service information")
-public class DigitalIdentityServiceDto {
+public class DigitalIdentityServicesDto {
 
     @Schema(description = "Unique identifier of the digital identity service", required = true)
-    private String id;
+    private int id;
 
     @NotEmpty(message = "Name cannot be empty")
     @Size(min = 2, max = 100)

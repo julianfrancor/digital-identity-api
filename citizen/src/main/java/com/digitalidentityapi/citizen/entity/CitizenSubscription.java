@@ -2,7 +2,6 @@ package com.digitalidentityapi.citizen.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
 
 import java.util.Date;
 
@@ -13,24 +12,26 @@ import java.util.Date;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class CitizenService extends BaseEntity {
-
+public class CitizenSubscription extends BaseEntity {
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(updatable = false, nullable = false)
+    private int id;
 
     @ManyToOne
     @JoinColumn(name = "citizen_id", nullable = false)
-    private Citizen citizenId;
+    private Citizen citizen;
 
     @ManyToOne
-    @JoinColumn(name = "service_id", nullable = false)
-    private DigitalIdentityService serviceId;
+    @JoinColumn(name = "digital_identity_service_id", nullable = false)
+    private DigitalIdentityServices digitalIdentityServices;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date subscriptionDate;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date unsubscriptionDate;
+
+    @Column(nullable = false)
+    private boolean isActive;
 }

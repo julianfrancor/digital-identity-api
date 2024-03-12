@@ -8,7 +8,7 @@ import com.digitalidentityapi.citizen.enums.Status;
 import static com.digitalidentityapi.citizen.utils.Utils.convertToDate;
 
 public class CitizenMapper {
-    public static CitizenDto mapToCitizenDto(Citizen citizen) {
+    public static CitizenDto toDto(Citizen citizen) {
         if (citizen == null) {
             throw new IllegalArgumentException("Cannot map a null Citizen to CitizenDto.");
         }
@@ -32,7 +32,7 @@ public class CitizenMapper {
     }
 
 
-    public static Citizen mapToCitizen(CitizenDto citizenDto) {
+    public static Citizen toEntity(CitizenDto citizenDto) {
         Citizen citizen = new Citizen();
         citizen.setIdentification(citizenDto.getIdentification());
         citizen.setIdentificationType(IdentificationType.valueOf(citizenDto.getIdentificationType()));

@@ -9,7 +9,7 @@ import static com.digitalidentityapi.citizen.utils.Utils.convertToDate;
 
 public class DocumentMapper {
 
-    public static DocumentDto mapToDocumentDto(Document document) {
+    public static DocumentDto toDto(Document document) {
         if (document == null) {
             throw new IllegalArgumentException("Cannot map a null Document to DocumentDto.");
         }
@@ -27,7 +27,7 @@ public class DocumentMapper {
         return documentDto;
     }
 
-    public static Document mapToDocument(DocumentDto documentDto, Document document, Citizen citizen) {
+    public static Document toEntity(DocumentDto documentDto, Document document, Citizen citizen) {
         if(document == null) {
             document = new Document();
         }

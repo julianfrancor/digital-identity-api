@@ -34,19 +34,20 @@ CREATE TABLE IF NOT EXISTS `digital_identity_services`
 (
     `id`         int AUTO_INCREMENT PRIMARY KEY NOT NULL,
     `name`       VARCHAR(255)            NOT NULL,
-    `premium`    BOOLEAN                 NOT NULL,
+    `is_premium`    BOOLEAN                 NOT NULL,
     `created_at` DATE,
     `updated_at` DATE,
     `deleted_at` DATE
 );
 
-CREATE TABLE IF NOT EXISTS `citizen_services`
+CREATE TABLE IF NOT EXISTS `citizen_subscription`
 (
     `id`                          int AUTO_INCREMENT PRIMARY KEY NOT NULL,
     `digital_identity_service_id` int                            NOT NULL,
     `citizen_id`                  int                            NOT NULL,
     `subscription_date`           DATE                           NOT NULL,
     `unsubscription_date`         DATE,
+    `is_active`                   BOOLEAN,
     `created_at`                  DATE,
     `updated_at`                  DATE,
     `deleted_at`                  DATE,

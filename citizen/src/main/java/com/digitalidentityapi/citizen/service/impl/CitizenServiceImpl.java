@@ -28,7 +28,7 @@ public class CitizenServiceImpl implements ICitizenService {
             throw new CitizenAlreadyExistsException("Citizen already registered with email: " + citizenDto.getEmail() + "already exists.");
         }
 
-        Citizen citizen = CitizenMapper.mapToCitizen(citizenDto);
+        Citizen citizen = CitizenMapper.toEntity(citizenDto);
         citizen.setCreatedAt(LocalDateTime.now(ZoneId.systemDefault()));
         citizen.setUpdatedAt(LocalDateTime.now(ZoneId.systemDefault()));
         citizenRepository.save(citizen);
@@ -64,7 +64,7 @@ public class CitizenServiceImpl implements ICitizenService {
     @Override
     public List<CitizenDto> getAllCitizens() {
         return citizenRepository.findAll().stream()
-                .map(CitizenMapper::mapToCitizenDto).collect(Collectors.toList());
+                .map(CitizenMapper::toDto).collect(Collectors.toList());
     }
 
     @Override
