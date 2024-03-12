@@ -2,6 +2,7 @@ package com.digitalidentityapi.operators.service.impl;
 
 import com.digitalidentityapi.operators.constants.Constants;
 import com.digitalidentityapi.operators.entity.AuthenticDocument;
+import com.digitalidentityapi.operators.entity.NotificationMessage;
 import com.digitalidentityapi.operators.service.SignDocumentsServices;
 import com.digitalidentityapi.operators.utils.rabbit.RabbitPublishMessage;
 import org.json.JSONObject;
@@ -14,13 +15,12 @@ import reactor.core.publisher.Mono;
 @Service
 public class SignDocument implements SignDocumentsServices {
     private final RabbitPublishMessage rabbitPublishMessage;
-    private final GetOperators getOperators;
 
     @Autowired
-    public SignDocument(RabbitPublishMessage rabbitPublishMessage, GetOperators getOperators) {
+    public SignDocument(RabbitPublishMessage rabbitPublishMessage) {
         this.rabbitPublishMessage = rabbitPublishMessage;
-        this.getOperators = getOperators;
     }
+
     @Override
     public void signDocument(String message) {
         JSONObject json = new JSONObject(message);
@@ -34,7 +34,7 @@ public class SignDocument implements SignDocumentsServices {
                 .retrieve()
                 .bodyToMono(String.class);
         System.out.println(response.block());
-        rabbitPublishMessage.sendMessageToQueue("notificationQueue", response.block());
-        getOperators.getOperators();
+        NotificationMessage notificationMessage = new NotificationMessage(json.getString("email"), response.block());
+        rabbitPublishMessage.sendMessageToQueue("notificationQueue", notificationMessage.toString());
     }
 }

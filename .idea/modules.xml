@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/digital-identity-api.iml" filepath="$PROJECT_DIR$/.idea/digital-identity-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/document.main.iml" filepath="$PROJECT_DIR$/.idea/modules/document.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/notifications.main.iml" filepath="$PROJECT_DIR$/.idea/modules/notifications.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/operators.main.iml" filepath="$PROJECT_DIR$/.idea/modules/operators.main.iml" />
     </modules>
   </component>

@@ -1,14 +1,18 @@
 package com.digitalidentityapi.operators.entity;
 
-public class citizenRegister {
-    private String id;
+import jakarta.persistence.criteria.CriteriaBuilder;
+
+import java.math.BigInteger;
+
+public class CitizenRegister {
+    private BigInteger id;
     private String name;
     private String address;
     private String email;
     private String operatorId;
     private String OperatorName;
 
-    public citizenRegister(String id, String name, String address, String email, String operatorId, String operatorName) {
+    public CitizenRegister(BigInteger id, String name, String address, String email, String operatorId, String operatorName) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -17,11 +21,11 @@ public class citizenRegister {
         OperatorName = operatorName;
     }
 
-    public String getId() {
+    public BigInteger getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(BigInteger id) {
         this.id = id;
     }
 
