@@ -1,12 +1,12 @@
 package com.digitalidentityapi.citizen.service.impl;
 
-import com.digitalidentityapi.citizen.dto.TransfersDto;
+import com.digitalidentityapi.citizen.dto.TransferDto;
 import com.digitalidentityapi.citizen.entity.Citizen;
 import com.digitalidentityapi.citizen.entity.Transfer;
-import com.digitalidentityapi.citizen.mapper.TransfersMapper;
+import com.digitalidentityapi.citizen.mapper.TransferMapper;
 import com.digitalidentityapi.citizen.repository.CitizenRepository;
-import com.digitalidentityapi.citizen.repository.TransfersRepository;
-import com.digitalidentityapi.citizen.service.ITransfersService;
+import com.digitalidentityapi.citizen.repository.TransferRepository;
+import com.digitalidentityapi.citizen.service.ITransferService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,33 +16,33 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class TransfersServiceImpl implements ITransfersService {
+public class TransferServiceImpl implements ITransferService {
 
     @Autowired
-    private final TransfersRepository transfersRepository;
+    private final TransferRepository transferRepository;
 
     @Autowired
     private CitizenRepository citizenRepository;
 
     @Autowired
-    public TransfersServiceImpl(TransfersRepository transfersRepository) {
-        this.transfersRepository = transfersRepository;
+    public TransferServiceImpl(TransferRepository transferRepository) {
+        this.transferRepository = transferRepository;
     }
 
     @Override
-    public TransfersDto createTransfer(TransfersDto transferDto) {
+    public TransferDto createTransfer(TransferDto transferDto) {
         String citizenEmail = transferDto.getCitizenEmail();
-        Transfer transfer = TransfersMapper.toEntity(transferDto, new Transfer());
+        Transfer transfer = TransferMapper.toEntity(transferDto, new Transfer());
         transfer.setCreatedAt(LocalDateTime.now(ZoneId.systemDefault()));
         transfer.setUpdatedAt(LocalDateTime.now(ZoneId.systemDefault()));
-        transfer = transfersRepository.save(transfer);
-        return TransfersMapper.toDto(transfer, citizenEmail);
+        transfer = transferRepository.save(transfer);
+        return TransferMapper.toDto(transfer, citizenEmail);
     }
 
     @Override
-    public TransfersDto updateTransfer(int id, TransfersDto transferDto) {
+    public TransferDto updateTransfer(int id, TransferDto transferDto) {
         String citizenEmail = transferDto.getCitizenEmail();
-        Transfer existingTransfer = transfersRepository.findById(id)
+        Transfer existingTransfer = transferRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Transfer with ID " + id + " not found"));
 
         existingTransfer.setCitizenId(Integer.parseInt(transferDto.getCitizenId()));
@@ -50,31 +50,31 @@ public class TransfersServiceImpl implements ITransfersService {
         existingTransfer.setTransferDate(transferDto.getTransferDate());
         existingTransfer.setUpdatedAt(LocalDateTime.now(ZoneId.systemDefault()));
 
-        transfersRepository.save(existingTransfer);
-        return TransfersMapper.toDto(existingTransfer, citizenEmail);
+        transferRepository.save(existingTransfer);
+        return TransferMapper.toDto(existingTransfer, citizenEmail);
     }
 
     @Override
     public void deleteTransfer(int id) {
-        Transfer transfer = transfersRepository.findById(id)
+        Transfer transfer = transferRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Transfer with ID " + id + " not found"));
-        transfersRepository.delete(transfer);
+        transferRepository.delete(transfer);
     }
 
     @Override
-    public TransfersDto getTransferById(int id) {
-        Transfer transfer = transfersRepository.findById(id)
+    public TransferDto getTransferById(int id) {
+        Transfer transfer = transferRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Transfer with ID " + id + " not found"));
         Citizen citizen = citizenRepository.findById(Integer.valueOf(String.valueOf(transfer.getCitizenId()))).orElseThrow(() ->
                 new IllegalStateException("Citizen with ID " + transfer.getCitizenId() + " does not exist"));
-        return TransfersMapper.toDto(transfer, citizen.getEmail());
+        return TransferMapper.toDto(transfer, citizen.getEmail());
     }
 
     @Override
-    public List<TransfersDto> getAllTransfers() {
-        return transfersRepository.findAll().stream()
+    public List<TransferDto> getAllTransfers() {
+        return transferRepository.findAll().stream()
                 .map(transfer -> {
-                    return TransfersMapper.toDto(transfer, (citizenRepository.findById(Integer.valueOf(String.valueOf(transfer.getCitizenId()))).orElseThrow(() ->
+                    return TransferMapper.toDto(transfer, (citizenRepository.findById(Integer.valueOf(String.valueOf(transfer.getCitizenId()))).orElseThrow(() ->
                             new IllegalStateException("Citizen with ID " + transfer.getCitizenId() + " does not exist")).getEmail()));
                 })
                 .collect(Collectors.toList());

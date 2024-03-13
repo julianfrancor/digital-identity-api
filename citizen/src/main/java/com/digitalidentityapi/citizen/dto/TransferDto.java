@@ -2,14 +2,13 @@ package com.digitalidentityapi.citizen.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
-import lombok.Builder;
 import lombok.Data;
 
 import java.util.Date;
 
 @Data
-@Schema(name = "Transfers", description = "Schema to hold Transfers information")
-public class TransfersDto {
+@Schema(name = "Transfer", description = "Schema to hold Transfers information")
+public class TransferDto {
     @NotEmpty(message = "ID cannot be empty")
     @Schema(description = "Unique identifier of the transfer", required = true)
     private int id;

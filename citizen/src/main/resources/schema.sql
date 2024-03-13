@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS `citizen_subscription`
     FOREIGN KEY (`citizen_id`) REFERENCES `citizen` (`id`)
 );
 
-CREATE TABLE IF NOT EXISTS `transfers`
+CREATE TABLE IF NOT EXISTS `transfer`
 (
     `id`            int AUTO_INCREMENT PRIMARY KEY NOT NULL,
     `citizen_id`    int             NOT NULL,
