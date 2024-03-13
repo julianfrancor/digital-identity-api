@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `digital_identity_services`
 (
     `id`         int AUTO_INCREMENT PRIMARY KEY NOT NULL,
     `name`       VARCHAR(255)            NOT NULL,
-    `is_premium`    BOOLEAN                 NOT NULL,
+    `is_premium` BOOLEAN                 NOT NULL,
     `created_at` DATE,
     `updated_at` DATE,
     `deleted_at` DATE
@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS `transfer`
 CREATE TABLE IF NOT EXISTS `external_company`
 (
     `id`                          int AUTO_INCREMENT PRIMARY KEY NOT NULL,
-    `external_company_id`         int                     NOT NULL,
+    `external_company_id`         int                     NOT NULL UNIQUE,
     `digital_identity_service_id` int                     NOT NULL,
     `affiliation_date`            DATE                    NOT NULL,
     `discharge_date`              DATE                    NOT NULL,

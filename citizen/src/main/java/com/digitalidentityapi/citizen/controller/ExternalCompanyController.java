@@ -3,6 +3,7 @@ package com.digitalidentityapi.citizen.controller;
 import com.digitalidentityapi.citizen.dto.ExternalCompanyDto;
 import com.digitalidentityapi.citizen.service.IExternalCompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,9 +22,25 @@ public class ExternalCompanyController {
     }
 
     @PostMapping
-    public ResponseEntity<ExternalCompanyDto> createExternalCompany(@RequestBody ExternalCompanyDto externalCompanyDto) {
-        ExternalCompanyDto createdExternalCompany = externalCompanyService.createExternalCompany(externalCompanyDto);
-        return new ResponseEntity<>(createdExternalCompany, HttpStatus.CREATED);
+    public ResponseEntity<?> createExternalCompany(@RequestBody ExternalCompanyDto externalCompanyDto) {
+        try {
+            ExternalCompanyDto createdExternalCompany = externalCompanyService.createExternalCompany(externalCompanyDto);
+            return new ResponseEntity<>(createdExternalCompany, HttpStatus.CREATED);
+        } catch (DataIntegrityViolationException e) {
+            return handleDataIntegrityViolationException(e);
+        }
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<?> handleDataIntegrityViolationException(DataIntegrityViolationException e) {
+        if (e.getCause() instanceof org.hibernate.exception.ConstraintViolationException) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("externalCompanyId already created and has to be unique");
+        }
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("An unexpected error occurred");
     }
 
     @PutMapping("/{id}")

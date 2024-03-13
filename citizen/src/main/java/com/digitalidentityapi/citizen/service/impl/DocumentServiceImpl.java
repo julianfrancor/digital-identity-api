@@ -43,6 +43,7 @@ public class DocumentServiceImpl implements IDocumentService {
         document.setDocumentTypeId(documentDto.getDocumentTypeId());
         document.setTitle(documentDto.getTitle());
         document.setUrl(documentDto.getUrl());
+        document.setUpdatedAt(LocalDateTime.now(ZoneId.systemDefault()));
         Document updatedDocument = documentRepository.save(document);
         return DocumentMapper.toDto(updatedDocument);
     }

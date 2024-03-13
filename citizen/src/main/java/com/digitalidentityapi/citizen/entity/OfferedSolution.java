@@ -20,8 +20,9 @@ public class OfferedSolution extends BaseEntity {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "external_company_id")
-    private int externalCompanyId;
+    @ManyToOne
+    @JoinColumn(name = "external_company_id")
+    private ExternalCompany externalCompany;
 
     @Column(name = "nit")
     private String nit;

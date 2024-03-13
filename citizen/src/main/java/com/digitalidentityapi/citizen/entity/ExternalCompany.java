@@ -16,7 +16,7 @@ public class ExternalCompany extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "external_company_id", nullable = false)
+    @Column(name = "external_company_id", nullable = false, unique = true)
     private int externalCompanyId;
 
     @Column(name = "digital_identity_service_id", nullable = false)

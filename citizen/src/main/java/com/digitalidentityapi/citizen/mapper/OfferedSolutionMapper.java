@@ -1,6 +1,7 @@
 package com.digitalidentityapi.citizen.mapper;
 
 import com.digitalidentityapi.citizen.dto.OfferedSolutionDto;
+import com.digitalidentityapi.citizen.entity.ExternalCompany;
 import com.digitalidentityapi.citizen.entity.OfferedSolution;
 
 import static com.digitalidentityapi.citizen.utils.Utils.convertToDate;
@@ -15,7 +16,7 @@ public class OfferedSolutionMapper {
         OfferedSolutionDto dto = new OfferedSolutionDto();
         dto.setId(entity.getId());
         dto.setName(entity.getName());
-        dto.setExternalCompanyId(entity.getExternalCompanyId());
+        dto.setExternalCompanyId(entity.getExternalCompany().getId());
         dto.setNit(entity.getNit());
         dto.setAddress(entity.getAddress());
         dto.setEmail(entity.getEmail());
@@ -26,14 +27,14 @@ public class OfferedSolutionMapper {
         return dto;
     }
 
-    public static OfferedSolution toEntity(OfferedSolutionDto dto) {
+    public static OfferedSolution toEntity(OfferedSolutionDto dto, ExternalCompany externalCompany) {
         if (dto == null) {
             return null;
         }
         OfferedSolution entity = new OfferedSolution();
 
         entity.setName(dto.getName());
-        entity.setExternalCompanyId(dto.getExternalCompanyId());
+        entity.setExternalCompany(externalCompany);
         entity.setNit(dto.getNit());
         entity.setAddress(dto.getAddress());
         entity.setEmail(dto.getEmail());
@@ -42,10 +43,14 @@ public class OfferedSolutionMapper {
         return entity;
     }
 
-    public static void updateEntity(OfferedSolution entity, OfferedSolutionDto dto) {
+    public static void updateEntity(
+            OfferedSolution entity,
+            OfferedSolutionDto dto,
+            ExternalCompany externalCompany
+    ) {
         if (entity != null && dto != null) {
             entity.setName(dto.getName());
-            entity.setExternalCompanyId(dto.getExternalCompanyId());
+            entity.setExternalCompany(externalCompany);
             entity.setNit(dto.getNit());
             entity.setAddress(dto.getAddress());
             entity.setEmail(dto.getEmail());
