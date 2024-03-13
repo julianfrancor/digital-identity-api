@@ -23,19 +23,19 @@ public interface ICitizenService {
     void updateCitizen(String email, CitizenDto citizenDto);
 
     /**
-     * Retrieves a citizen's information by their unique identifier.
+     * Retrieves a citizen's information by their email.
      *
-     * @param id the unique identifier of the citizen to retrieve
+     * @param email of the citizen to retrieve
      * @return the data transfer object containing the citizen's details
      */
-    CitizenDto getCitizenById(UUID id);
+    CitizenDto getCitizenByEmail(String email);
 
     /**
      * Deletes a citizen's record from the system.
      *
-     * @param id the unique identifier of the citizen to delete
+     * @param email the unique identifier of the citizen to delete
      */
-    void deleteCitizen(UUID id);
+    void deleteCitizen(String email);
 
     /**
      * Retrieves a list of all citizens in the system.
@@ -57,7 +57,7 @@ public interface ICitizenService {
      *
      * @param id the unique identifier of the citizen to restore
      */
-    void restoreCitizen(UUID id);
+    void restoreCitizen(String id);
 
     /**
      * Registers a citizen for a specific service.
@@ -65,7 +65,7 @@ public interface ICitizenService {
      * @param citizenId the unique identifier of the citizen
      * @param serviceId the unique identifier of the service to register the citizen for
      */
-    void registerCitizenForPremiumService(UUID citizenId, UUID serviceId);
+    void registerCitizenForPremiumService(String citizenId, String serviceId);
 
     /**
      * Unregisters a citizen from a specific service.
@@ -73,22 +73,22 @@ public interface ICitizenService {
      * @param citizenId the unique identifier of the citizen
      * @param serviceId the unique identifier of the service to unregister the citizen from
      */
-    void unregisterCitizenFromPremiumService(UUID citizenId, UUID serviceId);
+    void unregisterCitizenFromPremiumService(String citizenId, String serviceId);
 
     /**
      * Transfers a citizen to a different operator.
      *
-     * @param citizenId       the unique identifier of the citizen to transfer
+     * @param email       the unique identifier of the citizen to transfer
      * @param targetOperatorId the unique identifier of the target operator to transfer the citizen to
      */
-    void transferCitizen(UUID citizenId, UUID targetOperatorId);
+    void transferCitizen(String email, String targetOperatorId);
 
     /**
      * Verifies the identity of a citizen.
      *
-     * @param citizenId the unique identifier of the citizen whose identity is to be verified
+     * @param email the unique identifier of the citizen whose identity is to be verified
      * @return true if the identity is verified, false otherwise
      */
-    boolean verifyCitizenIdentity(UUID citizenId);
+    boolean verifyCitizenIdentity(String email);
 }
 

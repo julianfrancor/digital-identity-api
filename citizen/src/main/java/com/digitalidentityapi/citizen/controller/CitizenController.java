@@ -2,6 +2,7 @@ package com.digitalidentityapi.citizen.controller;
 
 import com.digitalidentityapi.citizen.dto.CitizenDto;
 import com.digitalidentityapi.citizen.service.ICitizenService;
+import com.digitalidentityapi.citizen.service.impl.CitizenServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,21 +36,21 @@ public class CitizenController {
         return new ResponseEntity<>(citizenDto, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{email}")
-    public ResponseEntity<CitizenDto> updateCitizen(@PathVariable String email, @RequestBody CitizenDto citizenDto) {
+    @PutMapping("/update")
+    public ResponseEntity<CitizenDto> updateCitizen(@RequestParam String email, @RequestBody CitizenDto citizenDto) {
         citizenService.updateCitizen(email, citizenDto);
         return ResponseEntity.ok(citizenDto);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<CitizenDto> getCitizenById(@PathVariable UUID id) {
-        CitizenDto citizenDto = citizenService.getCitizenById(id);
+    @GetMapping("/find-by-email")
+    public ResponseEntity<CitizenDto> getCitizenByEmail(@RequestParam String email) {
+        CitizenDto citizenDto = citizenService.getCitizenByEmail(email);
         return ResponseEntity.ok(citizenDto);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCitizen(@PathVariable UUID id) {
-        citizenService.deleteCitizen(id);
+    @DeleteMapping("/delete")
+    public ResponseEntity<Void> deleteCitizen(@RequestParam String email) {
+        citizenService.deleteCitizen(email);
         return ResponseEntity.noContent().build();
     }
 
@@ -60,37 +61,37 @@ public class CitizenController {
     }
 
     // Restore a soft-deleted citizen
-    @PatchMapping("/restore/{id}")
-    public ResponseEntity<Void> restoreCitizen(@PathVariable UUID id) {
-        citizenService.restoreCitizen(id);
+    @PatchMapping("/restore")
+    public ResponseEntity<Void> restoreCitizen(@RequestParam String email) {
+        citizenService.restoreCitizen(email);
         return ResponseEntity.ok().build();
     }
 
     // Register a citizen for a premium service
-    @PostMapping("/register/{citizenId}/{serviceId}")
-    public ResponseEntity<Void> registerCitizenForPremiumService(@PathVariable UUID citizenId, @PathVariable UUID serviceId) {
-        citizenService.registerCitizenForPremiumService(citizenId, serviceId);
+    @PostMapping("/register")
+    public ResponseEntity<Void> registerCitizenForPremiumService(@RequestParam String email, @RequestParam String serviceId) {
+        citizenService.registerCitizenForPremiumService(email, serviceId);
         return ResponseEntity.ok().build();
     }
 
     // Unregister a citizen from a premium service
-    @DeleteMapping("/unregister/{citizenId}/{serviceId}")
-    public ResponseEntity<Void> unregisterCitizenFromPremiumService(@PathVariable UUID citizenId, @PathVariable UUID serviceId) {
-        citizenService.unregisterCitizenFromPremiumService(citizenId, serviceId);
+    @DeleteMapping("/unregister")
+    public ResponseEntity<Void> unregisterCitizenFromPremiumService(@RequestParam String email, @RequestParam String serviceId) {
+        citizenService.unregisterCitizenFromPremiumService(email, serviceId);
         return ResponseEntity.ok().build();
     }
 
     // Transfer a citizen to a different operator
-    @PostMapping("/transfer/{citizenId}/{targetOperatorId}")
-    public ResponseEntity<Void> transferCitizen(@PathVariable UUID citizenId, @PathVariable UUID targetOperatorId) {
-        citizenService.transferCitizen(citizenId, targetOperatorId);
+    @PostMapping("/transfer")
+    public ResponseEntity<Void> transferCitizen(@RequestParam String email, @RequestParam String targetOperatorId) {
+        citizenService.transferCitizen(email, targetOperatorId);
         return ResponseEntity.ok().build();
     }
 
     // Verify a citizen's identity
-    @GetMapping("/verify/{citizenId}")
-    public ResponseEntity<Boolean> verifyCitizenIdentity(@PathVariable UUID citizenId) {
-        boolean isVerified = citizenService.verifyCitizenIdentity(citizenId);
+    @GetMapping("/verify")
+    public ResponseEntity<Boolean> verifyCitizenIdentity(@RequestParam String email) {
+        boolean isVerified = citizenService.verifyCitizenIdentity(email);
         return ResponseEntity.ok(isVerified);
     }
 }

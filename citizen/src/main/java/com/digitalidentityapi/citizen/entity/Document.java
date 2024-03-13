@@ -1,13 +1,7 @@
 package com.digitalidentityapi.citizen.entity;
 
-import com.digitalidentityapi.citizen.enums.IdentificationType;
-import com.digitalidentityapi.citizen.enums.Status;
-import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
 import lombok.*;
-
-import java.util.UUID;
 
 @Entity
 @Getter
@@ -20,11 +14,12 @@ public class Document extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(nullable = false)
-    private UUID citizenId;
+    @ManyToOne
+    @JoinColumn(name = "citizen_id", referencedColumnName = "id")
+    private Citizen citizen;
 
     @Column(nullable = false)
-    private UUID documentTypeId;
+    private String documentTypeId;
 
     @Column(nullable = false, length = 255)
     private String title;
@@ -34,6 +29,5 @@ public class Document extends BaseEntity {
 
     @Lob
     @Column(columnDefinition = "TEXT")
-    private String metadata; // JSON data as a string
+    private String metadata;
 }
-

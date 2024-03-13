@@ -1,6 +1,6 @@
-CREATE TABLE IF NOT EXISTS `citizens`
+CREATE TABLE IF NOT EXISTS `citizen`
 (
-    `id`                  UUID PRIMARY KEY                          NOT NULL,
+    `id`                  int AUTO_INCREMENT  PRIMARY KEY           NOT NULL,
     `identification`      VARCHAR(255)                              NOT NULL,
     `identification_type` ENUM('DNI', 'PASSPORT', 'DRIVER_LICENSE') NOT NULL,
     `first_name`          VARCHAR(255)                              NOT NULL,
@@ -16,88 +16,81 @@ CREATE TABLE IF NOT EXISTS `citizens`
     `deleted_at`          DATE                                      DEFAULT NULL
 );
 
-CREATE TABLE IF NOT EXISTS `document_types`
+CREATE TABLE IF NOT EXISTS `document`
 (
-    `id`         UUID PRIMARY KEY NOT NULL,
-    `type`       VARCHAR(255)     NOT NULL,
-    `created_at` DATE,
-    `updated_at` DATE,
-    `deleted_at` DATE
-);
-
-CREATE TABLE IF NOT EXISTS `documents`
-(
-    `id`               UUID PRIMARY KEY NOT NULL,
-    `citizen_id`       UUID             NOT NULL,
-    `document_type_id` UUID             NOT NULL,
-    `title`            VARCHAR(255)     NOT NULL,
-    `url`              TEXT             NOT NULL,
-    `metadata`         JSON             NOT NULL,
+    `id`               int AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    `citizen_id`       int                     NOT NULL,
+    `document_type_id` VARCHAR(255)            NOT NULL,
+    `title`            VARCHAR(255)            NOT NULL,
+    `url`              TEXT                    NOT NULL,
+    `metadata`         TEXT                    NOT NULL,
     `created_at`       DATE,
     `updated_at`       DATE,
     `deleted_at`       DATE,
-    FOREIGN KEY (`citizen_id`) REFERENCES `citizens` (`id`),
-    FOREIGN KEY (`document_type_id`) REFERENCES `document_types` (`id`)
+    FOREIGN KEY (`citizen_id`) REFERENCES `citizen` (`id`)
 );
 
 CREATE TABLE IF NOT EXISTS `digital_identity_services`
 (
-    `id`         UUID PRIMARY KEY NOT NULL,
-    `name`       VARCHAR(255)     NOT NULL,
-    `premium`    BOOLEAN          NOT NULL,
+    `id`         int AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    `name`       VARCHAR(255)            NOT NULL,
+    `is_premium` BOOLEAN                 NOT NULL,
     `created_at` DATE,
     `updated_at` DATE,
     `deleted_at` DATE
 );
 
-CREATE TABLE IF NOT EXISTS `citizen_services`
+CREATE TABLE IF NOT EXISTS `citizen_subscription`
 (
-    `id`                          UUID PRIMARY KEY NOT NULL,
-    `digital_identity_service_id` UUID             NOT NULL,
-    `citizen_id`                  UUID             NOT NULL,
-    `subscription_date`           DATE             NOT NULL,
+    `id`                          int AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    `digital_identity_service_id` int                            NOT NULL,
+    `citizen_id`                  int                            NOT NULL,
+    `subscription_date`           DATE                           NOT NULL,
     `unsubscription_date`         DATE,
+    `is_active`                   BOOLEAN,
     `created_at`                  DATE,
     `updated_at`                  DATE,
     `deleted_at`                  DATE,
     FOREIGN KEY (`digital_identity_service_id`) REFERENCES `digital_identity_services` (`id`),
-    FOREIGN KEY (`citizen_id`) REFERENCES `citizens` (`id`)
+    FOREIGN KEY (`citizen_id`) REFERENCES `citizen` (`id`)
 );
 
-CREATE TABLE IF NOT EXISTS `transfers`
+CREATE TABLE IF NOT EXISTS `transfer`
 (
-    `id`            UUID PRIMARY KEY NOT NULL,
-    `citizen_id`    UUID             NOT NULL,
-    `operator_id`   UUID             NOT NULL,
-    `transfer_date` DATE             NOT NULL,
+    `id`            int AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    `citizen_id`    int             NOT NULL,
+    `operator_id`   int             NOT NULL,
+    `transfer_date` DATE                    NOT NULL,
     `created_at`    DATE,
     `updated_at`    DATE,
     `deleted_at`    DATE,
-    FOREIGN KEY (`citizen_id`) REFERENCES `citizens` (`id`)
+    FOREIGN KEY (`citizen_id`) REFERENCES `citizen` (`id`)
 );
 
-CREATE TABLE IF NOT EXISTS `external_companies`
+CREATE TABLE IF NOT EXISTS `external_company`
 (
-    `id`                          UUID PRIMARY KEY NOT NULL,
-    `external_company_id`         UUID             NOT NULL,
-    `digital_identity_service_id` UUID             NOT NULL,
-    `affiliation_date`            DATE             NOT NULL,
-    `discharge_date`              DATE             NOT NULL,
+    `id`                          int AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    `external_company_id`         int                     NOT NULL UNIQUE,
+    `digital_identity_service_id` int                     NOT NULL,
+    `affiliation_date`            DATE                    NOT NULL,
+    `discharge_date`              DATE                    NOT NULL,
     `created_at`                  DATE,
     `updated_at`                  DATE,
     `deleted_at`                  DATE,
     FOREIGN KEY (`digital_identity_service_id`) REFERENCES `digital_identity_services` (`id`)
 );
 
-CREATE TABLE IF NOT EXISTS `external_companies_services`
+CREATE TABLE IF NOT EXISTS `offered_solution`
 (
-    `id`         UUID PRIMARY KEY NOT NULL,
-    `name`       VARCHAR(255)     NOT NULL,
-    `nit`        VARCHAR(255)     NOT NULL,
-    `address`    VARCHAR(255)     NOT NULL,
-    `email`      VARCHAR(255)     NOT NULL,
-    `phone`      VARCHAR(50)      NOT NULL,
-    `created_at` DATE,
-    `updated_at` DATE,
-    `deleted_at` DATE
+    `id`                    int AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    `name`                  VARCHAR(255)             NOT NULL,
+    `external_company_id`   int                      NOT NULL,
+    `nit`                   VARCHAR(255)             NOT NULL,
+    `address`               VARCHAR(255)             NOT NULL,
+    `email`                 VARCHAR(255)             NOT NULL,
+    `phone`                 VARCHAR(50)              NOT NULL,
+    `created_at`            DATE,
+    `updated_at`            DATE,
+    `deleted_at`            DATE,
+    FOREIGN KEY (`external_company_id`) REFERENCES `external_company` (`id`)
 );

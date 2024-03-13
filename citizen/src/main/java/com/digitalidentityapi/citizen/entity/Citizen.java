@@ -15,12 +15,10 @@ import org.hibernate.annotations.GenericGenerator;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Citizen extends BaseEntity {
-
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false, nullable = false)
-    private UUID id;
+    private int id;
 
     @Column(nullable = false)
     private String identification;
@@ -55,4 +53,3 @@ public class Citizen extends BaseEntity {
     @Column(nullable = false)
     private Status status;
 }
-
