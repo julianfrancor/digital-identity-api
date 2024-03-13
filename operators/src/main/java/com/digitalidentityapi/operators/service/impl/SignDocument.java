@@ -35,6 +35,6 @@ public class SignDocument implements SignDocumentsServices {
                 .bodyToMono(String.class);
         System.out.println(response.block());
         NotificationMessage notificationMessage = new NotificationMessage(json.getString("email"), response.block());
-        rabbitPublishMessage.sendMessageToQueue("notificationQueue", notificationMessage.toString());
+        rabbitPublishMessage.sendMessageToQueue(Constants.NOTIFICATIONSQUEU, notificationMessage.toString());
     }
 }

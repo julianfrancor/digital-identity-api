@@ -1,9 +1,10 @@
 package com.digitalidentityapi.operators.service.impl;
 
 import com.digitalidentityapi.operators.constants.Constants;
-import com.digitalidentityapi.operators.entity.CitizenRegister;
+import com.digitalidentityapi.operators.entity.AuthenticDocument;
 import com.digitalidentityapi.operators.entity.NotificationMessage;
-import com.digitalidentityapi.operators.service.RegisterCitizenServices;
+import com.digitalidentityapi.operators.service.SignDocumentsServices;
+import com.digitalidentityapi.operators.service.TransferCitizenServices;
 import com.digitalidentityapi.operators.utils.rabbit.RabbitPublishMessage;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,28 +14,27 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 @Service
-public class RegisterCitizen implements RegisterCitizenServices {
-
+public class TransferCitizen implements TransferCitizenServices {
     private final RabbitPublishMessage rabbitPublishMessage;
 
     @Autowired
-    public RegisterCitizen(RabbitPublishMessage rabbitPublishMessage, GetOperators getOperators) {
+    public TransferCitizen(RabbitPublishMessage rabbitPublishMessage) {
         this.rabbitPublishMessage = rabbitPublishMessage;
     }
 
 
     @Override
-    public void registerCitizen(String message) {
+    public void transferCitizzen(String message) {
         JSONObject json = new JSONObject(message);
         System.out.println("Received: " + message);
         WebClient operator = WebClient.create(Constants.URL);
-        CitizenRegister citizenRegister = new CitizenRegister(json.getBigInteger("id"), json.getString("name"), json.getString("address"), json.getString("email"), json.getString("operatorId"), json.getString("operatorName"));
-        Mono<String> response = operator.post()
-                .uri(Constants.REGISTERCITIZEN)
+        Mono<String> response = operator.put()
+                .uri("/authenticateDocument")
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(citizenRegister)
+                .bodyValue(json)
                 .retrieve()
                 .bodyToMono(String.class);
+        System.out.println(response.block());
         NotificationMessage notificationMessage = new NotificationMessage(json.getString("email"), response.block());
         rabbitPublishMessage.sendMessageToQueue(Constants.NOTIFICATIONSQUEU, notificationMessage.toString());
     }

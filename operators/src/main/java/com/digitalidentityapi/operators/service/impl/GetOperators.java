@@ -6,13 +6,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import static com.digitalidentityapi.operators.constants.Constants.GETOPERATORS;
+
 @Service
 public class GetOperators implements GetOperatorsServices {
     @Override
     public String getOperators() {
         WebClient webClient = WebClient.create(Constants.URL);
         Mono<String> responseBody = webClient.get()
-                .uri("/getOperators")
+                .uri(GETOPERATORS)
                 .retrieve()
                 .bodyToMono(String.class);
         System.out.println("Respuesta: " + responseBody);
