@@ -67,11 +67,11 @@ CREATE TABLE IF NOT EXISTS `transfer`
     FOREIGN KEY (`citizen_id`) REFERENCES `citizen` (`id`)
 );
 
-CREATE TABLE IF NOT EXISTS `external_companies`
+CREATE TABLE IF NOT EXISTS `external_company`
 (
     `id`                          int AUTO_INCREMENT PRIMARY KEY NOT NULL,
-    `external_company_id`         int             NOT NULL,
-    `digital_identity_service_id` int             NOT NULL,
+    `external_company_id`         int                     NOT NULL,
+    `digital_identity_service_id` int                     NOT NULL,
     `affiliation_date`            DATE                    NOT NULL,
     `discharge_date`              DATE                    NOT NULL,
     `created_at`                  DATE,
@@ -84,7 +84,7 @@ CREATE TABLE IF NOT EXISTS `external_companies_services`
 (
     `id`                    int AUTO_INCREMENT PRIMARY KEY NOT NULL,
     `name`                  VARCHAR(255)             NOT NULL,
-    `external_companies_id` int                      NOT NULL,
+    `external_company_id`   int                      NOT NULL,
     `nit`                   VARCHAR(255)             NOT NULL,
     `address`               VARCHAR(255)             NOT NULL,
     `email`                 VARCHAR(255)             NOT NULL,
@@ -92,5 +92,5 @@ CREATE TABLE IF NOT EXISTS `external_companies_services`
     `created_at`            DATE,
     `updated_at`            DATE,
     `deleted_at`            DATE,
-    FOREIGN KEY (`external_companies_id`) REFERENCES `external_companies` (`id`)
+    FOREIGN KEY (`external_company_id`) REFERENCES `external_company` (`id`)
 );
