@@ -80,7 +80,7 @@ CREATE TABLE IF NOT EXISTS `external_company`
     FOREIGN KEY (`digital_identity_service_id`) REFERENCES `digital_identity_services` (`id`)
 );
 
-CREATE TABLE IF NOT EXISTS `external_companies_services`
+CREATE TABLE IF NOT EXISTS `offered_solution`
 (
     `id`                    int AUTO_INCREMENT PRIMARY KEY NOT NULL,
     `name`                  VARCHAR(255)             NOT NULL,
