@@ -19,7 +19,6 @@ public class OperatorsApplication {
         //  rabbitGetMessage rabbitGetMessage1 = context.getBean(rabbitGetMessage.class);
         //context.close();
     }
-
     @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
