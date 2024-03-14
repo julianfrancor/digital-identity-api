@@ -1,19 +1,24 @@
 package com.digitalidentityapi.citizen.constants;
 
 public class Constants {
-    public static String URL = "https://govcarpeta-21868b7e9dd3.herokuapp.com/apis";
-    public static String EXISTCLIENT = "Ciudadano ya registrado en Operador";
-    public static String NOEXISTCLIENT = "Ciudadano no registrado en Operador";
+    // Queue names
+    public static final String CITIZEN_QUEUE = "citizen";
+    public static final String CITIZEN_SUBSCRIPTION_QUEUE = "citizenSubscription";
+    public static final String DIGITAL_IDENTITY_SERVICES_QUEUE = "digitalIdentityServices";
+    public static final String DOCUMENT_QUEUE = "document";
+    public static final String EXTERNAL_COMPANY_QUEUE = "externalCompany";
+    public static final String OFFERED_SOLUTION_QUEUE = "offeredSolution";
+    public static final String TRANSFERS_QUEUE = "transfers";
 
-    public static String IDOPERATOR = "";
-    public static String PATHVALIDATECITIZEN = "/validateCitizen/";
-    public static String UNREGISTEREDCITIZEN = "/unregisterCitizen";
+    // Exchange names
+    public static final String CITIZEN_EXCHANGE = "citizenExchange";
+    public static final String CITIZEN_SUBSCRIPTION_EXCHANGE = "citizenSubscriptionExchange";
+    public static final String DIGITAL_IDENTITY_SERVICES_EXCHANGE = "digitalIdentityServicesExchange";
+    public static final String DOCUMENT_EXCHANGE = "documentExchange";
+    public static final String EXTERNAL_COMPANY_EXCHANGE = "externalCompanyExchange";
+    public static final String OFFERED_SOLUTION_EXCHANGE = "offeredSolutionExchange";
+    public static final String TRANSFERS_EXCHANGE = "transfersExchange";
 
-    public static String GETOPERATORS = "/getOperators";
-    public static String REGISTERCITIZEN = "/registerCitizen";
-    public static String NOTIFICATIONSQUEU = "notificationQueue";
-    public static String REGISTERCITIZENQUEUE = "registerCitizen";
-    public static String UNREGISTERCITIZENQUEUE = "unregisterCitizen";
-    public static String GETOPERATORSQUEUE = "getOperators";
-    public static String SIGNDOCUMENTSQUEUE = "signDocuments";
+    // Routing key patterns
+    public static final String ROUTING_KEY_PATTERN = "#";
 }
