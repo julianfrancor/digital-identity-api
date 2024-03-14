@@ -84,7 +84,7 @@ public class RabbitMQConfig {
 
     @Bean
     TopicExchange externalCompanyExchange() {
-        return new TopicExchange("externalCompanyExchange");
+        return new TopicExchange(EXTERNAL_COMPANY_EXCHANGE);
     }
 
     @Bean
