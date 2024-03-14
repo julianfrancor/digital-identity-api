@@ -1,5 +1,7 @@
 package com.digitalidentityapi.operators.entity;
 
+import lombok.*;
+
 public class AuthenticDocument {
     private String idCitizen;
     private String urlDocument;
