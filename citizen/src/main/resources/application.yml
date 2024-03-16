@@ -19,3 +19,11 @@ spring:
     port: 5672
     username: guest
     password: guest
+    queues:
+      citizen: "citizen"
+      citizenSubscription: "citizenSubscription"
+      digitalIdentityServices: "digitalIdentityServices"
+      document: "document"
+      externalCompany: "externalCompany"
+      offeredSolution: "offeredSolution"
+      transfers: "transfers"
