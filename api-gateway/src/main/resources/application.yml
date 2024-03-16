@@ -33,5 +33,3 @@ logging:
     com:
       digital-identity-api:
         api-gateway: DEBUG
-
-
