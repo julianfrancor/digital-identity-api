@@ -1,6 +1,7 @@
 package com.digitalidentityapi.citizen.controller;
 
 import com.digitalidentityapi.citizen.Message.CitizenMessage;
+import com.digitalidentityapi.citizen.Message.DocumentMessage;
 import com.digitalidentityapi.citizen.Message.NotificationMessage;
 import com.digitalidentityapi.citizen.Message.RegisterCitizenMessage;
 import com.digitalidentityapi.citizen.producer.RabbitPublishMessage;
@@ -54,5 +55,14 @@ public class PublishMessageBrokerController {
         System.out.println(registerCitizenMessage.getEmail());
         rabbitPublishMessage.sendMessageToQueue(REGISTER_CITIZEN_QUEUE, message);
         return ResponseEntity.ok("Message successfully published to Operators Queue");
+    }
+
+    @PostMapping("/publish-to-document-queue")
+    public ResponseEntity<String> publishMessageToDocumentQueue(@Valid @RequestBody String message) throws JsonProcessingException {
+        System.out.println(message);
+        DocumentMessage documentMessage = objectMapper.readValue(message, DocumentMessage.class);
+        System.out.println(documentMessage.getOperation());
+        rabbitPublishMessage.sendMessageToQueue(DOCUMENT_QUEUE, message);
+        return ResponseEntity.ok("Message successfully published to Documents Queue");
     }
 }
