@@ -15,10 +15,13 @@ spring:
   jpa:
     show-sql: true
   rabbitmq:
-    host: 35.239.132.181
+    host: localhost
+#    host: 35.239.132.181
     port: 5672
-    username: sistemasdistribuidos
-    password: sistemasdistribuidos
+#    username: sistemasdistribuidos
+#    password: sistemasdistribuidos
+    username: guest
+    password: guest
     queues:
       citizen: "citizen"
       citizenSubscription: "citizenSubscription"

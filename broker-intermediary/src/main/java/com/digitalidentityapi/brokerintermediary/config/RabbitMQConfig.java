@@ -7,7 +7,8 @@ import org.springframework.amqp.core.TopicExchange;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import static com.digitalidentityapi.citizen.constants.Constants.*;
+import static com.digitalidentityapi.brokerintermediary.constants.Constants.*;
+
 
 @Configuration
 public class RabbitMQConfig {
