@@ -16,7 +16,12 @@ jobs:
         project_id: ${{ secrets.GCP_PROJECT_ID }}
         service_account_key: ${{ secrets.GCP_SA_KEY }}
         export_default_credentials: true
-    
+        
+    - name: Make scripts executable
+      run: |
+        chmod +x scripts/build-and-push.sh
+        chmod +x scripts/deploy-to-k8s.sh
+        
     # Construye y sube las imágenes Docker
     - name: Build and Push Docker images
       run: ./deploy/build-and-push.sh
