@@ -2,7 +2,6 @@ package com.digitalidentityapi.citizen.controller;
 
 import com.digitalidentityapi.citizen.dto.CitizenDto;
 import com.digitalidentityapi.citizen.service.ICitizenService;
-import com.digitalidentityapi.citizen.service.impl.CitizenServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping(path = "/citizens", produces = {MediaType.APPLICATION_JSON_VALUE})

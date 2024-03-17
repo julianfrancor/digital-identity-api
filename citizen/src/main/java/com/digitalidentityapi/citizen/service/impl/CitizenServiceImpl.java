@@ -4,10 +4,12 @@ import com.digitalidentityapi.citizen.dto.CitizenDto;
 import com.digitalidentityapi.citizen.entity.Citizen;
 import com.digitalidentityapi.citizen.exception.CitizenAlreadyExistsException;
 import com.digitalidentityapi.citizen.mapper.CitizenMapper;
+import com.digitalidentityapi.citizen.producer.RabbitPublishMessage;
 import com.digitalidentityapi.citizen.repository.CitizenRepository;
 import com.digitalidentityapi.citizen.service.ICitizenService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -15,25 +17,81 @@ import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.digitalidentityapi.citizen.constants.Constants.NOTIFICATION_QUEUE;
+import static com.digitalidentityapi.citizen.constants.Constants.REGISTER_CITIZEN_QUEUE;
+
 @Service
 @AllArgsConstructor
 public class CitizenServiceImpl implements ICitizenService {
 
     private CitizenRepository citizenRepository;
 
+    @Autowired
+    private final RabbitPublishMessage rabbitPublishMessage;
+
     @Override
     public void createCitizen(CitizenDto citizenDto) {
         Optional<Citizen> existingCitizen = citizenRepository.findByEmail(citizenDto.getEmail());
         if (existingCitizen.isPresent()) {
-            throw new CitizenAlreadyExistsException("Citizen already registered with email: " + citizenDto.getEmail() + "already exists.");
+            String messageCitizenAlreadyCreated = String.format("Citizen with email %s is already created.", existingCitizen.get().getEmail());
+
+            String message = String.format("{\n" +
+                    "    \"email\": \"%s\",\n" +
+                    "    \"message\": \"%s\"\n" +
+                    "}", existingCitizen.get().getEmail(), messageCitizenAlreadyCreated);
+
+            rabbitPublishMessage.sendMessageToQueue(NOTIFICATION_QUEUE, message);
+            return;
         }
 
         Citizen citizen = CitizenMapper.toEntity(citizenDto);
         citizen.setCreatedAt(LocalDateTime.now(ZoneId.systemDefault()));
         citizen.setUpdatedAt(LocalDateTime.now(ZoneId.systemDefault()));
         citizenRepository.save(citizen);
+
+        rabbitPublishMessage.sendMessageToQueue(REGISTER_CITIZEN_QUEUE, getRegisterCitizenMessageString(citizen));
+        rabbitPublishMessage.sendMessageToQueue(NOTIFICATION_QUEUE, getNotificationMessageString(citizen));
     }
 
+    private static String getRegisterCitizenMessageString(Citizen citizen) {
+        String fullName = buildFullName(citizen);
+
+        int identificationInt;
+        try {
+            identificationInt = Integer.parseInt(citizen.getIdentification());
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Identification must be a numeric value.");
+        }
+
+        return String.format("{\n" +
+                "    \"id\": \"%d\",\n" +
+                "    \"name\": \"%s\",\n" +
+                "    \"address\": \"%s\",\n" +
+                "    \"email\": \"%s\"\n" +
+                "}", identificationInt, fullName, citizen.getAddress(), citizen.getEmail());
+    }
+
+    private static String buildFullName(Citizen citizen) {
+        StringBuilder fullNameBuilder = new StringBuilder();
+
+        fullNameBuilder.append(citizen.getFirstName());
+        if (citizen.getSecondName() != null && !citizen.getSecondName().isEmpty()) {
+            fullNameBuilder.append(" ").append(citizen.getSecondName());
+        }
+        fullNameBuilder.append(" ").append(citizen.getLastName());
+        if (citizen.getSecondLastName() != null && !citizen.getSecondLastName().isEmpty()) {
+            fullNameBuilder.append(" ").append(citizen.getSecondLastName());
+        }
+        return fullNameBuilder.toString();
+    }
+
+    private static String getNotificationMessageString(Citizen existingCitizen) {
+        String messageCitizenSuccessfullyCreated = String.format("Citizen with email %s was successfully created.", existingCitizen.getEmail());
+        return String.format("{\n" +
+                "    \"email\": \"%s\",\n" +
+                "    \"message\": \"%s\"\n" +
+                "}", existingCitizen.getEmail(), messageCitizenSuccessfullyCreated);
+    }
 
 
     @Override

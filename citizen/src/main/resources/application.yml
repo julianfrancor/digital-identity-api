@@ -20,3 +20,14 @@ spring:
     port: 5672
     username: sistemasdistribuidos
     password: sistemasdistribuidos
+<<<<<<< HEAD
+=======
+    queues:
+      citizen: "citizen"
+      citizenSubscription: "citizenSubscription"
+      digitalIdentityServices: "digitalIdentityServices"
+      document: "document"
+      externalCompany: "externalCompany"
+      offeredSolution: "offeredSolution"
+      transfers: "transfers"
+>>>>>>> master
