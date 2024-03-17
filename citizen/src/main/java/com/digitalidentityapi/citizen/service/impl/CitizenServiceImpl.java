@@ -4,10 +4,12 @@ import com.digitalidentityapi.citizen.dto.CitizenDto;
 import com.digitalidentityapi.citizen.entity.Citizen;
 import com.digitalidentityapi.citizen.exception.CitizenAlreadyExistsException;
 import com.digitalidentityapi.citizen.mapper.CitizenMapper;
+import com.digitalidentityapi.citizen.producer.RabbitPublishMessage;
 import com.digitalidentityapi.citizen.repository.CitizenRepository;
 import com.digitalidentityapi.citizen.service.ICitizenService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -15,25 +17,44 @@ import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.digitalidentityapi.citizen.constants.Constants.NOTIFICATION_QUEUE;
+
 @Service
 @AllArgsConstructor
 public class CitizenServiceImpl implements ICitizenService {
 
     private CitizenRepository citizenRepository;
 
+    @Autowired
+    private final RabbitPublishMessage rabbitPublishMessage;
+
     @Override
     public void createCitizen(CitizenDto citizenDto) {
         Optional<Citizen> existingCitizen = citizenRepository.findByEmail(citizenDto.getEmail());
         if (existingCitizen.isPresent()) {
-            throw new CitizenAlreadyExistsException("Citizen already registered with email: " + citizenDto.getEmail() + "already exists.");
-            // TODO: Publish Message to NotificationQueue -> "Citizen with email citizenDto.getEmail() Already Exists"
+            String messageCitizenAlreadyCreated = String.format("Citizen with email %s is already created.", existingCitizen.get().getEmail());
+
+            String message = String.format("{\n" +
+                    "    \"email\": \"%s\",\n" +
+                    "    \"message\": \"%s\"\n" +
+                    "}", existingCitizen.get().getEmail(), messageCitizenAlreadyCreated);
+
+            rabbitPublishMessage.sendMessageToQueue(NOTIFICATION_QUEUE, message);
+            return;
         }
 
         Citizen citizen = CitizenMapper.toEntity(citizenDto);
         citizen.setCreatedAt(LocalDateTime.now(ZoneId.systemDefault()));
         citizen.setUpdatedAt(LocalDateTime.now(ZoneId.systemDefault()));
         citizenRepository.save(citizen);
-        // TODO: Publish Message to NotificationQueue -> "Citizen with email citizenDto.getEmail() Already Exists"
+
+        String messageCitizenSuccessfullyCreated = String.format("Citizen with email %s was successfully created.", existingCitizen.get().getEmail());
+
+        String message = String.format("{\n" +
+                "    \"email\": \"%s\",\n" +
+                "    \"message\": \"%s\"\n" +
+                "}", existingCitizen.get().getEmail(), messageCitizenSuccessfullyCreated);
+        rabbitPublishMessage.sendMessageToQueue(NOTIFICATION_QUEUE, message);
     }
 
 
