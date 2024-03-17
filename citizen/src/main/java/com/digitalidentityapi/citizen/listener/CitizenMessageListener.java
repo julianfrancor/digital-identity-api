@@ -1,5 +1,6 @@
 package com.digitalidentityapi.citizen.listener;
 
+import com.digitalidentityapi.citizen.Message.CitizenMessage;
 import com.digitalidentityapi.citizen.dto.CitizenDto;
 import com.digitalidentityapi.citizen.service.ICitizenService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -43,13 +44,5 @@ public class CitizenMessageListener {
             e.printStackTrace();
             throw new RuntimeException("Error processing message", e);
         }
-    }
-
-
-    @Getter
-    @Setter
-    public static class CitizenMessage {
-        private String operation;
-        private CitizenDto citizenDto;
     }
 }

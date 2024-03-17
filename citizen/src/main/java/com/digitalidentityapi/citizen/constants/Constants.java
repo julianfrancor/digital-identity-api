@@ -9,6 +9,8 @@ public class Constants {
     public static final String EXTERNAL_COMPANY_QUEUE = "externalCompany";
     public static final String OFFERED_SOLUTION_QUEUE = "offeredSolution";
     public static final String TRANSFERS_QUEUE = "transfers";
+    public static final String NOTIFICATION_QUEUE = "notificationQueue";
+    public static final String REGISTER_CITIZEN_QUEUE = "registerCitizen";
 
     // Exchange names
     public static final String CITIZEN_EXCHANGE = "citizenExchange";
