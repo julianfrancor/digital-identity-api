@@ -2,6 +2,7 @@ package com.digitalidentityapi.citizen.controller;
 
 import com.digitalidentityapi.citizen.Message.CitizenMessage;
 import com.digitalidentityapi.citizen.Message.NotificationMessage;
+import com.digitalidentityapi.citizen.Message.RegisterCitizenMessage;
 import com.digitalidentityapi.citizen.producer.RabbitPublishMessage;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,8 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static com.digitalidentityapi.citizen.constants.Constants.CITIZEN_QUEUE;
-import static com.digitalidentityapi.citizen.constants.Constants.NOTIFICATION_QUEUE;
+import static com.digitalidentityapi.citizen.constants.Constants.*;
 
 @RestController
 @RequestMapping(path = "/publish-broker-message", produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -47,4 +47,12 @@ public class PublishMessageBrokerController {
         return ResponseEntity.ok("Message successfully published to Notification Queue");
     }
 
+    @PostMapping("/publish-to-register-citizen-queue")
+    public ResponseEntity<String> publishMessageToRegisterCitizenQueue(@Valid @RequestBody String message) throws JsonProcessingException {
+        System.out.println(message);
+        RegisterCitizenMessage registerCitizenMessage = objectMapper.readValue(message, RegisterCitizenMessage.class);
+        System.out.println(registerCitizenMessage.getEmail());
+        rabbitPublishMessage.sendMessageToQueue(REGISTER_CITIZEN_QUEUE, message);
+        return ResponseEntity.ok("Message successfully published to Operators Queue");
+    }
 }
