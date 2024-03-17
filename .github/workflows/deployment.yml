@@ -19,8 +19,8 @@ jobs:
         
     - name: Make scripts executable
       run: |
-        chmod +x scripts/build-and-push.sh
-        chmod +x scripts/deploy-to-k8s.sh
+        chmod +x deploy/build-and-push.sh
+        chmod +x deploy/deploy-to-k8s.sh
         
     # Construye y sube las imágenes Docker
     - name: Build and Push Docker images
