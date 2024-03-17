@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(path = "/citizens", produces = {MediaType.APPLICATION_JSON_VALUE})
+@RequestMapping(path = "/broker-intermediary", produces = {MediaType.APPLICATION_JSON_VALUE})
 public class BrokerIntermediaryController {
 
     private final IBrokerIntermediaryService brokerIntermediaryService;

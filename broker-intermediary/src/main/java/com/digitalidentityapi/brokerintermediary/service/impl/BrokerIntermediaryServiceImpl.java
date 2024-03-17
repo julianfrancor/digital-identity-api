@@ -3,21 +3,14 @@ package com.digitalidentityapi.brokerintermediary.service.impl;
 import com.digitalidentityapi.brokerintermediary.Message.CitizenMessage;
 import com.digitalidentityapi.brokerintermediary.Message.DocumentMessage;
 import com.digitalidentityapi.brokerintermediary.Message.TransferMessage;
+import com.digitalidentityapi.brokerintermediary.dto.CitizenDto;
 import com.digitalidentityapi.brokerintermediary.dto.DocumentDto;
 import com.digitalidentityapi.brokerintermediary.dto.TransferDto;
-import com.digitalidentityapi.brokerintermediary.service.IBrokerIntermediaryService;
-import com.digitalidentityapi.brokerintermediary.dto.CitizenDto;
 import com.digitalidentityapi.brokerintermediary.producer.RabbitPublishMessage;
+import com.digitalidentityapi.brokerintermediary.service.IBrokerIntermediaryService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.digitalidentityapi.brokerintermediary.constants.Constants.*;
 
