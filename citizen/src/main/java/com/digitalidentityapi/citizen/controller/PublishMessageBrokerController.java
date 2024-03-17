@@ -63,6 +63,6 @@ public class PublishMessageBrokerController {
         DocumentMessage documentMessage = objectMapper.readValue(message, DocumentMessage.class);
         System.out.println(documentMessage.getOperation());
         rabbitPublishMessage.sendMessageToQueue(DOCUMENT_QUEUE, message);
-        return ResponseEntity.ok("Message successfully published to Operators Queue");
+        return ResponseEntity.ok("Message successfully published to Documents Queue");
     }
 }
