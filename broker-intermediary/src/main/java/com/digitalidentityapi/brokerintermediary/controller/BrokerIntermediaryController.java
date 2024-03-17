@@ -1,5 +1,9 @@
 package com.digitalidentityapi.brokerintermediary.controller;
 
+import com.digitalidentityapi.brokerintermediary.dto.CitizenDto;
+import com.digitalidentityapi.brokerintermediary.dto.DocumentDto;
+import com.digitalidentityapi.brokerintermediary.dto.TransferDto;
+import com.digitalidentityapi.brokerintermediary.service.IBrokerIntermediaryService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -7,87 +11,63 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping(path = "/citizens", produces = {MediaType.APPLICATION_JSON_VALUE})
 public class BrokerIntermediaryController {
 
-    private final ICitizenService citizenService;
+    private final IBrokerIntermediaryService brokerIntermediaryService;
 
     @Autowired
-    public BrokerIntermediaryController(ICitizenService citizenService) {
-        this.citizenService = citizenService;
+    public BrokerIntermediaryController(IBrokerIntermediaryService brokerIntermediaryService) {
+        this.brokerIntermediaryService = brokerIntermediaryService;
     }
 
-    @GetMapping
-    public ResponseEntity<List<CitizenDto>> getAllCitizens() {
-        List<CitizenDto> citizens = citizenService.getAllCitizens();
-        return ResponseEntity.ok(citizens);
+    @PostMapping("/citizen")
+    public ResponseEntity<String> createCitizen(@Valid @RequestBody CitizenDto citizenDto) {
+        brokerIntermediaryService.handleCitizenOperations("CREATE", citizenDto);
+        String messageResponse = String.format("Citizen with ID %s was sent to create.", citizenDto.getIdentification());
+        return new ResponseEntity<>(messageResponse, HttpStatus.CREATED);
     }
 
-    @PostMapping
-    public ResponseEntity<CitizenDto> createCitizen(@Valid @RequestBody CitizenDto citizenDto) {
-        citizenService.createCitizen(citizenDto);
-        return new ResponseEntity<>(citizenDto, HttpStatus.CREATED);
+    @PutMapping("/citizen")
+    public ResponseEntity<String> updateCitizen(@Valid @RequestBody CitizenDto citizenDto) {
+        brokerIntermediaryService.handleCitizenOperations("UPDATE", citizenDto);
+        String messageResponse = String.format("Citizen with ID %s was sent to update.", citizenDto.getIdentification());
+        return new ResponseEntity<>(messageResponse, HttpStatus.CREATED);
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<CitizenDto> updateCitizen(@RequestParam String email, @RequestBody CitizenDto citizenDto) {
-        citizenService.updateCitizen(email, citizenDto);
-        return ResponseEntity.ok(citizenDto);
+    @DeleteMapping("/citizen")
+    public ResponseEntity<String> deleteCitizen(@Valid @RequestBody CitizenDto citizenDto) {
+        brokerIntermediaryService.handleCitizenOperations("DELETE", citizenDto);
+        String messageResponse = String.format("Citizen with ID %s was sent to delete.", citizenDto.getIdentification());
+        return new ResponseEntity<>(messageResponse, HttpStatus.CREATED);
     }
 
-    @GetMapping("/find-by-email")
-    public ResponseEntity<CitizenDto> getCitizenByEmail(@RequestParam String email) {
-        CitizenDto citizenDto = citizenService.getCitizenByEmail(email);
-        return ResponseEntity.ok(citizenDto);
+    @PostMapping("/document")
+    public ResponseEntity<String> createDocument(@Valid @RequestBody DocumentDto documentDto) {
+        brokerIntermediaryService.handleDocumentOperations("CREATE", documentDto);
+        String messageResponse = String.format("Document with Title %s was sent to create.", documentDto.getTitle());
+        return new ResponseEntity<>(messageResponse, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/delete")
-    public ResponseEntity<Void> deleteCitizen(@RequestParam String email) {
-        citizenService.deleteCitizen(email);
-        return ResponseEntity.noContent().build();
+    @PutMapping("/document")
+    public ResponseEntity<String> updateDocument(@Valid @RequestBody DocumentDto documentDto) {
+        brokerIntermediaryService.handleDocumentOperations("UPDATE", documentDto);
+        String messageResponse = String.format("Document with Title %s was sent to update.", documentDto.getTitle());
+        return new ResponseEntity<>(messageResponse, HttpStatus.CREATED);
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<List<CitizenDto>> searchCitizens(@RequestParam String criteria) {
-        List<CitizenDto> citizens = citizenService.searchCitizens(criteria);
-        return ResponseEntity.ok(citizens);
+    @DeleteMapping("/document")
+    public ResponseEntity<String> deleteDocument(@Valid @RequestBody DocumentDto documentDto) {
+        brokerIntermediaryService.handleDocumentOperations("DELETE", documentDto);
+        String messageResponse = String.format("Document with Title %s was sent to delete.", documentDto.getTitle());
+        return new ResponseEntity<>(messageResponse, HttpStatus.CREATED);
     }
 
-    // Restore a soft-deleted citizen
-    @PatchMapping("/restore")
-    public ResponseEntity<Void> restoreCitizen(@RequestParam String email) {
-        citizenService.restoreCitizen(email);
-        return ResponseEntity.ok().build();
-    }
-
-    // Register a citizen for a premium service
-    @PostMapping("/register")
-    public ResponseEntity<Void> registerCitizenForPremiumService(@RequestParam String email, @RequestParam String serviceId) {
-        citizenService.registerCitizenForPremiumService(email, serviceId);
-        return ResponseEntity.ok().build();
-    }
-
-    // Unregister a citizen from a premium service
-    @DeleteMapping("/unregister")
-    public ResponseEntity<Void> unregisterCitizenFromPremiumService(@RequestParam String email, @RequestParam String serviceId) {
-        citizenService.unregisterCitizenFromPremiumService(email, serviceId);
-        return ResponseEntity.ok().build();
-    }
-
-    // Transfer a citizen to a different operator
-    @PostMapping("/transfer")
-    public ResponseEntity<Void> transferCitizen(@RequestParam String email, @RequestParam String targetOperatorId) {
-        citizenService.transferCitizen(email, targetOperatorId);
-        return ResponseEntity.ok().build();
-    }
-
-    // Verify a citizen's identity
-    @GetMapping("/verify")
-    public ResponseEntity<Boolean> verifyCitizenIdentity(@RequestParam String email) {
-        boolean isVerified = citizenService.verifyCitizenIdentity(email);
-        return ResponseEntity.ok(isVerified);
+    @PostMapping("/transfers")
+    public ResponseEntity<String> performTransfer(@Valid @RequestBody TransferDto transferDto) {
+        brokerIntermediaryService.handleTransferOperations(transferDto);
+        String messageResponse = String.format("Citizen with Email %s is being transferred.", transferDto.getCitizenEmail());
+        return new ResponseEntity<>(messageResponse, HttpStatus.CREATED);
     }
 }
