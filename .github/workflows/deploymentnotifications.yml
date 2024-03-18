@@ -27,13 +27,11 @@ jobs:
       run: chmod +x ./gradlew
       working-directory: ./notifications
     - name: Executing gradle clean
-      run: cd notifications
-           ./gradlew clean
-
+      run:  ./gradlew clean
+      working-directory: ./notifications
     - name: Executing gradle build
-      run: cd notifications
-           ./gradlew build
-
+      run: ./gradlew build
+      working-directory: ./notifications
     - name: Build Docker Api-Gateway Image
       run: |
           docker build -t "northamerica-northeast1-docker.pkg.dev/kubernetes-sistemas-distribui/identidaddigital/${APP_NAME}:latest"  -f ./notifications/Dockerfile .
