@@ -1,6 +1,6 @@
 #!/bin/bash
 # Define tu ID de proyecto y la ubicación de tu registro
-PROJECT_ID="identidaddigital"
+PROJECT_ID="kubernetes-sistemas-distribui"
 REGISTRY="gcr.io"
 # Lista de tus servicios
 services=("notifications")
