@@ -1,4 +1,3 @@
-# Usar una imagen base oficial de OpenJDK 17
 FROM amazoncorretto:17
 # Copiar el archivo JAR de tu aplicación en el contenedor
 COPY "./build/libs/notifications-1.0.0.jar" "notifications-1.0.0.jar"
