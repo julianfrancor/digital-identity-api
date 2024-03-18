@@ -23,9 +23,8 @@ public class Citizen extends BaseEntity {
     @Column(nullable = false)
     private String identification;
 
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private IdentificationType identificationType;
+    private String identificationType;
 
     @Column(nullable = false)
     private String firstName;

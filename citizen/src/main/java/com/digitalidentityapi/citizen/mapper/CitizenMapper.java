@@ -35,7 +35,7 @@ public class CitizenMapper {
     public static Citizen toEntity(CitizenDto citizenDto) {
         Citizen citizen = new Citizen();
         citizen.setIdentification(citizenDto.getIdentification());
-        citizen.setIdentificationType(IdentificationType.valueOf(citizenDto.getIdentificationType()));
+        citizen.setIdentificationType(citizenDto.getIdentificationType());
         citizen.setFirstName(citizenDto.getFirstName());
         citizen.setSecondName(citizenDto.getSecondName());
         citizen.setLastName(citizenDto.getLastName());
