@@ -10,7 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-
       # Configura gcloud y autentica
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v0
