@@ -45,15 +45,6 @@ jobs:
         run: |
           gcloud components install gke-gcloud-auth-plugin
           gcloud container clusters get-credentials ${CLUSTER_NAME} --zone=${ZONE} --project=${{ secrets.GCP_PROJECT_ID }}
-          kubectl apply -f deployment.yaml
-        env:
-          CLUSTER_NAME: sistemasdistribuidos
-          ZONE: us-central1-c
-
-      - name: Deploy to Kubernetes Api-Gateway Image
-        run: |
-          gcloud components install gke-gcloud-auth-plugin
-          gcloud container clusters get-credentials ${CLUSTER_NAME} --zone=${ZONE} --project=${{ secrets.GCP_PROJECT_ID }}
           kubectl apply -f notifications/deployment.yaml
         env:
           CLUSTER_NAME: sistemasdistribuidos
