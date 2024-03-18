@@ -24,8 +24,8 @@ jobs:
       env:
           REGION: us-central1
     - name: Make gradlew executable
-      run: cd notifications
-           chmod +x ./gradlew
+      run: chmod +x ./gradlew
+      working-directory: ./notifications
     - name: Executing gradle clean
       run: cd notifications
            ./gradlew clean
