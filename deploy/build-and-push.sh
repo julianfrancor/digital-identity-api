@@ -9,7 +9,7 @@ for service in "${services[@]}"; do
   echo "Construyendo y subiendo la imagen para $service..."
   # Construye la imagen
   # shellcheck disable=SC2086
-  docker build -t $REGISTRY/$PROJECT_ID/$service:latest ./"$service"
+  docker build -t $REGISTRY/$PROJECT_ID/$service:latest .
   # Sube la imagen al registro
   docker push $REGISTRY/$PROJECT_ID/"$service":latest
   echo "Imagen para $service construida y subida correctamente."
