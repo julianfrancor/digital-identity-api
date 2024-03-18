@@ -2,7 +2,6 @@ package com.digitalidentityapi.citizen.mapper;
 
 import com.digitalidentityapi.citizen.dto.CitizenDto;
 import com.digitalidentityapi.citizen.entity.Citizen;
-import com.digitalidentityapi.citizen.enums.IdentificationType;
 import com.digitalidentityapi.citizen.enums.Status;
 
 import static com.digitalidentityapi.citizen.utils.Utils.convertToDate;
