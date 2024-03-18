@@ -5,7 +5,7 @@ metadata:
   labels:
     app: notifications
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
       app: notifications
@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: notifications
-          image: gcr.io/identidaddigital/notifications:latest
+          image: northamerica-northeast1-docker.pkg.dev/kubernetes-sistemas-distribui/identidaddigital/notifications:latest
           ports:
             - containerPort: 8080
           resources:
@@ -29,3 +29,19 @@ spec:
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: "prod"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: notifications
+  name: notifications #
+  namespace: default
+spec:
+  ports:
+    - port: 3001
+      protocol: TCP
+      targetPort: 3001
+  selector:
+    app: notifications #
+  type: LoadBalancer
