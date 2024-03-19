@@ -36,7 +36,7 @@ jobs:
       - name: Executing gradle build
         run: ./gradlew build
         working-directory: ./operators
-      - name: Build Docker Api-Gateway Image
+      - name: Build Docker operators Image
         run: |
           docker build -t "northamerica-northeast1-docker.pkg.dev/kubernetes-sistemas-distribui/identidaddigital/${APP_NAME}:latest"  -f ./operators/Dockerfile .
           docker push "northamerica-northeast1-docker.pkg.dev/kubernetes-sistemas-distribui/identidaddigital/${APP_NAME}:latest"
@@ -46,7 +46,7 @@ jobs:
           IMAGE_NAME: identidaddigital
           APP_NAME: operators  #
 
-      - name: Deploy to Kubernetes Api-Gateway Image
+      - name: Deploy to Kubernetes operators Image
         run: |
           gcloud components install gke-gcloud-auth-plugin
           gcloud container clusters get-credentials ${CLUSTER_NAME} --zone=${ZONE} --project=${{ secrets.GCP_PROJECT_ID }}
