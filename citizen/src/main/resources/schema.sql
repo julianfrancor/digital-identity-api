@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS `citizen`
 (
     `id`                  int AUTO_INCREMENT  PRIMARY KEY           NOT NULL,
-    `identification`      VARCHAR(255)                              NOT NULL,
+    `identification`      BIGINT                                    NOT NULL,
     `identification_type` VARCHAR(255)                              NOT NULL,
     `first_name`          VARCHAR(255)                              NOT NULL,
     `second_name`         VARCHAR(255),

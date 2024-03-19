@@ -18,7 +18,7 @@ public class Citizen extends BaseEntity {
     private int id;
 
     @Column(nullable = false)
-    private String identification;
+    private Long identification;
 
     @Column(nullable = false)
     private String identificationType;

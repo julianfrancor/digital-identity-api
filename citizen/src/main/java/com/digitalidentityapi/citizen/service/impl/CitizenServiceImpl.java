@@ -56,9 +56,9 @@ public class CitizenServiceImpl implements ICitizenService {
     private static String getRegisterCitizenMessageString(Citizen citizen) {
         String fullName = buildFullName(citizen);
 
-        int identificationInt;
+        Long identificationInt;
         try {
-            identificationInt = Integer.parseInt(citizen.getIdentification());
+            identificationInt = citizen.getIdentification();
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("Identification must be a numeric value.");
         }

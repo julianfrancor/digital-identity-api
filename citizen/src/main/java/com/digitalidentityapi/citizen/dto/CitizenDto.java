@@ -20,7 +20,7 @@ public class CitizenDto {
 
     @NotEmpty(message = "Identification cannot be empty")
     @Schema(description = "Identification number of the citizen", required = true)
-    private String identification;
+    private Long identification;
 
     @NotEmpty
     @Schema(description = "Type of identification document", required = true)
