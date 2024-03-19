@@ -38,10 +38,23 @@ public class RegisterCitizen implements RegisterCitizenServices {
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(citizenRegister)
                 .retrieve()
+                .onStatus(httpStatus -> httpStatus.value() == 500,
+                        clientResponse -> Mono.error(new RuntimeException("Error: El servicio devolvió un error 500")))
                 .bodyToMono(String.class);
 
-        NotificationMessage notificationMessage = new NotificationMessage(json.getString("email"), response.block());
-        rabbitPublishMessage.sendMessageToQueue(Constants.NOTIFICATIONSQUEU, notificationMessage.toString());
-
+        response.subscribe(
+                // Manejo del caso de éxito
+                responseBody -> {
+                    System.out.println("Respuesta exitosa del servicio: " + responseBody);
+                    NotificationMessage notificationMessage = new NotificationMessage(json.getString("email"), responseBody);
+                    rabbitPublishMessage.sendMessageToQueue(Constants.NOTIFICATIONSQUEU, notificationMessage.toString());
+                },
+                // Manejo del error
+                error -> {
+                    System.out.println("Error al llamar al servicio: " + error.getMessage());
+                    NotificationMessage notificationMessage = new NotificationMessage(json.getString("email"), "El ciudadano que se intenta registrar con esta información: " + citizenRegister.toString() + "ya se encuentra registrado en otro Operador.");
+                    rabbitPublishMessage.sendMessageToQueue(Constants.NOTIFICATIONSQUEU, notificationMessage.toString());
+                }
+        );
     }
 }

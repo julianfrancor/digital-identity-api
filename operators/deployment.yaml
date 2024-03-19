@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: operators
+  labels:
+    app: operators
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: operators
+  template:
+    metadata:
+      labels:
+        app: operators
+    spec:
+      containers:
+        - name: operators
+          image: northamerica-northeast1-docker.pkg.dev/kubernetes-sistemas-distribui/identidaddigital/operators:latest
+          ports:
+            - containerPort: 8080
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "prod"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: operators
+  name: operators #
+  namespace: default
+spec:
+  ports:
+    - port: 3002
+      protocol: TCP
+      targetPort: 3002
+  selector:
+    app: operators #
+  type: LoadBalancer
