@@ -15,9 +15,6 @@ public class OperatorsApplication {
 
     public static void main(String[] args) {
         ConfigurableApplicationContext context = SpringApplication.run(OperatorsApplication.class);
-        RabbitPublishMessage rabbitPublishMessage1 = context.getBean(RabbitPublishMessage.class);
-        //  rabbitGetMessage rabbitGetMessage1 = context.getBean(rabbitGetMessage.class);
-        //context.close();
     }
     @Bean
     public WebMvcConfigurer corsConfigurer() {
