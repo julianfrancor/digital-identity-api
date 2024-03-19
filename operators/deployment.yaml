@@ -22,10 +22,10 @@ spec:
           resources:
             limits:
               memory: "1000Mi"
-              cpu: "1000m"
+              cpu: "2000m"
             requests:
               memory: "512Mi"
-              cpu: "512m"
+              cpu: "1000m"
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: "prod"
