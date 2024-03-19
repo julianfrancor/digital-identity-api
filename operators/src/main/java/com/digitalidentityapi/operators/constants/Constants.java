@@ -5,7 +5,8 @@ public class Constants {
     public static String EXISTCLIENT = "Ciudadano ya registrado en Operador";
     public static String NOEXISTCLIENT = "Ciudadano no registrado en Operador";
 
-    public static String IDOPERATOR = "";
+    public static String IDOPERATOR = "identidaddigital01";
+    public static String OPERATORNAME = "Identidad Digital";
     public static String PATHVALIDATECITIZEN = "/validateCitizen/";
     public static String UNREGISTEREDCITIZEN = "/unregisterCitizen";
 
@@ -14,7 +15,9 @@ public class Constants {
     public static String NOTIFICATIONSQUEU = "notificationQueue";
     public static String REGISTERCITIZENQUEUE = "registerCitizen";
     public static String UNREGISTERCITIZENQUEUE = "unregisterCitizen";
-    public static String GETOPERATORSQUEUE = "getOperators";
     public static String SIGNDOCUMENTSQUEUE = "signDocuments";
+    public static String SIGNDOCUMENTSEXCHANGE = "signDocumentsExchange";
+    public static final String ROUTING_KEY_PATTERN = "#";
+
 
 }

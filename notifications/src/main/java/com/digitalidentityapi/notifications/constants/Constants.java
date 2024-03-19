@@ -12,4 +12,10 @@ public class Constants {
     public static String PASSAPP = "fuvm vwgr tkdn oyds";
     public static String SUCCESFULLMESSAGESEND = "Correo electrónico enviado exitosamente.";
     public static String ERRORSENDMESSAGE = "Error al enviar el correo electrónico: ";
+    public static String NOTIFICATIONSQUEUE = "notificationQueue";
+    public static String NOTIFICATIONSEXCHANGE = "notificationsExchange";
+    public static final String ROUTING_KEY_PATTERN = "#";
+
+
+
 }

@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import static com.digitalidentityapi.operators.constants.Constants.IDOPERATOR;
+import static com.digitalidentityapi.operators.constants.Constants.OPERATORNAME;
+
 @Service
 public class RegisterCitizen implements RegisterCitizenServices {
 
@@ -28,14 +31,17 @@ public class RegisterCitizen implements RegisterCitizenServices {
         JSONObject json = new JSONObject(message);
         System.out.println("Received: " + message);
         WebClient operator = WebClient.create(Constants.URL);
-        CitizenRegister citizenRegister = new CitizenRegister(json.getBigInteger("id"), json.getString("name"), json.getString("address"), json.getString("email"), json.getString("operatorId"), json.getString("operatorName"));
+        CitizenRegister citizenRegister = new CitizenRegister(json.getBigInteger("id"), json.getString("name"), json.getString("address"), json.getString("email"), IDOPERATOR, OPERATORNAME);
+        System.out.println(citizenRegister.toString());
         Mono<String> response = operator.post()
                 .uri(Constants.REGISTERCITIZEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(citizenRegister)
                 .retrieve()
                 .bodyToMono(String.class);
+
         NotificationMessage notificationMessage = new NotificationMessage(json.getString("email"), response.block());
         rabbitPublishMessage.sendMessageToQueue(Constants.NOTIFICATIONSQUEU, notificationMessage.toString());
+
     }
 }

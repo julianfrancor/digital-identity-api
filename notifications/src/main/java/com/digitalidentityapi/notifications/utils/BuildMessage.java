@@ -13,8 +13,8 @@ public class BuildMessage {
         Message message = new MimeMessage(session);
         try {
             message.setFrom(new InternetAddress(Constants.USERNAME));
-            //String[] destinatarios = {Constants.CORREOPIPE, Constants.CORREOJULI, Constants.CORREOYULI};
-            String[] destinatarios = {Constants.CORREOPIPE};
+            String[] destinatarios = {Constants.CORREOPIPE, Constants.CORREOJULI, Constants.CORREOYULI};
+            //String[] destinatarios = {Constants.CORREOPIPE};
             InternetAddress[] direccionesDestinatarios = new InternetAddress[destinatarios.length];
             for (int i = 0; i < destinatarios.length; i++) {
                 direccionesDestinatarios[i] = new InternetAddress(destinatarios[i]);

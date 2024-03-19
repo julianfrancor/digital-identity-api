@@ -27,6 +27,7 @@ public class SignDocument implements SignDocumentsServices {
         System.out.println("Received: " + message);
         WebClient operator = WebClient.create(Constants.URL);
         AuthenticDocument authenticDocument = new AuthenticDocument(String.valueOf(json.getInt("idCitizen")), json.getString("UrlDocument"), json.getString("documentTitle"));
+        System.out.println(authenticDocument.toString());
         Mono<String> response = operator.put()
                 .uri("/authenticateDocument")
                 .contentType(MediaType.APPLICATION_JSON)

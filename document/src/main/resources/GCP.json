@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "kubernetes-sistemas-distribui",
+  "private_key_id": "b50a2f24e67b7969d145aa615bc4fd2736316581",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDDmuci+rqQNlLj\nSquV0zyjfCrrhoGGqJOA3goaXV4RS0SK/dtmLv79B/2QpOLeAyQ0DRu5H5vX2A6I\nqNacKxC7UhzccCyxoyk2RRSyjSVKtRiezDzOpFJt9vQRHd9cXc1h4rLrTOn+ujZq\na1AQ3EF8jzOklbTQnJOTmmWF96RXNw1fK0Q6OUbsltyotwks2Vu00HS+jvnGjlwC\nAErMP4wrljUzBH7GwKbNzqCnh/Yg6qFT1IcSps9e/S/utm0eNDAJMTMc8NAZSq46\nr/l8IIhVfJCRTjXRIdp66mvsE2L4QhzDqDwNulFWqadJS5RTeG67AQskL3OeNHgp\nl2RpkNu7AgMBAAECggEAELfxMIawonnaLM4pi0VCRhDrVDUrZfiLnvSbdXRsgVrn\nEWAwO/QhXDwuGopVT7eCBSbnqzN97P1tBJY1vaRaqkAS8m5uC4LQF3DhG3+/47pF\nz/DR87GM0BRO+RWODUWBM/Ad7cmlqF1/ICpq7f39ZOmSdutKyJfRb0i/i6tGcyO9\no7fD7YSKrn6WtWTXCHI0QO40Va1sLW4NM1KMf8pSvocy0lxd5qBqbyDLQdeAROTs\n5+qXaU6QyFPIcmJan8njQLCd73zHJ4l6xjV04DfI4cie+N11dbVnwe6GcAwtdGJF\nV/4tUzkywHLwrUEJXedOlAuESfzseyATLpot0YFedQKBgQDsdLaxOqMTMJB1xwNv\nSQA0CT86/+CMFJUBY5NxqcmjSqq6JJ3xf74nZWFRMsOYbkTrLKfSwrOD2WwcUiOx\nQRzmbZODuxPALAVat1n4Z1Ia+bn1UYO/zND481dqXD542Q93GhxWcvahxiUMjx7r\nhdH0/uzIlkNRPWazayE/FP5HvwKBgQDTxc6CWZNQUcc7fQSK9IqhNWgU5DyXYdkP\nPTSetj8K9M2HpPrvN5f8fg52Bb63e/qRBwAhP24de1lr/eHGb+iCdSnkqoUf/+Nl\nNsZEdgHcOn0sYGzfCFIvXhwMtbajB49AfR+F1yiY2AhtG5QfkBTqVBRtcg6p4ejV\nO/0P14vLBQKBgAjJ/dBwoYchEv2NvC7yw7MrdNI4mJwcV72Jef2Llhcfu2DX45cK\nbIMCXa+q92I/Fwi2zDYlTo7kEgSrePApv21BPW50EbPe7wQENK/rBz5BcgwQT5ld\nf5cBVIp7i0bqqox+x/bepxQ0TUQ+PaP7gWZd42dBTpdCdQLORJoXqav5AoGAOdj4\ntiad1PzhvWBDE2oFTE/4ZGyMGJYD4uPHMet6gRWp5vmsChhXjgMpFBgxppFZOrB8\n2pgnDiqZnKQ3PitnietTTEFAKCOQDB/QPPc3Pt9DPhIA61Osj3/Xjak9gH8aJHWJ\nXNgPIOEyPAuihJSpAfGBuvvDAajSHx1J3T/10bkCgYEA282O65xAuOBHuo0Fpws0\nrzQeC4JZnWqOLLidF746WNa+mvg91hHnLinnbtBmI9N+3IAYJbLZSvEbd4t05vOV\nvITdPkP5S8ZTY1rdpMXzV52kUayQI2YJKTQSmk9pR9SyL9VMfFJhyygOUPFjNZ6c\nnmPp084B7YL3q45ZFKqC1q4=\n-----END PRIVATE KEY-----\n",
+  "client_email": "identidad-digital@kubernetes-sistemas-distribui.iam.gserviceaccount.com",
+  "client_id": "116331517005006572689",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/identidad-digital%40kubernetes-sistemas-distribui.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

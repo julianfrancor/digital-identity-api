@@ -1,7 +1,5 @@
 package com.digitalidentityapi.operators.entity;
 
-import jakarta.persistence.criteria.CriteriaBuilder;
-
 import java.math.BigInteger;
 
 public class CitizenRegister {
@@ -72,12 +70,12 @@ public class CitizenRegister {
     @Override
     public String toString() {
         return "{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", address='" + address + '\'' +
-                ", email='" + email + '\'' +
-                ", operatorId='" + operatorId + '\'' +
-                ", OperatorName='" + OperatorName + '\'' +
+                "\"id\":" + id +
+                ",\"name\":\"" + name + '\"' +
+                ", \"address\":\"" + address + '\"' +
+                ", \"email\":\"" + email + '\"' +
+                ", \"operatorId\":\"" + operatorId + '\"' +
+                ", \"OperatorName\":\"" + OperatorName + '\"' +
                 '}';
     }
 }
