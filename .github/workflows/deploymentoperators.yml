@@ -1,0 +1,51 @@
+name: Deploy to GKE Operations
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'operators/**'
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      # Configura gcloud y autentica
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          export_default_credentials: true
+      - name: Authenticate with Artifact Registry
+        run: |
+          gcloud auth configure-docker "northamerica-northeast1-docker.pkg.dev" --quiet
+        env:
+          REGION: us-central1
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+        working-directory: ./operators
+      - name: Executing gradle clean
+        run:  ./gradlew clean
+        working-directory: ./operators
+      - name: Executing gradle build
+        run: ./gradlew build
+        working-directory: ./operators
+      - name: Build Docker Api-Gateway Image
+        run: |
+          docker build -t "northamerica-northeast1-docker.pkg.dev/kubernetes-sistemas-distribui/identidaddigital/${APP_NAME}:latest"  -f ./operators/Dockerfile .
+          docker push "northamerica-northeast1-docker.pkg.dev/kubernetes-sistemas-distribui/identidaddigital/${APP_NAME}:latest"
+        env:
+          REGION: northamerica-northeast1
+          PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+          IMAGE_NAME: identidaddigital
+          APP_NAME: operators  #
+
+      - name: Deploy to Kubernetes Api-Gateway Image
+        run: |
+          gcloud components install gke-gcloud-auth-plugin
+          gcloud container clusters get-credentials ${CLUSTER_NAME} --zone=${ZONE} --project=${{ secrets.GCP_PROJECT_ID }}
+          kubectl apply -f operators/deployment.yaml
+        env:
+          CLUSTER_NAME: sistemasdistribuidos
+          ZONE: us-central1-c
