@@ -38,8 +38,6 @@ public class RegisterCitizen implements RegisterCitizenServices {
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(citizenRegister)
                 .retrieve()
-                .onStatus(httpStatus -> httpStatus.value() == 500,
-                        clientResponse -> Mono.error(new RuntimeException("Error: El servicio devolvió un error 500")))
                 .bodyToMono(String.class);
 
         response.subscribe(
