@@ -1,12 +1,9 @@
 package com.digitalidentityapi.citizen.entity;
 
-import com.digitalidentityapi.citizen.enums.IdentificationType;
 import com.digitalidentityapi.citizen.enums.Status;
-import java.util.UUID;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Getter
@@ -23,9 +20,8 @@ public class Citizen extends BaseEntity {
     @Column(nullable = false)
     private String identification;
 
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private IdentificationType identificationType;
+    private String identificationType;
 
     @Column(nullable = false)
     private String firstName;

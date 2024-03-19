@@ -1,24 +1,27 @@
 server:
-  port: 8081
+  port: 8080
 spring:
   application:
-    name: "citizen"
+    name: "broker-intermediary"
   profiles:
     active: "prod"
   datasource:
-    url: jdbc:mysql://34.136.134.246:3306/citizensdb
-    username: sistemasdistribuidos
-    password: sistemasdistribuidos
+    url: jdbc:mysql://localhost:3306/citizensdb
+    username: root
+    password: root
   sql:
     init:
       mode: always
   jpa:
     show-sql: true
   rabbitmq:
-    host: 35.239.132.181
+    host: localhost
+#    host: 35.239.132.181
     port: 5672
-    username: sistemasdistribuidos
-    password: sistemasdistribuidos
+#    username: sistemasdistribuidos
+#    password: sistemasdistribuidos
+    username: guest
+    password: guest
     queues:
       citizen: "citizen"
       citizenSubscription: "citizenSubscription"
@@ -27,3 +30,5 @@ spring:
       externalCompany: "externalCompany"
       offeredSolution: "offeredSolution"
       transfers: "transfers"
+      registerCitizen: "registerCitizen"
+      notificationQueue: "notificationQueue"
