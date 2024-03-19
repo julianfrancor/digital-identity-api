@@ -24,8 +24,8 @@ spec:
               memory: "1000Mi"
               cpu: "2000m"
             requests:
-              memory: "512Mi"
-              cpu: "1000m"
+              memory: "128Mi"
+              cpu: "256m"
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: "prod"
