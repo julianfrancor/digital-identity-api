@@ -65,8 +65,8 @@ public class BrokerIntermediaryServiceImpl implements IBrokerIntermediaryService
 
     @Override
     public void handleTransferOperations(TransferRequestDto transferRequestDto) {
-        TransferMessage transferMessage = new TransferMessage("CREATE", transferRequestDto);
-        System.out.println(transferMessage.getOperation());
+        TransferMessage transferMessage = new TransferMessage(transferRequestDto);
+        System.out.println(transferMessage.getCitizenEmail());
         rabbitPublishMessage.sendMessageToQueue(TRANSFERS_QUEUE, getTransferMessageString(transferMessage));
         System.out.println("Message successfully published in Transfers Queue");
     }

@@ -7,12 +7,14 @@ import lombok.Setter;
 @Getter
 @Setter
 public class TransferMessage {
-    private String operation;
-    private TransferRequestDto transferRequestDto;
+    private Long citizenIdentification;
+    private String citizenEmail;
+    private int destinationOperatorId;
 
-    public TransferMessage(String operation, TransferRequestDto transferRequestDto) {
-        this.operation = operation;
-        this.transferRequestDto = transferRequestDto;
+    public TransferMessage(TransferRequestDto transferRequestDto) {
+        this.citizenIdentification = transferRequestDto.getCitizenIdentification();
+        this.citizenEmail = transferRequestDto.getCitizenEmail();
+        this.destinationOperatorId = transferRequestDto.getDestinationOperatorId();
     }
 }
 
