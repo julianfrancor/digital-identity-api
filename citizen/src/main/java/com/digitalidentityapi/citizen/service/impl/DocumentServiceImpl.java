@@ -4,6 +4,7 @@ import com.digitalidentityapi.citizen.dto.DocumentDto;
 import com.digitalidentityapi.citizen.entity.Citizen;
 import com.digitalidentityapi.citizen.entity.Document;
 import com.digitalidentityapi.citizen.mapper.DocumentMapper;
+import com.digitalidentityapi.citizen.producer.RabbitPublishMessage;
 import com.digitalidentityapi.citizen.repository.CitizenRepository;
 import com.digitalidentityapi.citizen.repository.DocumentRepository;
 import com.digitalidentityapi.citizen.service.IDocumentService;
@@ -16,8 +17,13 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static com.digitalidentityapi.citizen.constants.Constants.NOTIFICATION_QUEUE;
+
 @Service
 public class DocumentServiceImpl implements IDocumentService {
+
+    @Autowired
+    private final RabbitPublishMessage rabbitPublishMessage;
 
     @Autowired
     private DocumentRepository documentRepository;
@@ -25,15 +31,24 @@ public class DocumentServiceImpl implements IDocumentService {
     @Autowired
     private CitizenRepository citizenRepository;
 
+    public DocumentServiceImpl(RabbitPublishMessage rabbitPublishMessage) {
+        this.rabbitPublishMessage = rabbitPublishMessage;
+    }
+
     @Override
     public DocumentDto createDocument(DocumentDto documentDto) {
-        Citizen citizen = citizenRepository.findByEmail(documentDto.getCitizenEmail()).orElseThrow(() ->
-                new IllegalStateException("Citizen with Email " + documentDto.getCitizenEmail() + " does not exist"));
-        Document document = DocumentMapper.toEntity(documentDto, new Document(), citizen);
-        document.setCreatedAt(LocalDateTime.now(ZoneId.systemDefault()));
-        document.setUpdatedAt(LocalDateTime.now(ZoneId.systemDefault()));
-        Document savedDocument = documentRepository.save(document);
-        return DocumentMapper.toDto(savedDocument);
+        try {
+            Citizen citizen = citizenRepository.findByEmail(documentDto.getCitizenEmail()).orElseThrow(() ->
+                    new IllegalStateException("Citizen with Email " + documentDto.getCitizenEmail() + " does not exist"));
+            Document document = DocumentMapper.toEntity(documentDto, new Document(), citizen);
+            document.setCreatedAt(LocalDateTime.now(ZoneId.systemDefault()));
+            document.setUpdatedAt(LocalDateTime.now(ZoneId.systemDefault()));
+            Document savedDocument = documentRepository.save(document);
+            return DocumentMapper.toDto(savedDocument);
+        } catch (Exception e){
+            rabbitPublishMessage.sendMessageToQueue(NOTIFICATION_QUEUE, "");
+            return null;
+        }
     }
 
     @Override
@@ -60,9 +75,14 @@ public class DocumentServiceImpl implements IDocumentService {
 
     @Override
     public DocumentDto getDocumentById(int id) {
+        try {
+
         Document document = documentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Document not found"));
         return DocumentMapper.toDto(document);
+        } catch (Exception e){
+            return null;
+        }
     }
 
     @Override
