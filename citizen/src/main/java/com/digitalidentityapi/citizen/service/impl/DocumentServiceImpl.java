@@ -46,7 +46,7 @@ public class DocumentServiceImpl implements IDocumentService {
             Document savedDocument = documentRepository.save(document);
             return DocumentMapper.toDto(savedDocument);
         } catch (Exception e){
-            rabbitPublishMessage.sendMessageToQueue(NOTIFICATION_QUEUE, "");
+            rabbitPublishMessage.sendMessageToQueue(NOTIFICATION_QUEUE, "Citizen with Email " + documentDto.getCitizenEmail() + " does not exist");
             return null;
         }
     }
