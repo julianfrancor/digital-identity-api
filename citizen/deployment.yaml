@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: citizen
+  labels:
+    app: citizen
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: citizen
+  template:
+    metadata:
+      labels:
+        app: citizen
+    spec:
+      containers:
+        - name: citizen
+          image: northamerica-northeast1-docker.pkg.dev/kubernetes-sistemas-distribui/identidaddigital/citizen:latest
+          ports:
+            - containerPort: 8080
+          resources:
+            limits:
+              memory: "1000Mi"
+              cpu: "2000m"
+            requests:
+              memory: "128Mi"
+              cpu: "256m"
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "prod"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: citizen
+  name: citizen #
+  namespace: default
+spec:
+  ports:
+    - port: 8080
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: citizen #
+  type: LoadBalancer
