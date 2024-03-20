@@ -19,13 +19,13 @@ public class RabbitMQConfig {
     }
 
     @Bean
-    TopicExchange citizenExchange() {
+    TopicExchange uploadDocumentExchange() {
         return new TopicExchange(UPLOADDOCUMETEXCHANGE);
     }
 
     @Bean
-    Binding uploadDocumentBinding(Queue uploadDocumentQueue, TopicExchange citizenExchange) {
-        return BindingBuilder.bind(uploadDocumentQueue).to(citizenExchange).with(UPLOADDOCUMETQUEUE + "." + ROUTING_KEY_PATTERN);
+    Binding uploadDocumentBinding(Queue uploadDocumentQueue, TopicExchange uploadDocumentExchange) {
+        return BindingBuilder.bind(uploadDocumentQueue).to(uploadDocumentExchange).with(UPLOADDOCUMETQUEUE + "." + ROUTING_KEY_PATTERN);
     }
 
 

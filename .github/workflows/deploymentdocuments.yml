@@ -1,0 +1,56 @@
+name: Deploy to GKE Document
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'document/**'
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      # Configura gcloud y autentica
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          export_default_credentials: true
+      - name: Authenticate with Artifact Registry
+        run: |
+          gcloud auth configure-docker "northamerica-northeast1-docker.pkg.dev" --quiet
+        env:
+          REGION: us-central1
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+         java-version: '17'
+         distribution: 'adopt'
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+        working-directory: ./document
+      - name: Executing gradle clean
+        run:  ./gradlew clean
+        working-directory: ./document
+      - name: Executing gradle build
+        run: ./gradlew build
+        working-directory: ./document
+      - name: Build Docker document Image
+        run: |
+          docker build -t "northamerica-northeast1-docker.pkg.dev/kubernetes-sistemas-distribui/identidaddigital/${APP_NAME}:latest"  -f ./document/Dockerfile .
+          docker push "northamerica-northeast1-docker.pkg.dev/kubernetes-sistemas-distribui/identidaddigital/${APP_NAME}:latest"
+        env:
+          REGION: northamerica-northeast1
+          PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+          IMAGE_NAME: identidaddigital
+          APP_NAME: document  #
+
+      - name: Deploy to Kubernetes document Image
+        run: |
+          gcloud components install gke-gcloud-auth-plugin
+          gcloud container clusters get-credentials ${CLUSTER_NAME} --zone=${ZONE} --project=${{ secrets.GCP_PROJECT_ID }}
+          kubectl apply -f document/deployment.yaml
+        env:
+          CLUSTER_NAME: sistemasdistribuidos
+          ZONE: us-central1-c
