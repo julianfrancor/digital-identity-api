@@ -16,10 +16,7 @@ public class CitizenMapper {
         citizenDto.setId(citizen.getId());
         citizenDto.setIdentification(citizen.getIdentification());
         citizenDto.setIdentificationType(String.valueOf(citizen.getIdentificationType()));
-        citizenDto.setFirstName(citizen.getFirstName());
-        citizenDto.setSecondName(citizen.getSecondName());
-        citizenDto.setLastName(citizen.getLastName());
-        citizenDto.setSecondLastName(citizen.getSecondLastName());
+        citizenDto.setFullName(citizen.getFullName());
         citizenDto.setAddress(citizen.getAddress());
         citizenDto.setEmail(citizen.getEmail());
         citizenDto.setPhone(citizen.getPhone());
@@ -35,10 +32,7 @@ public class CitizenMapper {
         Citizen citizen = new Citizen();
         citizen.setIdentification(citizenDto.getIdentification());
         citizen.setIdentificationType(citizenDto.getIdentificationType());
-        citizen.setFirstName(citizenDto.getFirstName());
-        citizen.setSecondName(citizenDto.getSecondName());
-        citizen.setLastName(citizenDto.getLastName());
-        citizen.setSecondLastName(citizenDto.getSecondLastName());
+        citizen.setFullName(citizenDto.getFullName());
         citizen.setAddress(citizenDto.getAddress());
         citizen.setEmail(citizenDto.getEmail());
         citizen.setPhone(citizenDto.getPhone());

@@ -27,7 +27,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.digitalidentityapi.citizen.constants.Constants.CITIZEN_QUEUE;
 import static com.digitalidentityapi.citizen.constants.Constants.TRANSFER_CITIZEN_QUEUE;
 
 @Service
@@ -60,7 +59,7 @@ public class TransferServiceImpl implements ITransferService {
         Citizen citizen = getCitizenByEmail(transferRequestDto.getCitizenEmail());
 
         citizenWithDocumentsTransferInfoDTO.setId(citizen.getIdentification());
-        citizenWithDocumentsTransferInfoDTO.setName(buildFullName(citizen));
+        citizenWithDocumentsTransferInfoDTO.setName(citizen.getFullName());
         citizenWithDocumentsTransferInfoDTO.setAddress(citizen.getAddress());
         citizenWithDocumentsTransferInfoDTO.setEmail(citizen.getEmail());
         // TODO: mirar como se hace esto del callback
@@ -108,20 +107,6 @@ public class TransferServiceImpl implements ITransferService {
     private Citizen getCitizenByEmail(String citizenEmail) {
         return citizenRepository.findByEmail(citizenEmail).orElseThrow(() ->
                 new IllegalStateException("Citizen with email " + citizenEmail + " does not exist"));
-    }
-
-    private static String buildFullName(Citizen citizen) {
-        StringBuilder fullNameBuilder = new StringBuilder();
-
-        fullNameBuilder.append(citizen.getFirstName());
-        if (citizen.getSecondName() != null && !citizen.getSecondName().isEmpty()) {
-            fullNameBuilder.append(" ").append(citizen.getSecondName());
-        }
-        fullNameBuilder.append(" ").append(citizen.getLastName());
-        if (citizen.getSecondLastName() != null && !citizen.getSecondLastName().isEmpty()) {
-            fullNameBuilder.append(" ").append(citizen.getSecondLastName());
-        }
-        return fullNameBuilder.toString();
     }
 
     private List<DocumentDto> getAllDocumentsByCitizenEmail(String email) {

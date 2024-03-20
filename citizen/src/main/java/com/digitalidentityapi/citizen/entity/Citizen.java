@@ -24,16 +24,7 @@ public class Citizen extends BaseEntity {
     private String identificationType;
 
     @Column(nullable = false)
-    private String firstName;
-
-    @Column
-    private String secondName;
-
-    @Column(nullable = false)
-    private String lastName;
-
-    @Column
-    private String secondLastName;
+    private String fullName;
 
     @Column(length = 500)
     private String address;

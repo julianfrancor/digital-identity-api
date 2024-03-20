@@ -25,7 +25,6 @@ public class CitizenMessageListener {
     @RabbitListener(queues = "citizen")
     public void handleCitizenMessage(@Payload String message) {
         try {
-            System.out.println("===========" + message + "===========");
             CitizenMessage citizenMessage = objectMapper.readValue(message, CitizenMessage.class);
 
             switch (citizenMessage.getOperation()) {

@@ -5,11 +5,9 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import lombok.Builder;
 import lombok.Data;
 
 import java.util.Date;
-import java.util.UUID;
 
 @Data
 @Schema(name = "citizen", description = "Schema to hold Citizen information")
@@ -27,22 +25,9 @@ public class CitizenDto {
     private String identificationType;
 
     @NotEmpty
-    @Size(min = 2, max = 100)
+    @Size(min = 2, max = 200)
     @Schema(description = "First name of the citizen", required = true)
-    private String firstName;
-
-    @Size(max = 100)
-    @Schema(description = "Second name of the citizen")
-    private String secondName;
-
-    @NotEmpty
-    @Size(min = 2, max = 100)
-    @Schema(description = "Last name of the citizen", required = true)
-    private String lastName;
-
-    @Size(max = 100)
-    @Schema(description = "Second last name of the citizen")
-    private String secondLastName;
+    private String fullName;
 
     @Schema(description = "Address of the citizen")
     private String address;
