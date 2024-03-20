@@ -1,6 +1,8 @@
 package com.digitalidentityapi.citizen.controller;
 
+import com.digitalidentityapi.citizen.dto.CitizenWithDocumentsTransferInfoDTO;
 import com.digitalidentityapi.citizen.dto.TransferDto;
+import com.digitalidentityapi.citizen.dto.TransferRequestDto;
 import com.digitalidentityapi.citizen.service.ITransferService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,8 +29,8 @@ public class TransfersController {
     }
 
     @PostMapping
-    public ResponseEntity<TransferDto> createTransfer(@RequestBody TransferDto transferDto) {
-        TransferDto newTransfer = transfersService.createTransfer(transferDto);
+    public ResponseEntity<CitizenWithDocumentsTransferInfoDTO> createTransfer(@RequestBody TransferRequestDto transferRequestDto) {
+        CitizenWithDocumentsTransferInfoDTO newTransfer = transfersService.createTransfer(transferRequestDto);
         return new ResponseEntity<>(newTransfer, HttpStatus.CREATED);
     }
 

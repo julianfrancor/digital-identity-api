@@ -15,7 +15,7 @@ public class TransferMapper {
         TransferDto transferDto =  new TransferDto();
 
         transferDto.setId(transfer.getId());
-        transferDto.setCitizenId(String.valueOf(transfer.getCitizenId()));
+        transferDto.setCitizenId(transfer.getCitizenId());
         transferDto.setOperatorId(String.valueOf(transfer.getOperatorId()));
         transferDto.setCitizenEmail(citizenEmail);
         transferDto.setCreatedAt(convertToDate(transfer.getCreatedAt()));
@@ -29,7 +29,7 @@ public class TransferMapper {
             transfer = new Transfer();
         }
 
-        transfer.setCitizenId(Integer.parseInt(transferDto.getCitizenId()));
+        transfer.setCitizenId(transferDto.getCitizenId());
         transfer.setOperatorId(Integer.parseInt(transferDto.getOperatorId()));
         transfer.setTransferDate(transferDto.getTransferDate());
         return transfer;

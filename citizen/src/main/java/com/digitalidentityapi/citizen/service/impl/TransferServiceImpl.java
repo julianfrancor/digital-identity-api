@@ -1,21 +1,34 @@
 package com.digitalidentityapi.citizen.service.impl;
 
+import com.digitalidentityapi.citizen.Message.TransferCitizenMessage;
 import com.digitalidentityapi.citizen.dto.CitizenWithDocumentsTransferInfoDTO;
+import com.digitalidentityapi.citizen.dto.CitizenWithDocumentsTransferInfoDTO.DocumentTransferInfo;
+import com.digitalidentityapi.citizen.dto.DocumentDto;
 import com.digitalidentityapi.citizen.dto.TransferDto;
+import com.digitalidentityapi.citizen.dto.TransferRequestDto;
 import com.digitalidentityapi.citizen.entity.Citizen;
+import com.digitalidentityapi.citizen.entity.Document;
 import com.digitalidentityapi.citizen.entity.Transfer;
+import com.digitalidentityapi.citizen.mapper.DocumentMapper;
 import com.digitalidentityapi.citizen.mapper.TransferMapper;
+import com.digitalidentityapi.citizen.producer.RabbitPublishMessage;
 import com.digitalidentityapi.citizen.repository.CitizenRepository;
+import com.digitalidentityapi.citizen.repository.DocumentRepository;
 import com.digitalidentityapi.citizen.repository.TransferRepository;
 import com.digitalidentityapi.citizen.service.ITransferService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.digitalidentityapi.citizen.constants.Constants.CITIZEN_QUEUE;
+import static com.digitalidentityapi.citizen.constants.Constants.TRANSFER_CITIZEN_QUEUE;
 
 @Service
 public class TransferServiceImpl implements ITransferService {
@@ -27,14 +40,24 @@ public class TransferServiceImpl implements ITransferService {
     private CitizenRepository citizenRepository;
 
     @Autowired
-    public TransferServiceImpl(TransferRepository transferRepository) {
+    private DocumentRepository documentRepository;
+
+    @Autowired
+    private final RabbitPublishMessage rabbitPublishMessage;
+
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @Autowired
+    public TransferServiceImpl(TransferRepository transferRepository, RabbitPublishMessage rabbitPublishMessage) {
         this.transferRepository = transferRepository;
+        this.rabbitPublishMessage = rabbitPublishMessage;
     }
 
     @Override
-    public TransferDto createTransfer(TransferDto transferDto) {
+    public CitizenWithDocumentsTransferInfoDTO createTransfer(TransferRequestDto transferRequestDto) {
         CitizenWithDocumentsTransferInfoDTO citizenWithDocumentsTransferInfoDTO = new CitizenWithDocumentsTransferInfoDTO();
-        Citizen citizen = getCitizenByEmail(transferDto);
+        Citizen citizen = getCitizenByEmail(transferRequestDto.getCitizenEmail());
 
         citizenWithDocumentsTransferInfoDTO.setId(citizen.getIdentification());
         citizenWithDocumentsTransferInfoDTO.setName(buildFullName(citizen));
@@ -42,36 +65,49 @@ public class TransferServiceImpl implements ITransferService {
         citizenWithDocumentsTransferInfoDTO.setEmail(citizen.getEmail());
         // TODO: mirar como se hace esto del callback
         citizenWithDocumentsTransferInfoDTO.setCallbackUrl("example.com");
+        List<DocumentDto> allDocuments = getAllDocumentsByCitizenEmail(citizen.getEmail());
+        citizenWithDocumentsTransferInfoDTO.setFiles(convertToDocumentTransferInfoList(allDocuments));
 
-        List<DocumentInfoDTO> documents = new ArrayList<>();
-        CitizenWithDocumentsTransferInfoDTO.DocumentInfoDTO ccDocument = new CitizenWithDocumentsTransferInfoDTO.DocumentInfoDTO();
-        ccDocument.setDocumentTitle("CC");
-        ccDocument.setUrlDocument("example.com");
+        TransferDto transferDto = getTransferDto(citizen);
+        registerTransferInDatabase(transferDto);
 
-        CitizenWithDocumentsTransferInfoDTO.DocumentInfoDTO licenseDocument = new CitizenWithDocumentsTransferInfoDTO.DocumentInfoDTO();
-        licenseDocument.setDocumentTitle("LICENCIA");
-        licenseDocument.setUrlDocument("example2.com");
+        TransferCitizenMessage transferCitizenMessage = new TransferCitizenMessage(transferRequestDto.getDestinationOperatorId(), citizenWithDocumentsTransferInfoDTO);
+        String transferMessage = getCitizenTransferMessageString(transferCitizenMessage);
+        System.out.println(transferMessage);
+        rabbitPublishMessage.sendMessageToQueue(TRANSFER_CITIZEN_QUEUE, transferMessage);
+        return citizenWithDocumentsTransferInfoDTO;
+    }
 
-        documents.add(ccDocument);
-        documents.add(licenseDocument);
+    private static TransferDto getTransferDto(Citizen citizen) {
+        TransferDto transferDto = new TransferDto();
+        transferDto.setCitizenId(citizen.getId());
+        transferDto.setCitizenEmail(citizen.getEmail());
+        transferDto.setTransferDate(new Date());
+        transferDto.setCreatedAt(new Date());
+        transferDto.setUpdatedAt(new Date());
+        return transferDto;
+    }
 
-        citizenWithDocumentsTransferInfoDTO.setFiles(documents);
+    private String getCitizenTransferMessageString(TransferCitizenMessage transferCitizenMessage) {
+        String message = "";
+        try {
+            message = objectMapper.writeValueAsString(transferCitizenMessage);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return message;
+    }
 
-
-        String citizenEmail = transferDto.getCitizenEmail();
-
-
-
+    private void registerTransferInDatabase(TransferDto transferDto) {
         Transfer transfer = TransferMapper.toEntity(transferDto, new Transfer());
         transfer.setCreatedAt(LocalDateTime.now(ZoneId.systemDefault()));
         transfer.setUpdatedAt(LocalDateTime.now(ZoneId.systemDefault()));
-        transfer = transferRepository.save(transfer);
-        return TransferMapper.toDto(transfer, citizenEmail);
+        transferRepository.save(transfer);
     }
 
-    private Citizen getCitizenByEmail(TransferDto transferDto) {
-        return citizenRepository.findByEmail(transferDto.getCitizenEmail()).orElseThrow(() ->
-                new IllegalStateException("Citizen with email " + transferDto.getCitizenEmail() + " does not exist"));
+    private Citizen getCitizenByEmail(String citizenEmail) {
+        return citizenRepository.findByEmail(citizenEmail).orElseThrow(() ->
+                new IllegalStateException("Citizen with email " + citizenEmail + " does not exist"));
     }
 
     private static String buildFullName(Citizen citizen) {
@@ -88,13 +124,26 @@ public class TransferServiceImpl implements ITransferService {
         return fullNameBuilder.toString();
     }
 
+    private List<DocumentDto> getAllDocumentsByCitizenEmail(String email) {
+        List<Document> documents = documentRepository.findAllByCitizenEmail(email);
+        return documents.stream()
+                .map(DocumentMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    private List<DocumentTransferInfo> convertToDocumentTransferInfoList(List<DocumentDto> allDocuments) {
+        return allDocuments.stream()
+                .map(document -> new DocumentTransferInfo(document.getTitle(), document.getUrl()))
+                .collect(Collectors.toList());
+    }
+
     @Override
     public TransferDto updateTransfer(int id, TransferDto transferDto) {
         String citizenEmail = transferDto.getCitizenEmail();
         Transfer existingTransfer = transferRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Transfer with ID " + id + " not found"));
 
-        existingTransfer.setCitizenId(Integer.parseInt(transferDto.getCitizenId()));
+        existingTransfer.setCitizenId(transferDto.getCitizenId());
         existingTransfer.setOperatorId(Integer.parseInt(transferDto.getOperatorId()));
         existingTransfer.setTransferDate(transferDto.getTransferDate());
         existingTransfer.setUpdatedAt(LocalDateTime.now(ZoneId.systemDefault()));
@@ -114,7 +163,7 @@ public class TransferServiceImpl implements ITransferService {
     public TransferDto getTransferById(int id) {
         Transfer transfer = transferRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Transfer with ID " + id + " not found"));
-        Citizen citizen = citizenRepository.findById(Integer.valueOf(String.valueOf(transfer.getCitizenId()))).orElseThrow(() ->
+        Citizen citizen = citizenRepository.findById((long) Integer.parseInt(String.valueOf(transfer.getCitizenId()))).orElseThrow(() ->
                 new IllegalStateException("Citizen with ID " + transfer.getCitizenId() + " does not exist"));
         return TransferMapper.toDto(transfer, citizen.getEmail());
     }
@@ -123,7 +172,7 @@ public class TransferServiceImpl implements ITransferService {
     public List<TransferDto> getAllTransfers() {
         return transferRepository.findAll().stream()
                 .map(transfer -> {
-                    return TransferMapper.toDto(transfer, (citizenRepository.findById(Integer.valueOf(String.valueOf(transfer.getCitizenId()))).orElseThrow(() ->
+                    return TransferMapper.toDto(transfer, (citizenRepository.findById((long) Integer.parseInt(String.valueOf(transfer.getCitizenId()))).orElseThrow(() ->
                             new IllegalStateException("Citizen with ID " + transfer.getCitizenId() + " does not exist")).getEmail()));
                 })
                 .collect(Collectors.toList());

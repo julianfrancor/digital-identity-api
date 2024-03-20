@@ -1,6 +1,9 @@
 package com.digitalidentityapi.citizen.dto;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.List;
 
 @Data
@@ -12,8 +15,15 @@ public class CitizenWithDocumentsTransferInfoDTO {
     private String callbackUrl;
     private List<DocumentTransferInfo> files;
 
+    @Getter
+    @Setter
     public static class DocumentTransferInfo {
         private String documentTitle;
         private String urlDocument;
+
+        public DocumentTransferInfo(String documentTitle, String urlDocument) {
+            this.documentTitle = documentTitle;
+            this.urlDocument = urlDocument;
+        }
     }
 }
