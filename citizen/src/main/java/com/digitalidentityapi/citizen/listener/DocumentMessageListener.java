@@ -25,7 +25,6 @@ public class DocumentMessageListener {
     public void handleDocumentMessage(@Payload String message) {
         try {
             DocumentMessage documentMessage = objectMapper.readValue(message, DocumentMessage.class);
-
             switch (documentMessage.getOperation()) {
                 case "CREATE":
                     documentService.createDocument(documentMessage.getDocumentDto());
