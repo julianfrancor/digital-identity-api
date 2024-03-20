@@ -2,7 +2,6 @@ package com.digitalidentityapi.citizen.service.impl;
 
 import com.digitalidentityapi.citizen.dto.CitizenDto;
 import com.digitalidentityapi.citizen.entity.Citizen;
-import com.digitalidentityapi.citizen.exception.CitizenAlreadyExistsException;
 import com.digitalidentityapi.citizen.mapper.CitizenMapper;
 import com.digitalidentityapi.citizen.producer.RabbitPublishMessage;
 import com.digitalidentityapi.citizen.repository.CitizenRepository;
@@ -54,11 +53,11 @@ public class CitizenServiceImpl implements ICitizenService {
     }
 
     private static String getRegisterCitizenMessageString(Citizen citizen) {
-        String fullName = buildFullName(citizen);
+        String fullName = citizen.getFullName();
 
-        int identificationInt;
+        Long identificationInt;
         try {
-            identificationInt = Integer.parseInt(citizen.getIdentification());
+            identificationInt = citizen.getIdentification();
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("Identification must be a numeric value.");
         }
@@ -69,20 +68,6 @@ public class CitizenServiceImpl implements ICitizenService {
                 "    \"address\": \"%s\",\n" +
                 "    \"email\": \"%s\"\n" +
                 "}", identificationInt, fullName, citizen.getAddress(), citizen.getEmail());
-    }
-
-    private static String buildFullName(Citizen citizen) {
-        StringBuilder fullNameBuilder = new StringBuilder();
-
-        fullNameBuilder.append(citizen.getFirstName());
-        if (citizen.getSecondName() != null && !citizen.getSecondName().isEmpty()) {
-            fullNameBuilder.append(" ").append(citizen.getSecondName());
-        }
-        fullNameBuilder.append(" ").append(citizen.getLastName());
-        if (citizen.getSecondLastName() != null && !citizen.getSecondLastName().isEmpty()) {
-            fullNameBuilder.append(" ").append(citizen.getSecondLastName());
-        }
-        return fullNameBuilder.toString();
     }
 
     private static String getNotificationMessageString(Citizen existingCitizen) {

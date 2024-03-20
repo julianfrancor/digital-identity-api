@@ -7,8 +7,11 @@ spring:
     active: "prod"
   datasource:
     url: jdbc:mysql://34.136.134.246:3306/citizensdb
+#    url: jdbc:mysql://localhost:3306/citizensdb
     username: sistemasdistribuidos
+#    username: root
     password: sistemasdistribuidos
+#    password: root
   sql:
     init:
       mode: always
@@ -16,9 +19,12 @@ spring:
     show-sql: true
   rabbitmq:
     host: 35.239.132.181
+#    host: localhost
     port: 5672
     username: sistemasdistribuidos
     password: sistemasdistribuidos
+#    username: guest
+#    password: guest
     queues:
       citizen: "citizen"
       citizenSubscription: "citizenSubscription"

@@ -5,7 +5,7 @@ import com.digitalidentityapi.brokerintermediary.Message.DocumentMessage;
 import com.digitalidentityapi.brokerintermediary.Message.TransferMessage;
 import com.digitalidentityapi.brokerintermediary.dto.CitizenDto;
 import com.digitalidentityapi.brokerintermediary.dto.DocumentDto;
-import com.digitalidentityapi.brokerintermediary.dto.TransferDto;
+import com.digitalidentityapi.brokerintermediary.dto.TransferRequestDto;
 import com.digitalidentityapi.brokerintermediary.producer.RabbitPublishMessage;
 import com.digitalidentityapi.brokerintermediary.service.IBrokerIntermediaryService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -64,8 +64,8 @@ public class BrokerIntermediaryServiceImpl implements IBrokerIntermediaryService
     }
 
     @Override
-    public void handleTransferOperations(TransferDto transferDto) {
-        TransferMessage transferMessage = new TransferMessage("CREATE", transferDto);
+    public void handleTransferOperations(TransferRequestDto transferRequestDto) {
+        TransferMessage transferMessage = new TransferMessage("CREATE", transferRequestDto);
         System.out.println(transferMessage.getOperation());
         rabbitPublishMessage.sendMessageToQueue(TRANSFERS_QUEUE, getTransferMessageString(transferMessage));
         System.out.println("Message successfully published in Transfers Queue");

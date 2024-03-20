@@ -15,7 +15,7 @@ public class TransferDto {
 
     @NotEmpty(message = "Citizen ID cannot be empty")
     @Schema(description = "Identifier of the citizen being transferred", required = true)
-    private String citizenId;
+    private int citizenId;
 
     @NotEmpty(message = "Citizen email cannot be empty")
     @Schema(description = "Email of the citizen to whom the document belongs", required = true)

@@ -1,7 +1,6 @@
 package com.digitalidentityapi.brokerintermediary.Message;
 
-import com.digitalidentityapi.brokerintermediary.dto.DocumentDto;
-import com.digitalidentityapi.brokerintermediary.dto.TransferDto;
+import com.digitalidentityapi.brokerintermediary.dto.TransferRequestDto;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,11 +8,11 @@ import lombok.Setter;
 @Setter
 public class TransferMessage {
     private String operation;
-    private TransferDto transferDto;
+    private TransferRequestDto transferRequestDto;
 
-    public TransferMessage(String operation, TransferDto transferDto) {
+    public TransferMessage(String operation, TransferRequestDto transferRequestDto) {
         this.operation = operation;
-        this.transferDto = transferDto;
+        this.transferRequestDto = transferRequestDto;
     }
 }
 

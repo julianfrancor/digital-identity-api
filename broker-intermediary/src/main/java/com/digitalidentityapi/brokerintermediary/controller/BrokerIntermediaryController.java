@@ -2,7 +2,7 @@ package com.digitalidentityapi.brokerintermediary.controller;
 
 import com.digitalidentityapi.brokerintermediary.dto.CitizenDto;
 import com.digitalidentityapi.brokerintermediary.dto.DocumentDto;
-import com.digitalidentityapi.brokerintermediary.dto.TransferDto;
+import com.digitalidentityapi.brokerintermediary.dto.TransferRequestDto;
 import com.digitalidentityapi.brokerintermediary.service.IBrokerIntermediaryService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,9 +65,9 @@ public class BrokerIntermediaryController {
     }
 
     @PostMapping("/transfers")
-    public ResponseEntity<String> performTransfer(@Valid @RequestBody TransferDto transferDto) {
-        brokerIntermediaryService.handleTransferOperations(transferDto);
-        String messageResponse = String.format("Citizen with Email %s is being transferred.", transferDto.getCitizenEmail());
+    public ResponseEntity<String> performTransfer(@Valid @RequestBody TransferRequestDto transferRequestDto) {
+        brokerIntermediaryService.handleTransferOperations(transferRequestDto);
+        String messageResponse = String.format("Citizen with Email %s is being transferred.", transferRequestDto.getCitizenEmail());
         return new ResponseEntity<>(messageResponse, HttpStatus.CREATED);
     }
 }
