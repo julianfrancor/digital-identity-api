@@ -67,7 +67,7 @@ public class TransferServiceImpl implements ITransferService {
         List<DocumentDto> allDocuments = getAllDocumentsByCitizenEmail(citizen.getEmail());
         citizenWithDocumentsTransferInfoDTO.setFiles(convertToDocumentTransferInfoList(allDocuments));
 
-        TransferDto transferDto = getTransferDto(citizen);
+        TransferDto transferDto = getTransferDto(citizen, transferRequestDto.getDestinationOperatorId());
         registerTransferInDatabase(transferDto);
 
         TransferCitizenMessage transferCitizenMessage = new TransferCitizenMessage(transferRequestDto.getDestinationOperatorId(), citizenWithDocumentsTransferInfoDTO);
@@ -77,10 +77,11 @@ public class TransferServiceImpl implements ITransferService {
         return citizenWithDocumentsTransferInfoDTO;
     }
 
-    private static TransferDto getTransferDto(Citizen citizen) {
+    private static TransferDto getTransferDto(Citizen citizen, int operatorId) {
         TransferDto transferDto = new TransferDto();
         transferDto.setCitizenId(citizen.getId());
         transferDto.setCitizenEmail(citizen.getEmail());
+        transferDto.setOperatorId(String.valueOf(operatorId));
         transferDto.setTransferDate(new Date());
         transferDto.setCreatedAt(new Date());
         transferDto.setUpdatedAt(new Date());
