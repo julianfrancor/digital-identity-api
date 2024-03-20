@@ -24,7 +24,7 @@ public class UpdateDocument {
                 "\"documentTypeId\": \"" + documentTypeId + "\"," +
                 "\"title\": \"" + title + "\"," +
                 "\"url\":\"" + url + "\"," +
-                "\"metadata\": {\"autor\": \"Siste\", \"fecha\": \"2024-03-10\"}}}";
+                "\"metadata\": \"{\\\"autor\\\": \\\"Siste\\\", \\\"fecha\\\": \\\"2024-03-10\\\"}\"}}";
     }
 
 }
