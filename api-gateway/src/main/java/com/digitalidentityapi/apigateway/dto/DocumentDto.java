@@ -11,6 +11,7 @@ public class DocumentDto {
     private String documentTypeId;
     private String title;
     private String url;
+    private String base64file;
     private String metadata;
     private Date createdAt;
     private Date updatedAt;
