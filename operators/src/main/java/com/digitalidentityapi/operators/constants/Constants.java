@@ -14,10 +14,12 @@ public class Constants {
     public static String REGISTERCITIZEN = "/registerCitizen";
     public static String NOTIFICATIONSQUEU = "notificationQueue";
     public static String REGISTERCITIZENQUEUE = "registerCitizen";
+    public static String CITIZEN = "citizen";
+
     public static String UNREGISTERCITIZENQUEUE = "unregisterCitizen";
     public static String SIGNDOCUMENTSQUEUE = "signDocuments";
     public static String SIGNDOCUMENTSEXCHANGE = "signDocumentsExchange";
     public static final String ROUTING_KEY_PATTERN = "#";
 
-
+    public static final String ERRORTRANSFERCITIZENOPERATOR = "Error de transferencia al usuario - Operador no disponible, se realiza registro de nuevo ante MinTic";
 }
