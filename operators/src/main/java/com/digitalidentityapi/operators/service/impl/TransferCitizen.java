@@ -49,7 +49,7 @@ public class TransferCitizen implements TransferCitizenServices {
     public void transferCitizen(CitizenForTransferDTO citizenForTransferDTO) {
 
         String urlTransfer = getUrlTranfer(citizenForTransferDTO.getDestinationOperatorId());
-        WebClient operator = WebClient.create(urlTransfer);
+        WebClient operator = WebClient.create(urlTransfer.replace(" ", ""));
         UnregistredCitizenDTO unregistredCitizenDTO = new UnregistredCitizenDTO(BigInteger.valueOf(Long.parseLong(citizenForTransferDTO.getCitizenWithDocumentsTransferInfoDTO().getId())), citizenForTransferDTO.getCitizenWithDocumentsTransferInfoDTO().getEmail());
         unregistrerCitizenServices.unregisterCitizen(unregistredCitizenDTO.toString());
         BuildMessageTransfer buildMessageTransfer = new BuildMessageTransfer();
@@ -59,14 +59,13 @@ public class TransferCitizen implements TransferCitizenServices {
                 .bodyValue(body)
                 .retrieve()
                 .bodyToMono(String.class);
+        System.out.println(response);
         response.subscribe(
-                // Manejo del caso de éxito
                 responseBody -> {
                     System.out.println("Respuesta exitosa del servicio: " + responseBody);
-                    NotificationMessage notificationMessage = new NotificationMessage(citizenForTransferDTO.getCitizenWithDocumentsTransferInfoDTO().getEmail(), response.block());
+                    NotificationMessage notificationMessage = new NotificationMessage(citizenForTransferDTO.getCitizenWithDocumentsTransferInfoDTO().getEmail(), SUCCESFULLTRANSFERCITIZENOPERATORS);
                     rabbitPublishMessage.sendMessageToQueue(Constants.NOTIFICATIONSQUEU, notificationMessage.toString());
                 },
-                // Manejo del error
                 error -> {
                     System.out.println("Error al llamar al servicio: " + error.getMessage());
                     NotificationMessage notificationMessage = new NotificationMessage(citizenForTransferDTO.getCitizenWithDocumentsTransferInfoDTO().getEmail(), ERRORTRANSFERCITIZENOPERATOR);
