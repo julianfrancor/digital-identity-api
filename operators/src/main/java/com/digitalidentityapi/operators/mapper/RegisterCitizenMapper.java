@@ -5,10 +5,12 @@ import com.digitalidentityapi.operators.dto.OperationDTO;
 import com.digitalidentityapi.operators.dto.RecieveCitizenDTO;
 import com.digitalidentityapi.operators.entity.CitizenRecieveOperator;
 
+import java.math.BigInteger;
+
 public class RegisterCitizenMapper {
     public OperationDTO convertToOperationDTO(RecieveCitizenDTO citizen, String operation) {
         DtoRegisterCitizen citizenDto = new DtoRegisterCitizen();
-        citizenDto.setIdentification(citizen.getId().longValue());
+        citizenDto.setIdentification(Long.valueOf(citizen.getId()));
         citizenDto.setIdentificationType("CC");
         citizenDto.setFullName(citizen.getName());
         citizenDto.setAddress(citizen.getAddress());

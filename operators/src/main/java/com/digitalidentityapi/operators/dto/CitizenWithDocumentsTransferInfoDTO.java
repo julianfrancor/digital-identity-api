@@ -6,18 +6,18 @@ import java.math.BigInteger;
 import java.util.List;
 
 public class CitizenWithDocumentsTransferInfoDTO {
-    public BigInteger id;
+    public String id;
     public String name;
     public String address;
     public String email;
     public String callbackUrl;
     public List<Files> files;
 
-    public BigInteger getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(BigInteger id) {
+    public void setId(String id) {
         this.id = id;
     }
 
