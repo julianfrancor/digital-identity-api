@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 8080
 spring:
   application:
     name: "citizen"
@@ -33,3 +33,10 @@ spring:
       externalCompany: "externalCompany"
       offeredSolution: "offeredSolution"
       transfers: "transfers"
+logging:
+  level:
+    org:
+      springframework:
+        web: DEBUG
+        boot:
+          autoconfigure: DEBUG
