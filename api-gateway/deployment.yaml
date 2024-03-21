@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-gateway
+  labels:
+    app: api-gateway
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: api-gateway
+  template:
+    metadata:
+      labels:
+        app: api-gateway
+    spec:
+      containers:
+        - name: api-gateway
+          image: northamerica-northeast1-docker.pkg.dev/kubernetes-sistemas-distribui/identidaddigital/api-gateway:latest
+          ports:
+            - containerPort: 8080
+          resources:
+            limits:
+              memory: "1000Mi"
+              cpu: "2000m"
+            requests:
+              memory: "128Mi"
+              cpu: "256m"
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "prod"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: api-gateway
+  name: api-gateway #
+  namespace: default
+spec:
+  ports:
+    - port: 8080
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: api-gateway #
+  type: LoadBalancer
