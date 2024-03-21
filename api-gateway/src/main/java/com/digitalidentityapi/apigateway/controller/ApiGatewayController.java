@@ -60,7 +60,7 @@ public class ApiGatewayController {
     }
 
     @PostMapping("/sign-document")
-    public Mono<ResponseEntity<String>> performTransfer(@RequestBody SignDocumentDto signDocumentDto) {
+    public Mono<ResponseEntity<String>> signDocument(@RequestBody SignDocumentDto signDocumentDto) {
         return apiGatewayService.signDocument(signDocumentDto);
     }
 
