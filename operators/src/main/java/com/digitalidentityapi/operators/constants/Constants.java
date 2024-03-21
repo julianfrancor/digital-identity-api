@@ -5,7 +5,7 @@ public class Constants {
     public static String EXISTCLIENT = "Ciudadano ya registrado en Operador";
     public static String NOEXISTCLIENT = "Ciudadano no registrado en Operador";
 
-    public static String IDOPERATOR = "identidaddigital01";
+    public static String IDOPERATOR = "65fbaa97404d11001555ac4c";
     public static String OPERATORNAME = "Identidad Digital";
     public static String PATHVALIDATECITIZEN = "/validateCitizen/";
     public static String UNREGISTEREDCITIZEN = "/unregisterCitizen";

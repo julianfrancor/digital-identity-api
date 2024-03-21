@@ -21,6 +21,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.List;
 
 import static com.digitalidentityapi.operators.constants.Constants.*;
@@ -46,27 +47,35 @@ public class TransferCitizen implements TransferCitizenServices {
 
     @Override
     public void transferCitizen(CitizenForTransferDTO citizenForTransferDTO) {
-        try {
-            String urlTransfer = getUrlTranfer(citizenForTransferDTO.getDestinationOperatorId());
-            WebClient operator = WebClient.create(urlTransfer);
-            UnregistredCitizenDTO unregistredCitizenDTO = new UnregistredCitizenDTO(citizenForTransferDTO.getCitizenWithDocumentsTransferInfoDTO().getId(), citizenForTransferDTO.getCitizenWithDocumentsTransferInfoDTO().getEmail());
-            unregistrerCitizenServices.unregisterCitizen(unregistredCitizenDTO.toString());
-            BuildMessageTransfer buildMessageTransfer = new BuildMessageTransfer();
-            String body = buildMessageTransfer.buildMessageTransferDTO(citizenForTransferDTO);
-            Mono<String> response = operator.post()
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .bodyValue(body)
-                    .retrieve()
-                    .bodyToMono(String.class);
-            System.out.println(response.block());
-            NotificationMessage notificationMessage = new NotificationMessage(citizenForTransferDTO.getCitizenWithDocumentsTransferInfoDTO().getEmail(), response.block());
-            rabbitPublishMessage.sendMessageToQueue(Constants.NOTIFICATIONSQUEU, notificationMessage.toString());
-        } catch (Exception e) {
-            System.out.println(e);
-            NotificationMessage notificationMessage = new NotificationMessage(citizenForTransferDTO.getCitizenWithDocumentsTransferInfoDTO().getEmail(), ERRORTRANSFERCITIZENOPERATOR);
-            rabbitPublishMessage.sendMessageToQueue(Constants.NOTIFICATIONSQUEU, notificationMessage.toString());
-            rollbackUnregisterCitizen(citizenForTransferDTO);
-        }
+
+        String urlTransfer = getUrlTranfer(citizenForTransferDTO.getDestinationOperatorId());
+        WebClient operator = WebClient.create(urlTransfer);
+        UnregistredCitizenDTO unregistredCitizenDTO = new UnregistredCitizenDTO(BigInteger.valueOf(Long.parseLong(citizenForTransferDTO.getCitizenWithDocumentsTransferInfoDTO().getId())), citizenForTransferDTO.getCitizenWithDocumentsTransferInfoDTO().getEmail());
+        unregistrerCitizenServices.unregisterCitizen(unregistredCitizenDTO.toString());
+        BuildMessageTransfer buildMessageTransfer = new BuildMessageTransfer();
+        String body = buildMessageTransfer.buildMessageTransferDTO(citizenForTransferDTO);
+        Mono<String> response = operator.post()
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(body)
+                .retrieve()
+                .bodyToMono(String.class);
+        response.subscribe(
+                // Manejo del caso de éxito
+                responseBody -> {
+                    System.out.println("Respuesta exitosa del servicio: " + responseBody);
+                    NotificationMessage notificationMessage = new NotificationMessage(citizenForTransferDTO.getCitizenWithDocumentsTransferInfoDTO().getEmail(), response.block());
+                    rabbitPublishMessage.sendMessageToQueue(Constants.NOTIFICATIONSQUEU, notificationMessage.toString());
+                },
+                // Manejo del error
+                error -> {
+                    System.out.println("Error al llamar al servicio: " + error.getMessage());
+                    NotificationMessage notificationMessage = new NotificationMessage(citizenForTransferDTO.getCitizenWithDocumentsTransferInfoDTO().getEmail(), ERRORTRANSFERCITIZENOPERATOR);
+                    rabbitPublishMessage.sendMessageToQueue(Constants.NOTIFICATIONSQUEU, notificationMessage.toString());
+                    rollbackUnregisterCitizen(citizenForTransferDTO);
+                }
+
+        );
+
     }
 
     public String getUrlTranfer(String idOperator) {
@@ -91,7 +100,7 @@ public class TransferCitizen implements TransferCitizenServices {
     }
 
     public void rollbackUnregisterCitizen(CitizenForTransferDTO citizenForTransferDTO) {
-        CitizenRegister citizenRegister = new CitizenRegister(citizenForTransferDTO.getCitizenWithDocumentsTransferInfoDTO().getId(),
+        CitizenRegister citizenRegister = new CitizenRegister(BigInteger.valueOf(Long.parseLong(citizenForTransferDTO.getCitizenWithDocumentsTransferInfoDTO().getId())),
                 citizenForTransferDTO.getCitizenWithDocumentsTransferInfoDTO().getName(),
                 citizenForTransferDTO.getCitizenWithDocumentsTransferInfoDTO().getAddress(),
                 citizenForTransferDTO.getCitizenWithDocumentsTransferInfoDTO().getEmail(), IDOPERATOR, OPERATORNAME);
