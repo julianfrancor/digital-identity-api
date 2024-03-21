@@ -2,6 +2,7 @@ package com.digitalidentityapi.brokerintermediary.controller;
 
 import com.digitalidentityapi.brokerintermediary.dto.CitizenDto;
 import com.digitalidentityapi.brokerintermediary.dto.DocumentDto;
+import com.digitalidentityapi.brokerintermediary.dto.SignDocumentDto;
 import com.digitalidentityapi.brokerintermediary.dto.TransferRequestDto;
 import com.digitalidentityapi.brokerintermediary.service.IBrokerIntermediaryService;
 import jakarta.validation.Valid;
@@ -61,6 +62,13 @@ public class BrokerIntermediaryController {
     public ResponseEntity<String> deleteDocument(@Valid @RequestBody DocumentDto documentDto) {
         brokerIntermediaryService.handleDocumentOperations("DELETE", documentDto);
         String messageResponse = String.format("Document with Title %s was sent to delete.", documentDto.getTitle());
+        return new ResponseEntity<>(messageResponse, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/sign-document")
+    public ResponseEntity<String> signDocument(@Valid @RequestBody SignDocumentDto signDocumentDto) {
+        brokerIntermediaryService.handleSignDocumentOperations(signDocumentDto);
+        String messageResponse = String.format("Document with Title %s was sent for signature.", signDocumentDto.getDocumentTitle());
         return new ResponseEntity<>(messageResponse, HttpStatus.CREATED);
     }
 

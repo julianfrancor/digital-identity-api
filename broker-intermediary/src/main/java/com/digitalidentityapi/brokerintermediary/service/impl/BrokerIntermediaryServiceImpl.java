@@ -1,13 +1,7 @@
 package com.digitalidentityapi.brokerintermediary.service.impl;
 
-import com.digitalidentityapi.brokerintermediary.Message.CitizenMessage;
-import com.digitalidentityapi.brokerintermediary.Message.DocumentMessage;
-import com.digitalidentityapi.brokerintermediary.Message.DocumentUploadMessage;
-import com.digitalidentityapi.brokerintermediary.Message.TransferMessage;
-import com.digitalidentityapi.brokerintermediary.dto.CitizenDto;
-import com.digitalidentityapi.brokerintermediary.dto.DocumentDto;
-import com.digitalidentityapi.brokerintermediary.dto.DocumentUploadDto;
-import com.digitalidentityapi.brokerintermediary.dto.TransferRequestDto;
+import com.digitalidentityapi.brokerintermediary.Message.*;
+import com.digitalidentityapi.brokerintermediary.dto.*;
 import com.digitalidentityapi.brokerintermediary.producer.RabbitPublishMessage;
 import com.digitalidentityapi.brokerintermediary.service.IBrokerIntermediaryService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -77,6 +71,24 @@ public class BrokerIntermediaryServiceImpl implements IBrokerIntermediaryService
         System.out.println(transferMessage.getCitizenEmail());
         rabbitPublishMessage.sendMessageToQueue(TRANSFERS_QUEUE, getTransferMessageString(transferMessage));
         System.out.println("Message successfully published in Transfers Queue");
+    }
+
+    @Override
+    public void handleSignDocumentOperations(SignDocumentDto signDocumentDto){
+        SignDocumentMessage signDocumentMessage = new SignDocumentMessage(signDocumentDto);
+        System.out.println(signDocumentMessage.getEmail());
+        rabbitPublishMessage.sendMessageToQueue(SIGN_DOCUMENTS_QUEUE, getSignDocumentMessageString(signDocumentMessage));
+        System.out.println("Message successfully published in Sign Documents Queue");
+    }
+
+    private String getSignDocumentMessageString(SignDocumentMessage signDocumentMessage) {
+        String message = "";
+        try {
+            message = objectMapper.writeValueAsString(signDocumentMessage);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return message;
     }
 
     private String getTransferMessageString(TransferMessage transferMessage) {
