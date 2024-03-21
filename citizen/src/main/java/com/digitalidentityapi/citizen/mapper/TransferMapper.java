@@ -30,7 +30,7 @@ public class TransferMapper {
         }
 
         transfer.setCitizenId(transferDto.getCitizenId());
-        transfer.setOperatorId(Integer.parseInt(transferDto.getOperatorId()));
+        transfer.setOperatorId(transferDto.getOperatorId());
         transfer.setTransferDate(transferDto.getTransferDate());
         return transfer;
     }

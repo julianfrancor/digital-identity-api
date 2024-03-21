@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS `transfer`
 (
     `id`            int AUTO_INCREMENT PRIMARY KEY NOT NULL,
     `citizen_id`    int                            NOT NULL,
-    `operator_id`   int                            NOT NULL,
+    `operator_id`   VARCHAR(255)                   NOT NULL,
     `transfer_date` DATE                           NOT NULL,
     `created_at`    DATE,
     `updated_at`    DATE,
