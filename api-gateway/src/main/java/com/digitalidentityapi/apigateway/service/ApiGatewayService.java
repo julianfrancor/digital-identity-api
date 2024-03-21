@@ -2,6 +2,7 @@ package com.digitalidentityapi.apigateway.service;
 
 import com.digitalidentityapi.apigateway.dto.CitizenDto;
 import com.digitalidentityapi.apigateway.dto.DocumentDto;
+import com.digitalidentityapi.apigateway.dto.SignDocumentDto;
 import com.digitalidentityapi.apigateway.dto.TransferRequestDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -77,6 +78,14 @@ public class ApiGatewayService {
         return webClient.post()
                 .uri(BROKER_INTERMEDIARY_BASE_URL + "/broker-intermediary/transfers")
                 .bodyValue(transferRequestDto)
+                .retrieve()
+                .toEntity(String.class);
+    }
+
+    public Mono<ResponseEntity<String>> signDocument(SignDocumentDto signDocumentDto) {
+        return webClient.post()
+                .uri(BROKER_INTERMEDIARY_BASE_URL + "/broker-intermediary/sign-document")
+                .bodyValue(signDocumentDto)
                 .retrieve()
                 .toEntity(String.class);
     }

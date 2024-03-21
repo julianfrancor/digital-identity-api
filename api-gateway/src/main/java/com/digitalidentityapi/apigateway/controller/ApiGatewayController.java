@@ -1,5 +1,6 @@
 package com.digitalidentityapi.apigateway.controller;
 
+import com.digitalidentityapi.apigateway.dto.SignDocumentDto;
 import com.digitalidentityapi.apigateway.service.ApiGatewayService;
 import com.digitalidentityapi.apigateway.dto.CitizenDto;
 import com.digitalidentityapi.apigateway.dto.DocumentDto;
@@ -55,6 +56,11 @@ public class ApiGatewayController {
     @PostMapping("/transfers")
     public Mono<ResponseEntity<String>> performTransfer(@RequestBody TransferRequestDto transferRequestDto) {
         return apiGatewayService.performTransfer(transferRequestDto);
+    }
+
+    @PostMapping("/sign-document")
+    public Mono<ResponseEntity<String>> performTransfer(@RequestBody SignDocumentDto signDocumentDto) {
+        return apiGatewayService.signDocument(signDocumentDto);
     }
 
     @GetMapping("/documents/{email}")
