@@ -1,5 +1,6 @@
 package com.digitalidentityapi.citizen.listener;
 
+import com.digitalidentityapi.citizen.Message.TransferRequestMessage;
 import com.digitalidentityapi.citizen.dto.TransferDto;
 import com.digitalidentityapi.citizen.dto.TransferRequestDto;
 import com.digitalidentityapi.citizen.service.ITransferService;
@@ -26,8 +27,8 @@ public class TransferMessageListener {
     public void handleMessage(@Payload String message) {
         try {
             System.out.println("========================="+ message);
-            TransferRequestDto transferRequestDto = objectMapper.readValue(message, TransferRequestDto.class);
-            transferService.createTransfer(transferRequestDto);
+            TransferRequestMessage transferRequestMessage = objectMapper.readValue(message, TransferRequestMessage.class);
+            transferService.createTransfer(new TransferRequestDto(transferRequestMessage));
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException("Error processing message", e);

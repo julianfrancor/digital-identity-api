@@ -1,5 +1,6 @@
 package com.digitalidentityapi.citizen.dto;
 
+import com.digitalidentityapi.citizen.Message.TransferRequestMessage;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,9 +13,9 @@ public class TransferRequestDto {
     private String citizenEmail;
     private String destinationOperatorId;
 
-    public TransferRequestDto(String citizenIdentification, String citizenEmail, String destinationOperatorId) {
-        this.citizenIdentification = citizenIdentification;
-        this.citizenEmail = citizenEmail;
-        this.destinationOperatorId = destinationOperatorId;
+    public TransferRequestDto(TransferRequestMessage transferRequestMessage) {
+        this.citizenIdentification = transferRequestMessage.getCitizenIdentification();
+        this.citizenEmail = transferRequestMessage.getCitizenEmail();
+        this.destinationOperatorId = transferRequestMessage.getDestinationOperatorId();
     }
 }
