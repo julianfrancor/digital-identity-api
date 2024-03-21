@@ -20,7 +20,7 @@ public class Transfer extends BaseEntity {
     private int citizenId;
 
     @Column(name = "operator_id", nullable = false)
-    private int operatorId;
+    private String operatorId;
 
     @Column(name = "transfer_date", nullable = false)
     @Temporal(TemporalType.DATE)

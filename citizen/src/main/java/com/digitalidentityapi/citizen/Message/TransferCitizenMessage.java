@@ -11,10 +11,10 @@ import java.util.List;
 @Getter
 @Data
 public class TransferCitizenMessage {
-    private int destinationOperatorId;
+    private String destinationOperatorId;
     private CitizenWithDocumentsTransferInfoDTO citizenWithDocumentsTransferInfoDTO;
 
-    public TransferCitizenMessage(int destinationOperatorId, CitizenWithDocumentsTransferInfoDTO citizenWithDocumentsTransferInfoDTO) {
+    public TransferCitizenMessage(String destinationOperatorId, CitizenWithDocumentsTransferInfoDTO citizenWithDocumentsTransferInfoDTO) {
         this.destinationOperatorId = destinationOperatorId;
         this.citizenWithDocumentsTransferInfoDTO = citizenWithDocumentsTransferInfoDTO;
     }

@@ -77,11 +77,11 @@ public class TransferServiceImpl implements ITransferService {
         return citizenWithDocumentsTransferInfoDTO;
     }
 
-    private static TransferDto getTransferDto(Citizen citizen, int operatorId) {
+    private static TransferDto getTransferDto(Citizen citizen, String operatorId) {
         TransferDto transferDto = new TransferDto();
         transferDto.setCitizenId(citizen.getId());
         transferDto.setCitizenEmail(citizen.getEmail());
-        transferDto.setOperatorId(String.valueOf(operatorId));
+        transferDto.setOperatorId(operatorId);
         transferDto.setTransferDate(new Date());
         transferDto.setCreatedAt(new Date());
         transferDto.setUpdatedAt(new Date());
@@ -130,7 +130,7 @@ public class TransferServiceImpl implements ITransferService {
                 .orElseThrow(() -> new IllegalArgumentException("Transfer with ID " + id + " not found"));
 
         existingTransfer.setCitizenId(transferDto.getCitizenId());
-        existingTransfer.setOperatorId(Integer.parseInt(transferDto.getOperatorId()));
+        existingTransfer.setOperatorId(transferDto.getOperatorId());
         existingTransfer.setTransferDate(transferDto.getTransferDate());
         existingTransfer.setUpdatedAt(LocalDateTime.now(ZoneId.systemDefault()));
 
