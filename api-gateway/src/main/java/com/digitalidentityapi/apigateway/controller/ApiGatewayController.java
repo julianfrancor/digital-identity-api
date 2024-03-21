@@ -61,4 +61,9 @@ public class ApiGatewayController {
     public Mono<ResponseEntity<List<DocumentDto>>> getAllDocumentsByEmail(@PathVariable String email) {
         return apiGatewayService.getAllDocumentsByEmail(email);
     }
+
+    @PostMapping("/transfers/confirm")
+    public String callBackUrlTransfer() {
+        return "Transferencia procesada con exito";
+    }
 }

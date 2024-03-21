@@ -47,6 +47,8 @@ public class TransferServiceImpl implements ITransferService {
     @Autowired
     private ObjectMapper objectMapper;
 
+    private static final String CALLBACK_URL = "34.136.184.165:8080/api-gateway/transfers/confirm";
+
     @Autowired
     public TransferServiceImpl(TransferRepository transferRepository, RabbitPublishMessage rabbitPublishMessage) {
         this.transferRepository = transferRepository;
@@ -62,8 +64,7 @@ public class TransferServiceImpl implements ITransferService {
         citizenWithDocumentsTransferInfoDTO.setName(citizen.getFullName());
         citizenWithDocumentsTransferInfoDTO.setAddress(citizen.getAddress());
         citizenWithDocumentsTransferInfoDTO.setEmail(citizen.getEmail());
-        // TODO: mirar como se hace esto del callback
-        citizenWithDocumentsTransferInfoDTO.setCallbackUrl("example.com");
+        citizenWithDocumentsTransferInfoDTO.setCallbackUrl(CALLBACK_URL);
         List<DocumentDto> allDocuments = getAllDocumentsByCitizenEmail(citizen.getEmail());
         citizenWithDocumentsTransferInfoDTO.setFiles(convertToDocumentTransferInfoList(allDocuments));
 
