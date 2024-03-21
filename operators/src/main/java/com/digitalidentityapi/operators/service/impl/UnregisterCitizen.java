@@ -25,7 +25,7 @@ public class UnregisterCitizen implements UnregistrerCitizenServices {
         JSONObject json = new JSONObject(message);
         OkHttpClient client = new OkHttpClient();
         MediaType mediaType = MediaType.parse("application/json");
-        String requestBody = "{\"id\": " + json.getString("id") + "}";
+        String requestBody = "{\"id\": " + json.getInt("id") + "}";
         RequestBody body = RequestBody.create(mediaType, requestBody);
         Request request = BuildRequestUnregisterCitizen.getRequest(body);
         try {

@@ -1,5 +1,7 @@
 package com.digitalidentityapi.operators.service;
 
+import com.digitalidentityapi.operators.dto.CitizenForTransferDTO;
+
 public interface TransferCitizenServices {
-    void transferCitizzen(String message);
+    void transferCitizen(CitizenForTransferDTO citizenForTransferDTO);
 }

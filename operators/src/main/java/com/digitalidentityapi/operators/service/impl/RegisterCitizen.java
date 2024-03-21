@@ -21,7 +21,7 @@ public class RegisterCitizen implements RegisterCitizenServices {
     private final RabbitPublishMessage rabbitPublishMessage;
 
     @Autowired
-    public RegisterCitizen(RabbitPublishMessage rabbitPublishMessage, GetOperators getOperators) {
+    public RegisterCitizen(RabbitPublishMessage rabbitPublishMessage) {
         this.rabbitPublishMessage = rabbitPublishMessage;
     }
 

@@ -1,21 +1,42 @@
 package com.digitalidentityapi.operators.service.impl;
 
 import com.digitalidentityapi.operators.constants.Constants;
-import com.digitalidentityapi.operators.entity.AuthenticDocument;
+import com.digitalidentityapi.operators.dto.CitizenForTransferDTO;
+import com.digitalidentityapi.operators.dto.UnregistredCitizenDTO;
+import com.digitalidentityapi.operators.entity.CitizenRegister;
 import com.digitalidentityapi.operators.entity.NotificationMessage;
-import com.digitalidentityapi.operators.service.SignDocumentsServices;
+import com.digitalidentityapi.operators.entity.Operator;
+import com.digitalidentityapi.operators.service.GetOperatorsServices;
+import com.digitalidentityapi.operators.service.RegisterCitizenServices;
 import com.digitalidentityapi.operators.service.TransferCitizenServices;
+import com.digitalidentityapi.operators.service.UnregistrerCitizenServices;
+import com.digitalidentityapi.operators.utils.rabbit.BuildMessageTransfer;
 import com.digitalidentityapi.operators.utils.rabbit.RabbitPublishMessage;
-import org.json.JSONObject;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
+import java.util.List;
+
+import static com.digitalidentityapi.operators.constants.Constants.*;
+
 @Service
 public class TransferCitizen implements TransferCitizenServices {
     private final RabbitPublishMessage rabbitPublishMessage;
+    @Autowired
+    GetOperatorsServices getOperatorsServices;
+    @Autowired
+    UnregistrerCitizenServices unregistrerCitizenServices;
+    @Autowired
+    RegisterCitizenServices registerCitizenServices;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Autowired
     public TransferCitizen(RabbitPublishMessage rabbitPublishMessage) {
@@ -24,18 +45,56 @@ public class TransferCitizen implements TransferCitizenServices {
 
 
     @Override
-    public void transferCitizzen(String message) {
-        JSONObject json = new JSONObject(message);
-        System.out.println("Received: " + message);
-        WebClient operator = WebClient.create(Constants.URL);
-        Mono<String> response = operator.put()
-                .uri("/authenticateDocument")
-                .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(json)
-                .retrieve()
-                .bodyToMono(String.class);
-        System.out.println(response.block());
-        NotificationMessage notificationMessage = new NotificationMessage(json.getString("email"), response.block());
-        rabbitPublishMessage.sendMessageToQueue(Constants.NOTIFICATIONSQUEU, notificationMessage.toString());
+    public void transferCitizen(CitizenForTransferDTO citizenForTransferDTO) {
+        try {
+            String urlTransfer = getUrlTranfer(citizenForTransferDTO.getDestinationOperatorId());
+            WebClient operator = WebClient.create(urlTransfer);
+            UnregistredCitizenDTO unregistredCitizenDTO = new UnregistredCitizenDTO(citizenForTransferDTO.getCitizenWithDocumentsTransferInfoDTO().getId(), citizenForTransferDTO.getCitizenWithDocumentsTransferInfoDTO().getEmail());
+            unregistrerCitizenServices.unregisterCitizen(unregistredCitizenDTO.toString());
+            BuildMessageTransfer buildMessageTransfer = new BuildMessageTransfer();
+            String body = buildMessageTransfer.buildMessageTransferDTO(citizenForTransferDTO);
+            Mono<String> response = operator.post()
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .bodyValue(body)
+                    .retrieve()
+                    .bodyToMono(String.class);
+            System.out.println(response.block());
+            NotificationMessage notificationMessage = new NotificationMessage(citizenForTransferDTO.getCitizenWithDocumentsTransferInfoDTO().getEmail(), response.block());
+            rabbitPublishMessage.sendMessageToQueue(Constants.NOTIFICATIONSQUEU, notificationMessage.toString());
+        } catch (Exception e) {
+            System.out.println(e);
+            NotificationMessage notificationMessage = new NotificationMessage(citizenForTransferDTO.getCitizenWithDocumentsTransferInfoDTO().getEmail(), ERRORTRANSFERCITIZENOPERATOR);
+            rabbitPublishMessage.sendMessageToQueue(Constants.NOTIFICATIONSQUEU, notificationMessage.toString());
+            rollbackUnregisterCitizen(citizenForTransferDTO);
+        }
+    }
+
+    public String getUrlTranfer(String idOperator) {
+        ObjectMapper mapper = new ObjectMapper();
+        String urlTransfer = "";
+        String operatorsMinTic = getOperatorsServices.getOperators();
+        try {
+            List<Operator> operators = mapper.readValue(operatorsMinTic, new TypeReference<List<Operator>>() {
+            });
+
+            for (Operator operator : operators) {
+                if (operator.get_id().equals(idOperator)) {
+                    System.out.println("Encontrado: " + operator.getOperatorName());
+                    urlTransfer = operator.getTransferAPIURL();
+                    break;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return urlTransfer;
+    }
+
+    public void rollbackUnregisterCitizen(CitizenForTransferDTO citizenForTransferDTO) {
+        CitizenRegister citizenRegister = new CitizenRegister(citizenForTransferDTO.getCitizenWithDocumentsTransferInfoDTO().getId(),
+                citizenForTransferDTO.getCitizenWithDocumentsTransferInfoDTO().getName(),
+                citizenForTransferDTO.getCitizenWithDocumentsTransferInfoDTO().getAddress(),
+                citizenForTransferDTO.getCitizenWithDocumentsTransferInfoDTO().getEmail(), IDOPERATOR, OPERATORNAME);
+        rabbitPublishMessage.sendMessageToQueue(REGISTERCITIZENQUEUE, citizenRegister.toString());
     }
 }
