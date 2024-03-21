@@ -9,7 +9,7 @@ import lombok.Setter;
 public class TransferMessage {
     private Long citizenIdentification;
     private String citizenEmail;
-    private int destinationOperatorId;
+    private String destinationOperatorId;
 
     public TransferMessage(TransferRequestDto transferRequestDto) {
         this.citizenIdentification = transferRequestDto.getCitizenIdentification();
