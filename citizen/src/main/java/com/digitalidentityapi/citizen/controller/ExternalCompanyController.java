@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/external-companies")
+@RequestMapping("/citizen-service/external-companies")
 public class ExternalCompanyController {
 
     private final IExternalCompanyService externalCompanyService;

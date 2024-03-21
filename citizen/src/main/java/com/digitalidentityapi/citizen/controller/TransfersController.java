@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/transfers")
+@RequestMapping("/citizen-service/transfers")
 public class TransfersController {
 
     private final ITransferService transfersService;
