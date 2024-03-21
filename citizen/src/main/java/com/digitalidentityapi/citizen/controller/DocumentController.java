@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/documents")
+@RequestMapping("/citizen-service/documents")
 public class DocumentController {
 
     @Autowired

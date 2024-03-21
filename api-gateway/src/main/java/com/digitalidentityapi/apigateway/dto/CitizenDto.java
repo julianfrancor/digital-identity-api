@@ -1,4 +1,4 @@
-package com.digitalidentityapi.brokerintermediary.dto;
+package com.digitalidentityapi.apigateway.dto;
 
 import lombok.Data;
 
@@ -6,7 +6,7 @@ import java.util.Date;
 
 @Data
 public class CitizenDto {
-    private Long identification;
+    private String identification;
     private String identificationType;
     private String fullName;
     private String address;

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import static com.digitalidentityapi.citizen.constants.Constants.*;
 
 @RestController
-@RequestMapping(path = "/publish-broker-message", produces = {MediaType.APPLICATION_JSON_VALUE})
+@RequestMapping(path = "/citizen-service/publish-broker-message", produces = {MediaType.APPLICATION_JSON_VALUE})
 public class PublishMessageBrokerController {
 
     @Autowired

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/digital-identity-services")
+@RequestMapping("/citizen-service/digital-identity-services")
 public class DigitalIdentityServicesController {
 
     private final IDigitalIdentityServicesService digitalIdentityServicesService;
