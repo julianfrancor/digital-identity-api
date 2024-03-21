@@ -2,6 +2,31 @@ server:
   port: 8080
 spring:
   application:
-    name: "citizen"
+    name: "api-gateway"
   profiles:
     active: "prod"
+  jpa:
+    show-sql: true
+  rabbitmq:
+    host: 35.239.132.181
+    #    host: localhost
+    port: 5672
+    username: sistemasdistribuidos
+    password: sistemasdistribuidos
+    #    username: guest
+    #    password: guest
+    queues:
+      citizen: "citizen"
+      citizenSubscription: "citizenSubscription"
+      digitalIdentityServices: "digitalIdentityServices"
+      document: "document"
+      externalCompany: "externalCompany"
+      offeredSolution: "offeredSolution"
+      transfers: "transfers"
+logging:
+  level:
+    org:
+      springframework:
+        web: DEBUG
+        boot:
+          autoconfigure: DEBUG
