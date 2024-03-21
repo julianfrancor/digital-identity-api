@@ -25,6 +25,7 @@ public class TransferMessageListener {
     @RabbitListener(queues = "transfers")
     public void handleMessage(@Payload String message) {
         try {
+            System.out.println("========================="+ message);
             TransferRequestDto transferRequestDto = objectMapper.readValue(message, TransferRequestDto.class);
             transferService.createTransfer(transferRequestDto);
         } catch (IOException e) {
