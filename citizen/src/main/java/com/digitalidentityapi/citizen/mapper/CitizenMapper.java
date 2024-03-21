@@ -2,7 +2,6 @@ package com.digitalidentityapi.citizen.mapper;
 
 import com.digitalidentityapi.citizen.dto.CitizenDto;
 import com.digitalidentityapi.citizen.entity.Citizen;
-import com.digitalidentityapi.citizen.enums.IdentificationType;
 import com.digitalidentityapi.citizen.enums.Status;
 
 import static com.digitalidentityapi.citizen.utils.Utils.convertToDate;
@@ -17,10 +16,7 @@ public class CitizenMapper {
         citizenDto.setId(citizen.getId());
         citizenDto.setIdentification(citizen.getIdentification());
         citizenDto.setIdentificationType(String.valueOf(citizen.getIdentificationType()));
-        citizenDto.setFirstName(citizen.getFirstName());
-        citizenDto.setSecondName(citizen.getSecondName());
-        citizenDto.setLastName(citizen.getLastName());
-        citizenDto.setSecondLastName(citizen.getSecondLastName());
+        citizenDto.setFullName(citizen.getFullName());
         citizenDto.setAddress(citizen.getAddress());
         citizenDto.setEmail(citizen.getEmail());
         citizenDto.setPhone(citizen.getPhone());
@@ -35,11 +31,8 @@ public class CitizenMapper {
     public static Citizen toEntity(CitizenDto citizenDto) {
         Citizen citizen = new Citizen();
         citizen.setIdentification(citizenDto.getIdentification());
-        citizen.setIdentificationType(IdentificationType.valueOf(citizenDto.getIdentificationType()));
-        citizen.setFirstName(citizenDto.getFirstName());
-        citizen.setSecondName(citizenDto.getSecondName());
-        citizen.setLastName(citizenDto.getLastName());
-        citizen.setSecondLastName(citizenDto.getSecondLastName());
+        citizen.setIdentificationType(citizenDto.getIdentificationType());
+        citizen.setFullName(citizenDto.getFullName());
         citizen.setAddress(citizenDto.getAddress());
         citizen.setEmail(citizenDto.getEmail());
         citizen.setPhone(citizenDto.getPhone());

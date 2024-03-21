@@ -12,6 +12,8 @@ public class Constants {
     public static final String NOTIFICATION_QUEUE = "notificationQueue";
     public static final String REGISTER_CITIZEN_QUEUE = "registerCitizen";
 
+    public static final String TRANSFER_CITIZEN_QUEUE = "transferCitizen";
+
     // Exchange names
     public static final String CITIZEN_EXCHANGE = "citizenExchange";
     public static final String CITIZEN_SUBSCRIPTION_EXCHANGE = "citizenSubscriptionExchange";

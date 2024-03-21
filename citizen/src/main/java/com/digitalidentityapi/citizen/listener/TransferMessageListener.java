@@ -1,6 +1,7 @@
 package com.digitalidentityapi.citizen.listener;
 
 import com.digitalidentityapi.citizen.dto.TransferDto;
+import com.digitalidentityapi.citizen.dto.TransferRequestDto;
 import com.digitalidentityapi.citizen.service.ITransferService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
@@ -24,20 +25,8 @@ public class TransferMessageListener {
     @RabbitListener(queues = "transfers")
     public void handleMessage(@Payload String message) {
         try {
-            TransferMessage transferMessage = objectMapper.readValue(message, TransferMessage.class);
-            switch (transferMessage.getOperation()) {
-                case "CREATE":
-                    transferService.createTransfer(transferMessage.getTransferDto());
-                    break;
-                case "UPDATE":
-                    transferService.updateTransfer(transferMessage.getTransferDto().getId(), transferMessage.getTransferDto());
-                    break;
-                case "DELETE":
-                    transferService.deleteTransfer(transferMessage.getTransferDto().getId());
-                    break;
-                default:
-                    throw new IllegalArgumentException("Unsupported operation: " + transferMessage.getOperation());
-            }
+            TransferRequestDto transferRequestDto = objectMapper.readValue(message, TransferRequestDto.class);
+            transferService.createTransfer(transferRequestDto);
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException("Error processing message", e);

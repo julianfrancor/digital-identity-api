@@ -8,12 +8,12 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface CitizenRepository extends JpaRepository<Citizen, Integer> {
+public interface CitizenRepository extends JpaRepository<Citizen, Long> {
 
     // Find a citizen by their email
     Optional<Citizen> findByEmail(String email);
 
     // Find a citizen by their identification number
-    Optional<Citizen> findByIdentification(String identification);
+    Optional<Citizen> findByIdentification(Long identification);
 }
 
