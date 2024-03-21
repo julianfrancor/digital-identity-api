@@ -6,6 +6,7 @@ public class Constants {
     public static final String CITIZEN_SUBSCRIPTION_QUEUE = "citizenSubscription";
     public static final String DIGITAL_IDENTITY_SERVICES_QUEUE = "digitalIdentityServices";
     public static final String DOCUMENT_QUEUE = "document";
+    public static final String DOCUMENT_UPLOAD_QUEUE = "uploadDocumentQueue";
     public static final String EXTERNAL_COMPANY_QUEUE = "externalCompany";
     public static final String OFFERED_SOLUTION_QUEUE = "offeredSolution";
     public static final String TRANSFERS_QUEUE = "transfers";

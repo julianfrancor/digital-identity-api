@@ -2,9 +2,11 @@ package com.digitalidentityapi.brokerintermediary.service.impl;
 
 import com.digitalidentityapi.brokerintermediary.Message.CitizenMessage;
 import com.digitalidentityapi.brokerintermediary.Message.DocumentMessage;
+import com.digitalidentityapi.brokerintermediary.Message.DocumentUploadMessage;
 import com.digitalidentityapi.brokerintermediary.Message.TransferMessage;
 import com.digitalidentityapi.brokerintermediary.dto.CitizenDto;
 import com.digitalidentityapi.brokerintermediary.dto.DocumentDto;
+import com.digitalidentityapi.brokerintermediary.dto.DocumentUploadDto;
 import com.digitalidentityapi.brokerintermediary.dto.TransferRequestDto;
 import com.digitalidentityapi.brokerintermediary.producer.RabbitPublishMessage;
 import com.digitalidentityapi.brokerintermediary.service.IBrokerIntermediaryService;
@@ -49,14 +51,20 @@ public class BrokerIntermediaryServiceImpl implements IBrokerIntermediaryService
     public void handleDocumentOperations(String operation, DocumentDto documentDto) {
         DocumentMessage documentMessage = new DocumentMessage(operation, documentDto);
         System.out.println(documentMessage.getOperation());
-        rabbitPublishMessage.sendMessageToQueue(DOCUMENT_QUEUE, getDocumentMessageString(documentMessage));
+        DocumentUploadMessage documentUploadMessage = new DocumentUploadMessage(
+                documentDto.getTitle(),
+                documentDto.getDocumentTypeId(),
+                documentDto.getCitizenEmail(),
+                documentDto.getBase64file()
+        );
+        rabbitPublishMessage.sendMessageToQueue(DOCUMENT_UPLOAD_QUEUE, getDocumentUploadMessageString(documentUploadMessage));
         System.out.println("Message successfully published in Document Queue");
     }
 
-    private String getDocumentMessageString(DocumentMessage documentMessage) {
+    private String getDocumentUploadMessageString(DocumentUploadMessage documentUploadMessage) {
         String message = "";
         try {
-            message = objectMapper.writeValueAsString(documentMessage);
+            message = objectMapper.writeValueAsString(documentUploadMessage);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
