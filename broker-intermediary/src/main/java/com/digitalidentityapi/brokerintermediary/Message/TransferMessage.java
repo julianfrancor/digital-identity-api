@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class TransferMessage {
-    private Long citizenIdentification;
+    private String citizenIdentification;
     private String citizenEmail;
     private String destinationOperatorId;
 
