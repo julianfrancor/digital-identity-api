@@ -22,4 +22,6 @@ public class Constants {
     public static final String ROUTING_KEY_PATTERN = "#";
 
     public static final String ERRORTRANSFERCITIZENOPERATOR = "Error de transferencia al usuario - Operador no disponible, se realiza registro de nuevo ante MinTic";
+    public static final String SUCCESFULLTRANSFERCITIZENOPERATORS = "Envio de solicitud exitosa al operador ";
+
 }
